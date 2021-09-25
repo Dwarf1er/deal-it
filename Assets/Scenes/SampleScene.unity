@@ -3035,7 +3035,7 @@ MonoBehaviour:
   direction: {x: 0, y: 0}
   eventManager: {fileID: 0}
   graph: {fileID: 311074411}
-  speed: 1
+  speed: 0.5
 --- !u!212 &976354789
 SpriteRenderer:
   m_ObjectHideFlags: 0
