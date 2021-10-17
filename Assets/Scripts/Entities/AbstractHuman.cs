@@ -25,6 +25,22 @@ public abstract class AbstractHuman : MonoBehaviour {
         }
     }
 
+    public float DistanceTo(GameObject gameObject) {
+        return this.DistanceTo(gameObject.transform);
+    }
+
+    public float DistanceTo(Transform transform) {
+        return this.DistanceTo(transform.position);
+    }
+
+    public float DistanceTo(Vector2 target) {
+        return this.DistanceTo(new Vector3(target.x, target.y, 0));
+    }
+
+    public float DistanceTo(Vector3 target) {
+        return Vector2.Distance(this.transform.position, target);
+    }
+
     public virtual void Update() {
         int directionIndex = this.GetDirectionIndex();
 

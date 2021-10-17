@@ -1,19 +1,19 @@
 fileFormatVersion: 2
-guid: 14333bbd24a53fc959e17f1529bd41de
+guid: 17c258536f10f59be8eedb5a2f7a823e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -138676537794702570
-    second: dealer_character_0
+      213: 7365096797410354213
+    second: professor2_0
   - first:
-      213: -7185232824305254490
-    second: dealer_character_1
+      213: 5229478019088101140
+    second: professor2_1
   - first:
-      213: -5026964516666045560
-    second: dealer_character_2
+      213: 4482562063335868561
+    second: professor2_2
   - first:
-      213: 7970687911487900740
-    second: dealer_character_3
+      213: -5562230085088335047
+    second: professor2_3
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -80,7 +80,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -92,7 +92,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -103,85 +103,85 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: dealer_character_0
+      name: professor2_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 13
-        height: 17
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        height: 15
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 613d0127c62531ef0800000000000000
-      internalID: -138676537794702570
+      spriteID: 524e20ae384163660800000000000000
+      internalID: 7365096797410354213
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: dealer_character_1
+      name: professor2_1
       rect:
         serializedVersion: 2
         x: 14
         y: 0
         width: 13
-        height: 17
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        height: 15
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6affec6b0dce84c90800000000000000
-      internalID: -7185232824305254490
+      spriteID: 41fa5782d86d29840800000000000000
+      internalID: 5229478019088101140
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: dealer_character_2
+      name: professor2_2
       rect:
         serializedVersion: 2
         x: 29
         y: 1
         width: 13
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        height: 14
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 88b80a5f762ac3ab0800000000000000
-      internalID: -5026964516666045560
+      spriteID: 198c6cc6272453e30800000000000000
+      internalID: 4482562063335868561
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: dealer_character_3
+      name: professor2_3
       rect:
         serializedVersion: 2
-        x: 43
+        x: 44
         y: 1
-        width: 11
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 10
+        height: 14
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 44c8cbbcc629d9e60800000000000000
-      internalID: 7970687911487900740
+      spriteID: 93ba153253dfec2b0800000000000000
+      internalID: -5562230085088335047
       vertices: []
       indices: 
       edges: []

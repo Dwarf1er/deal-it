@@ -18,7 +18,19 @@ public class GotoObjectState : AIState {
     }
 
     public override void Enter() {
-        this.target = GameObject.Find(this.targetName).transform.position;
+        float nearestDistance = float.MaxValue;
+        GameObject nearestObject = null;
+
+        foreach(GameObject gameObject in GameObject.FindGameObjectsWithTag(this.targetName)) {
+            float distance = this.ai.DistanceTo(gameObject);
+            
+            if(distance < nearestDistance) {
+                nearestDistance = distance;
+                nearestObject = gameObject;
+            }
+        }
+
+        this.target = nearestObject.transform.position;
     }
 
     public override void Update() {
