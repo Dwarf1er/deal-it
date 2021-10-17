@@ -163,7 +163,6 @@ MonoBehaviour:
   - {fileID: 7591145167710593082, guid: 14333bbd24a53fc959e17f1529bd41de, type: 3}
   - {fileID: 9033734696675200748, guid: 14333bbd24a53fc959e17f1529bd41de, type: 3}
   direction: {x: 0, y: 0}
-  eventManager: {fileID: 0}
   speed: 1
 --- !u!212 &76967300
 SpriteRenderer:
@@ -224,7 +223,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 76967298}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.75, z: 0}
+  m_LocalPosition: {x: 0, y: -0.85, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 86306994}
@@ -333,7 +332,7 @@ Transform:
   - {fileID: 76967301}
   - {fileID: 1970015638}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &134861819
 GameObject:
@@ -562,7 +561,6 @@ MonoBehaviour:
   - {fileID: -6324792683804347027, guid: e46c4a40784bcb4c5a025a72f0d87006, type: 3}
   - {fileID: 3126148886740201640, guid: e46c4a40784bcb4c5a025a72f0d87006, type: 3}
   direction: {x: 0, y: 0}
-  eventManager: {fileID: 0}
   graph: {fileID: 311074411}
   speed: 0.75
 --- !u!212 &276503790
@@ -1088,7 +1086,6 @@ MonoBehaviour:
   - {fileID: -7607746089973471222, guid: 121a5236a4d2c3d659eaa894586a7eb7, type: 3}
   - {fileID: 3961412914170026893, guid: 121a5236a4d2c3d659eaa894586a7eb7, type: 3}
   direction: {x: 0, y: 0}
-  eventManager: {fileID: 0}
   graph: {fileID: 311074411}
   speed: 1
 --- !u!50 &478272622
@@ -3346,7 +3343,7 @@ Transform:
   - {fileID: 276503791}
   - {fileID: 478272619}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &905308790
 GameObject:
@@ -3359,7 +3356,7 @@ GameObject:
   - component: {fileID: 905308792}
   - component: {fileID: 905308791}
   m_Layer: 0
-  m_Name: EventManager
+  m_Name: Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3430,7 +3427,6 @@ MonoBehaviour:
   - {fileID: 4482562063335868561, guid: 17c258536f10f59be8eedb5a2f7a823e, type: 3}
   - {fileID: -5562230085088335047, guid: 17c258536f10f59be8eedb5a2f7a823e, type: 3}
   direction: {x: 0, y: 0}
-  eventManager: {fileID: 0}
   graph: {fileID: 311074411}
   speed: 0.5
 --- !u!212 &976354789
@@ -6055,7 +6051,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1970015637}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.5, y: -0.75, z: 0}
+  m_LocalPosition: {x: 0.5, y: -0.85, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 86306994}
@@ -6152,7 +6148,6 @@ MonoBehaviour:
   - {fileID: 7591145167710593082, guid: 14333bbd24a53fc959e17f1529bd41de, type: 3}
   - {fileID: 9033734696675200748, guid: 14333bbd24a53fc959e17f1529bd41de, type: 3}
   direction: {x: 0, y: 0}
-  eventManager: {fileID: 0}
   speed: 1
 --- !u!212 &1970015644
 SpriteRenderer:
@@ -6344,34 +6339,4 @@ Transform:
   - {fileID: 1908806344}
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2116709114
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2116709115}
-  m_Layer: 0
-  m_Name: Board
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2116709115
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2116709114}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.25, y: -0.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

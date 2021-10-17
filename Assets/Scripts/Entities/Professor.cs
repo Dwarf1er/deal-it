@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,24 +6,20 @@ using UnityEngine;
 public class Professor : AI {
     public override void Start() {
         base.Start();
-        this.eventManager.onClassStart += OnClassStart;
-        this.eventManager.onClassEnd += OnClassEnd;
+
+        EventManager.Get().Subscribe((ClassStartEvent classEvent) => OnClassStart(classEvent));
+        EventManager.Get().Subscribe((ClassEndEvent classEvent) => OnClassEnd(classEvent));
     }
 
-    public void OnDestroy() {
-        this.eventManager.onClassStart -= OnClassStart;
-        this.eventManager.onClassEnd -= OnClassEnd;
-    }
-
-    private void OnClassStart() {
+    private void OnClassStart(ClassStartEvent classEvent) {
         this.SetNextState(new SequenceState(this, new AIState[]{
-            new GotoState(this, new Vector3(0, -0.75f)),
+            new GotoState(this, new Vector3(classEvent.position.x, classEvent.position.y)),
             new GotoObjectState(this, "Board"),
             new WaitState(this, Vector2.down)
         }));
     }
 
-    private void OnClassEnd() {
+    private void OnClassEnd(ClassEndEvent classEvent) {
         this.SetNextState(new IdleState(this));
     }
 }

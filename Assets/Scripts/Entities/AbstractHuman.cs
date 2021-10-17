@@ -3,16 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public abstract class AbstractHuman : MonoBehaviour {
+public abstract class AbstractHuman : MonoBehaviour, ISubscriber {
     public Sprite[] sprites;
     public Vector2 direction;
     private int spriteIndex;
     protected SpriteRenderer spriteRenderer;
-    public EventManager eventManager;
 
     public virtual void Start() {
-        this.eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
         this.spriteRenderer = this.GetComponent<SpriteRenderer>();
+    }
+
+    public void OnDestroy() {
+        EventManager.Get().UnSubcribeAll(this);
+    }
+
+    public Transform GetTransform() {
+        return this.transform;
     }
 
     private int GetDirectionIndex() {
