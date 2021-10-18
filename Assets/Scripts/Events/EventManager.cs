@@ -24,7 +24,7 @@ public class EventManager : MonoBehaviour {
     }
     
     /// Subscribe to a type of event.
-    public void Subscribe<T>(Action<T> eventHandler) where T: IEvent {
+    public EventManager Subscribe<T>(Action<T> eventHandler) where T: IEvent {
         object subscriber = eventHandler.Target;
 
         if(!(subscriber is ISubscriber)) throw new TypeLoadException("Subscriber needs to be instance of ISubscriber.");
@@ -35,6 +35,8 @@ public class EventManager : MonoBehaviour {
 
         this.subscriberEventHandlers[subscriber].Add(eventHandler);
         this.eventHandlerSubcribers[eventHandler] = eventHandler.Target;
+        
+        return this;
     }
 
     private IEnumerator BroadcastDelayedEnumerator<T>(T eventObject, float seconds) where T: IEvent {
@@ -53,13 +55,15 @@ public class EventManager : MonoBehaviour {
         foreach(object subscriber in subscriberEventHandlers.Keys) {
             if(subscriber is ISubscriber) {
                 ISubscriber castedSubscriber = subscriber as ISubscriber;
-                Transform transform = castedSubscriber.GetTransform();
 
-                if(Vector3.Distance(origin, transform.position) <= distance) {
-                    HashSet<object> eventHandlers = subscriberEventHandlers[subscriber];
-
-                    BroadcastList(eventObject, eventHandlers);
+                if(castedSubscriber.HasDistance()) {
+                    Transform transform = castedSubscriber.GetTransform();
+                    if(Vector3.Distance(origin, transform.position) > distance) continue;
                 }
+                
+                HashSet<object> eventHandlers = subscriberEventHandlers[subscriber];
+
+                BroadcastList(eventObject, eventHandlers);
             }
         }
     }

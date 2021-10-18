@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public abstract class AbstractHuman : MonoBehaviour, ISubscriber {
+    public float speed = 1.0f;
     public Sprite[] sprites;
     public Vector2 direction;
     private int spriteIndex;
@@ -15,6 +16,10 @@ public abstract class AbstractHuman : MonoBehaviour, ISubscriber {
 
     public void OnDestroy() {
         EventManager.Get().UnSubcribeAll(this);
+    }
+
+    public bool HasDistance() {
+        return true;
     }
 
     public Transform GetTransform() {
