@@ -3,16 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public abstract class AbstractHuman : MonoBehaviour {
+public abstract class AbstractHuman : MonoBehaviour, ISubscriber {
+    public float speed = 1.0f;
     public Sprite[] sprites;
     public Vector2 direction;
     private int spriteIndex;
     protected SpriteRenderer spriteRenderer;
-    public EventManager eventManager;
 
     public virtual void Start() {
-        this.eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
         this.spriteRenderer = this.GetComponent<SpriteRenderer>();
+    }
+
+    public void OnDestroy() {
+        EventManager.Get().UnSubcribeAll(this);
+    }
+
+    public bool HasDistance() {
+        return true;
+    }
+
+    public Transform GetTransform() {
+        return this.transform;
     }
 
     private int GetDirectionIndex() {
@@ -23,6 +34,22 @@ public abstract class AbstractHuman : MonoBehaviour {
         } else {
             return direction.y < 0 ? 0 : 1;
         }
+    }
+
+    public float DistanceTo(GameObject gameObject) {
+        return this.DistanceTo(gameObject.transform);
+    }
+
+    public float DistanceTo(Transform transform) {
+        return this.DistanceTo(transform.position);
+    }
+
+    public float DistanceTo(Vector2 target) {
+        return this.DistanceTo(new Vector3(target.x, target.y, 0));
+    }
+
+    public float DistanceTo(Vector3 target) {
+        return Vector2.Distance(this.transform.position, target);
     }
 
     public virtual void Update() {

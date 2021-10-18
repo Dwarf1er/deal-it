@@ -5,8 +5,7 @@ using UnityEngine;
 public abstract class AI : AbstractHuman {
     protected AIState state;
     public Graph graph;
-    public float speed = 1.0f;
-    private float reachDistance = 0.1f;
+    private float reachDistance = 0.025f;
 
     public override void Start() {
         base.Start();
