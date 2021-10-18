@@ -39,6 +39,15 @@ public class EventManager : MonoBehaviour {
         return this;
     }
 
+    private void BroadcastCollection<T, U>(T eventObject, ICollection<U> eventHandlers) where T: IEvent {
+        foreach(object eventHandler in eventHandlers) {
+            if(eventHandler is Action<T>) {
+                Action<T> castedEventHandler = eventHandler as Action<T>;
+                castedEventHandler(eventObject);
+            }
+        }
+    }
+
     private IEnumerator BroadcastDelayedEnumerator<T>(T eventObject, float seconds) where T: IEvent {
         yield return new WaitForSeconds(seconds);
 
@@ -63,23 +72,14 @@ public class EventManager : MonoBehaviour {
                 
                 HashSet<object> eventHandlers = subscriberEventHandlers[subscriber];
 
-                BroadcastList(eventObject, eventHandlers);
-            }
-        }
-    }
-
-    private void BroadcastList<T, U>(T eventObject, ICollection<U> eventHandlers) where T: IEvent {
-        foreach(object eventHandler in eventHandlers) {
-            if(eventHandler is Action<T>) {
-                Action<T> castedEventHandler = eventHandler as Action<T>;
-                castedEventHandler(eventObject);
+                BroadcastCollection(eventObject, eventHandlers);
             }
         }
     }
 
     /// Sends an event to all subscribers.
     public void BroadcastAll<T>(T eventObject) where T: IEvent {
-        BroadcastList(eventObject, eventHandlerSubcribers.Keys);
+        BroadcastCollection(eventObject, eventHandlerSubcribers.Keys);
     }
 
     /// Unsubscribe from event type.
