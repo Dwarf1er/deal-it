@@ -12,7 +12,8 @@ public class GameManager : MonoBehaviour {
     }
 
     void Start() {
-        EventManager.Get().BroadcastDelayed(new ClassStartEvent(new Vector2(0, -0.85f)), 5.0f);
-        EventManager.Get().BroadcastDelayed(new ClassEndEvent(), 30.0f);    
+        Vector3 classPosition = new Vector2(0, -0.85f);
+
+        EventManager.Get().BroadcastWithDelay(new ClassStartEvent(classPosition), 5.0f);
     }
 }

@@ -10,8 +10,10 @@ public class Guard : AI {
     }
 
     private void OnAlert(AlertEvent alertEvent) {
+        Vector3 position = alertEvent.GetPosition();
+
         this.SetNextState(new SequenceState(this, new AIState[]{
-            new GotoState(this, new Vector3(alertEvent.position.x, alertEvent.position.y)),
+            new GotoState(this, position),
             new FollowState(this, alertEvent.target)
         }));
     }

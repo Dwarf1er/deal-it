@@ -12,8 +12,10 @@ public class Professor : AI {
     }
 
     private void OnClassStart(ClassStartEvent classEvent) {
+        Vector3 position = classEvent.GetPosition();
+
         this.SetNextState(new SequenceState(this, new AIState[]{
-            new GotoState(this, new Vector3(classEvent.position.x, classEvent.position.y)),
+            new GotoState(this, position),
             new GotoObjectState(this, "Board"),
             new WaitState(this, Vector2.down)
         }));

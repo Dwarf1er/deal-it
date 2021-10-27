@@ -23,10 +23,10 @@ public class InputManager : MonoBehaviour {
 
             if(direction.magnitude != 0) {
                 hadInput[player] = true;
-                EventManager.Get().BroadcastAll(new InputEvent(player, direction));
+                EventManager.Get().Broadcast(new InputEvent(player, direction));
             } else if(hadInput[player]) {
                 hadInput[player] = false;
-                EventManager.Get().BroadcastAll(new InputEvent(player, direction));
+                EventManager.Get().Broadcast(new InputEvent(player, direction));
             }
         }
     }

@@ -10,4 +10,12 @@ public class InputEvent : IEvent {
         this.player = player;
         this.direction = direction;
     }
+
+    public Vector2 GetPosition() {
+        return Vector2.zero;
+    }
+
+    public float GetRange() {
+        return float.MaxValue;
+    }
 }
