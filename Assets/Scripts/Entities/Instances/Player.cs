@@ -10,8 +10,11 @@ public class Player : AbstractHuman, IDealer {
 
         this.speed = 0.8f;
 
-        EventManager.Get().Subscribe((MoveEvent inputEvent) => OnMoveEvent(inputEvent));
+        EventManager.Get().Subscribe((MoveInputEvent inputEvent) => OnMoveInputEvent(inputEvent));
+        EventManager.Get().Subscribe((DealInputEvent inputEvent) => OnDealInputEvent(inputEvent));
+
         EventManager.Get().Subscribe((DealStartEvent dealEvent) => OnDealStartEvent(dealEvent));
+        EventManager.Get().Subscribe((DealEndEvent dealEvent) => OnDealEndEvent(dealEvent));
     }
 
     /// TODO: Don't copy from other class.
@@ -34,10 +37,15 @@ public class Player : AbstractHuman, IDealer {
         endEvent = dealEvent.GetEndEvent();
     }
 
-    private void OnMoveEvent(MoveEvent moveEvent) {
-        if(moveEvent.player != this.transform.name) return;
+    private void OnDealEndEvent(DealEndEvent dealEvent) {
+        if(!endEvent.Equals(dealEvent)) return;
+        endEvent = null;
+    }
 
-        this.direction = moveEvent.direction;
+    private void OnMoveInputEvent(MoveInputEvent inputEvent) {
+        if(inputEvent.player != this.transform.name) return;
+
+        this.direction = inputEvent.direction;
 
         if(direction.magnitude > 0 && endEvent is ICancellableEvent) {
             ICancellableEvent cancellableEvent = (ICancellableEvent)endEvent;
@@ -45,5 +53,28 @@ public class Player : AbstractHuman, IDealer {
         }
 
         this.transform.position += new Vector3(this.direction.x, this.direction.y, 0) * Time.deltaTime * this.speed;
+    }
+
+    private static readonly float DEAL_DISTANCE = 0.5f;
+
+    private void OnDealInputEvent(DealInputEvent inputEvent) {
+        if(inputEvent.player != this.transform.name) return;
+        if(endEvent != null) return;
+
+        IDealable minDeable = null;
+        float minDistance = float.MaxValue;
+        foreach(MonoBehaviour monoBehaviour in FindObjectsOfType<MonoBehaviour>()) {
+            if(monoBehaviour.TryGetComponent<IDealable>(out IDealable dealable)) {
+                float distance = Vector2.Distance(this.GetPosition(), dealable.GetPosition());
+                if(distance < minDistance) {
+                    minDistance = distance;
+                    minDeable = dealable;
+                }
+            }
+        }
+
+        if(minDistance < DEAL_DISTANCE) {
+            EventManager.Get().Broadcast(new DealStartEvent(this, minDeable));
+        }
     }
 }

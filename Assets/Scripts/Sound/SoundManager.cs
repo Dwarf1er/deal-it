@@ -10,6 +10,10 @@ public class SoundManager : MonoBehaviour, ISubscriber {
             .Subscribe((AlertEvent alertEvent) => OnAlert(alertEvent));
     }
 
+    private void OnDestroy() {
+        EventManager.Get().UnSubcribeAll(this);    
+    }
+
     public bool HasDistance() {
         return false;
     }
@@ -19,7 +23,7 @@ public class SoundManager : MonoBehaviour, ISubscriber {
     }
 
     private void PlayAt(string path, Vector3 position) {
-        GameObject soundPrefab = (GameObject)Resources.Load(path);
+        GameObject soundPrefab = (GameObject)Resources.Load("Sounds/" + path);
         Instantiate(soundPrefab, position, soundPrefab.transform.rotation);
     }
 
@@ -28,14 +32,14 @@ public class SoundManager : MonoBehaviour, ISubscriber {
     }
 
     private void OnClassStart(ClassStartEvent classStartEvent) {
-        Play("Sounds/School Bell");
+        Play("School Bell");
     }
 
     private void OnClassEnd(ClassEndEvent classStartEvent) {
-        Play("Sounds/School Bell");
+        Play("School Bell");
     }
 
     private void OnAlert(AlertEvent alertEvent) {
-        Play("Sounds/Alert");
+        Play("Alert");
     }
 }

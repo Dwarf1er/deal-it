@@ -45,7 +45,10 @@ public class Student : AI, IDealable {
 
     private void OnDealStart(DealStartEvent dealEvent) {
         if(!dealEvent.GetTo().Equals(this)) return;
-        if(!CanStartEvent()) return;
+        if(!CanStartEvent()) {
+            ((ICancellableEvent)dealEvent.GetEndEvent()).Cancel();
+            return;
+        }
 
         endEvent = dealEvent.GetEndEvent();
 

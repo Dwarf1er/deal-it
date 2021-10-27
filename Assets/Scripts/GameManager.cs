@@ -2,7 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(EventManager)), RequireComponent(typeof(SoundManager)), RequireComponent(typeof(InputManager)), RequireComponent(typeof(UIManager))]
+[
+    RequireComponent(typeof(EventManager)), 
+    RequireComponent(typeof(SoundManager)), 
+    RequireComponent(typeof(InputManager)), 
+    RequireComponent(typeof(UIManager)),
+    RequireComponent(typeof(EmojiManager))
+]
 public class GameManager : MonoBehaviour {
     private static GameManager gameManager;
 
