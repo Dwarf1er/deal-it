@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 public class EventManager : MonoBehaviour {
@@ -40,46 +41,72 @@ public class EventManager : MonoBehaviour {
     }
 
     private void BroadcastCollection<T, U>(T eventObject, ICollection<U> eventHandlers) where T: IEvent {
+        Type actionType = typeof(Action<>).MakeGenericType(new Type[]{ eventObject.GetType() });
+        MethodInfo actionInvoke = actionType.GetMethod("Invoke");
+        object[] parameters = new object[]{ eventObject };
+
         foreach(object eventHandler in eventHandlers) {
-            if(eventHandler is Action<T>) {
-                Action<T> castedEventHandler = eventHandler as Action<T>;
-                castedEventHandler(eventObject);
-            }
+            if(!(eventHandler.GetType() == actionType)) continue;
+            actionInvoke.Invoke(eventHandler, parameters);
         }
     }
 
-    private IEnumerator BroadcastDelayedEnumerator<T>(T eventObject, float seconds) where T: IEvent {
-        yield return new WaitForSeconds(seconds);
-
-        BroadcastAll(eventObject);
-    }
-
-    /// Sends an event to all subscribers after delay in seconds.
-    public void BroadcastDelayed<T>(T eventObject, float seconds) where T: IEvent {
-        StartCoroutine(this.BroadcastDelayedEnumerator(eventObject, seconds));
-    }
-
-    /// Sends an event to all subscribers in certain distance from origin.
-    public void BroadcastRange<T>(T eventObject, Vector3 origin, float distance) where T: IEvent {
+    private void BroadcastSender<T>(T eventObject) where T: IEvent {
         foreach(object subscriber in subscriberEventHandlers.Keys) {
-            if(subscriber is ISubscriber) {
-                ISubscriber castedSubscriber = subscriber as ISubscriber;
+            if(!(subscriber is ISubscriber)) continue;
 
-                if(castedSubscriber.HasDistance()) {
-                    Transform transform = castedSubscriber.GetTransform();
-                    if(Vector3.Distance(origin, transform.position) > distance) continue;
-                }
-                
-                HashSet<object> eventHandlers = subscriberEventHandlers[subscriber];
+            ISubscriber castedSubscriber = (ISubscriber)subscriber;
 
-                BroadcastCollection(eventObject, eventHandlers);
+            if(castedSubscriber.HasDistance()) {
+                Transform transform = castedSubscriber.GetTransform();
+                if(Vector3.Distance(eventObject.GetPosition(), transform.position) > eventObject.GetRange()) continue;
             }
+
+            HashSet<object> eventHandlers = subscriberEventHandlers[subscriber];
+
+            BroadcastCollection(eventObject, eventHandlers);
         }
     }
 
-    /// Sends an event to all subscribers.
-    public void BroadcastAll<T>(T eventObject) where T: IEvent {
-        BroadcastCollection(eventObject, eventHandlerSubcribers.Keys);
+    private IEnumerator BroadcastDelayedEnumerator<T>(T eventObject, float delay) where T: IEvent {
+        if(eventObject is ICancellableEvent) {
+            ICancellableEvent cancellableEvent = (ICancellableEvent) eventObject;
+
+            float increment = delay / 10.0f;
+            for(float i = 0; i < delay; i += increment) {
+                yield return new WaitForSeconds(increment);
+
+                if(cancellableEvent.IsCancelled()) break;
+            }
+        } else {
+            yield return new WaitForSeconds(delay);
+        }
+
+        BroadcastNoDelay<T>(eventObject);
+    }
+
+    private void BroadcastNoDelay<T>(T eventObject) where T: IEvent {
+        if(eventObject is IStartEvent) {
+            IStartEvent startEvent = (IStartEvent)eventObject;
+            BroadcastSender(eventObject);
+            Broadcast(startEvent.GetEndEvent());
+        } else {
+            BroadcastSender(eventObject);
+        }
+    }
+
+    public void BroadcastWithDelay<T>(T eventObject, float delay) where T: IEvent {
+        StartCoroutine(this.BroadcastDelayedEnumerator(eventObject, delay));
+    }
+
+    /// Sends an event to subscribers.
+    public void Broadcast<T>(T eventObject) where T: IEvent {
+        if(eventObject is IDelayedEvent) {
+            IDelayedEvent delayedEvent = (IDelayedEvent)eventObject;
+            BroadcastWithDelay<T>(eventObject, delayedEvent.GetDelay());
+        } else {
+            BroadcastNoDelay<T>(eventObject);
+        }
     }
 
     /// Unsubscribe from event type.

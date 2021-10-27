@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GotoState : AIState {
-    private Queue<Node> path;
-    private Vector3 target;
+    protected Queue<TilemapNode> path;
+    protected Vector3 target;
 
     public GotoState(AI ai, Vector3 target) : base(ai) {
         this.target = target;
@@ -19,16 +19,17 @@ public class GotoState : AIState {
 
     public override void Enter() {
         if(path == null || path.Count == 0) {
-            Node[] shortestPath = this.ai.graph.GetPathTo(this.ai.transform.position, target);
-            this.path = new Queue<Node>(shortestPath);
+            TilemapNode[] shortestPath = this.ai.GetGraph().GetPathTo(this.ai.transform.position, target);
+            this.path = new Queue<TilemapNode>(shortestPath);
         }
     }
 
     public override void Update() {
+        if(this.path == null) return;
         if(this.path.Count == 0) return;
 
-        Node nextNode = path.Peek();
-        Vector3 target = nextNode.transform.position;
+        TilemapNode nextNode = path.Peek();
+        Vector3 target = nextNode.GetPosition();
 
         this.ai.MoveTowards(target);
 

@@ -18,15 +18,20 @@ public class InputManager : MonoBehaviour {
     }
 
     void Update() {
+        /// TODO: Per player check for deal.
+        if(Input.GetKeyDown(KeyCode.Space)) {
+            EventManager.Get().Broadcast(new DealInputEvent("P1"));
+        }
+
         foreach(string player in PLAYER_NAMES) {
             Vector2 direction = new Vector2(Input.GetAxis(player + "Horizontal"), Input.GetAxis(player + "Vertical")).normalized;
 
             if(direction.magnitude != 0) {
                 hadInput[player] = true;
-                EventManager.Get().BroadcastAll(new InputEvent(player, direction));
+                EventManager.Get().Broadcast(new MoveInputEvent(player, direction));
             } else if(hadInput[player]) {
                 hadInput[player] = false;
-                EventManager.Get().BroadcastAll(new InputEvent(player, direction));
+                EventManager.Get().Broadcast(new MoveInputEvent(player, direction));
             }
         }
     }

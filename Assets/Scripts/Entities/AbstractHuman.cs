@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public abstract class AbstractHuman : MonoBehaviour, ISubscriber {
+public abstract class AbstractHuman : MonoBehaviour, ISubscriber, IWithPosition, IWithTransform {
     public float speed = 1.0f;
     public Sprite[] sprites;
     public Vector2 direction;
@@ -12,6 +12,10 @@ public abstract class AbstractHuman : MonoBehaviour, ISubscriber {
 
     public virtual void Start() {
         this.spriteRenderer = this.GetComponent<SpriteRenderer>();
+    }
+
+    public Vector2 GetPosition() {
+        return this.transform.position;
     }
 
     public void OnDestroy() {
@@ -24,16 +28,6 @@ public abstract class AbstractHuman : MonoBehaviour, ISubscriber {
 
     public Transform GetTransform() {
         return this.transform;
-    }
-
-    private int GetDirectionIndex() {
-        if(direction.magnitude == 0) return -1;
-
-        if(Mathf.Abs(direction.x) > Mathf.Abs(direction.y)) {
-            return direction.x > 0 ? 2 : 3;
-        } else {
-            return direction.y < 0 ? 0 : 1;
-        }
     }
 
     public float DistanceTo(GameObject gameObject) {
@@ -52,8 +46,28 @@ public abstract class AbstractHuman : MonoBehaviour, ISubscriber {
         return Vector2.Distance(this.transform.position, target);
     }
 
-    public virtual void Update() {
-        int directionIndex = this.GetDirectionIndex();
+    private int GetDirectionIndex(Vector2 direction) {
+        if(direction.magnitude == 0) return -1;
+
+        float angle = Vector2.SignedAngle(Vector2.right, direction) + 180.0f;
+
+        if(angle >= 45 && angle < 135) {
+            return 0;
+        } else if(angle >= 135 && angle < 225) {
+            return 2;
+        } else if(angle >= 225 && angle < 315) {
+            return 1;
+        } else {
+            return 3;
+        }
+    }
+
+    public void LookAt(Transform transform) {
+        LookAt((transform.position - this.transform.position).normalized);
+    }
+
+    public void LookAt(Vector2 direction) {
+        int directionIndex = this.GetDirectionIndex(direction);
 
         switch(directionIndex) {
             case 0:
@@ -66,6 +80,12 @@ public abstract class AbstractHuman : MonoBehaviour, ISubscriber {
                 this.spriteRenderer.flipX = directionIndex == 2;
                 break;
         }
+    }
+
+    public virtual void Update() {
+        int directionIndex = this.GetDirectionIndex(direction);
+
+        LookAt(this.direction);
 
         if(Time.frameCount % 10 == 0) {
             switch(directionIndex) {
