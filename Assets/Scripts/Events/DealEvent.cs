@@ -2,24 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class DealEvent : IInteractionEvent {
-    private AbstractHuman from;
-    private AbstractHuman to;
+public abstract class DealEvent : IInteractionEvent<IDealer, IDealable> {
+    private IDealer from;
+    private IDealable to;
 
-    public DealEvent(AbstractHuman from, AbstractHuman to) {
+    public DealEvent(IDealer from, IDealable to) {
         this.from = from;
         this.to = to;
     }
 
     public Vector2 GetPosition() {
-        return (from.transform.position + to.transform.position) / 2.0f;
+        return (from.GetPosition() + to.GetPosition()) / 2.0f;
     }
 
-    public AbstractHuman GetFrom() {
+    public IDealer GetFrom() {
         return this.from;
     }
 
-    public AbstractHuman GetTo() {
+    public IDealable GetTo() {
         return this.to;
     }
 
@@ -31,7 +31,7 @@ public abstract class DealEvent : IInteractionEvent {
 public class DealStartEvent : DealEvent, IStartEvent {
     private DealEndEvent dealEndEvent;
 
-    public DealStartEvent(AbstractHuman from, AbstractHuman to) : base(from, to) {
+    public DealStartEvent(IDealer from, IDealable to) : base(from, to) {
         this.dealEndEvent = new DealEndEvent(this);
     }
 

@@ -10,7 +10,7 @@ public class TilemapNode : INode {
         this.position = position;
     }
 
-    public Vector3 GetPosition() {
+    public Vector2 GetPosition() {
         return this.position;
     }
 
@@ -28,7 +28,7 @@ public class TilemapNode : INode {
 
     public bool Equals(INode node) {
         if(this == node) return true;
-        if(new Vector3(this.position.x, this.position.y, 0) == node.GetPosition()) return true;
+        if(this.position == node.GetPosition()) return true;
 
         return false;
     }

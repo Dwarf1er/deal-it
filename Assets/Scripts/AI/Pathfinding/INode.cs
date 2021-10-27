@@ -1,9 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface INode {
-    Vector3 GetPosition();
-
+public interface INode : IWithPosition {
     void AddNeighbor(INode node);
 
     HashSet<INode> GetNeighbors();

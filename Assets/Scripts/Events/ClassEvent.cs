@@ -40,6 +40,6 @@ public class ClassEndEvent : ClassEvent, IEndEvent, IDelayedEvent {
     }
 
     public float GetDelay() {
-        return 60.0f;
+        return 30.0f;
     }
 }

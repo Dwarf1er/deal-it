@@ -1,4 +1,4 @@
-public interface IInteractionEvent : IEvent {
-    AbstractHuman GetFrom();
-    AbstractHuman GetTo();
+public interface IInteractionEvent<T, U> : IEvent {
+    T GetFrom();
+    U GetTo();
 }

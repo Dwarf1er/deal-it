@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface ISubscriber {
+public interface ISubscriber : IWithTransform {
     bool HasDistance();
-    Transform GetTransform();
 }

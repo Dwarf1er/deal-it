@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public abstract class AbstractHuman : MonoBehaviour, ISubscriber {
+public abstract class AbstractHuman : MonoBehaviour, ISubscriber, IWithPosition, IWithTransform {
     public float speed = 1.0f;
     public Sprite[] sprites;
     public Vector2 direction;
@@ -12,6 +12,10 @@ public abstract class AbstractHuman : MonoBehaviour, ISubscriber {
 
     public virtual void Start() {
         this.spriteRenderer = this.GetComponent<SpriteRenderer>();
+    }
+
+    public Vector2 GetPosition() {
+        return this.transform.position;
     }
 
     public void OnDestroy() {
