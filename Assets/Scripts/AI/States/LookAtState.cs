@@ -2,11 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WaitState : AIState {
+public class LookAtState : AIState {
     Vector2 direction;
-    bool setDirection;
-    public WaitState(AI ai, Vector2 direction) : base(ai) {
+    Transform target;
+    public LookAtState(AI ai, Vector2 direction) : base(ai) {
         this.direction = direction;
+    }
+
+    public LookAtState(AI ai, Transform target) : base (ai) {
+        this.target = target;
     }
 
     public override AIState NextState() {
@@ -14,15 +18,12 @@ public class WaitState : AIState {
     }
 
     public override void Enter() {
-        this.ai.direction = direction;
-        this.setDirection = false;
+        this.ai.direction = new Vector2();
     }
 
     public override void Update() {
-        if(!this.setDirection) {
-            this.setDirection = true;
-            this.ai.direction = new Vector2();
-        }
+        if(target != null) this.ai.LookAt(target);
+        else this.ai.LookAt(direction);
     }
 
     public override void Exit() {}

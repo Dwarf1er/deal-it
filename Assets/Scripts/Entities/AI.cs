@@ -4,13 +4,18 @@ using UnityEngine;
 
 public abstract class AI : AbstractHuman {
     protected AIState state;
-    public Graph graph;
+    private TilemapGraph graph;
     private float reachDistance = 0.025f;
 
     public override void Start() {
         base.Start();
+        this.graph = FindObjectOfType<TilemapGraph>();
         this.state = new IdleState(this);
         this.state.Enter();
+    }
+
+    public TilemapGraph GetGraph() {
+        return this.graph;
     }
 
     public bool ReachedPosition(Vector3 target) {

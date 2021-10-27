@@ -17,7 +17,7 @@ public class Professor : AI {
         this.SetNextState(new SequenceState(this, new AIState[]{
             new GotoState(this, position),
             new GotoObjectState(this, "Board"),
-            new WaitState(this, Vector2.down)
+            new LookAtState(this, GameObject.Find("P1").transform)
         }));
     }
 

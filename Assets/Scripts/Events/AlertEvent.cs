@@ -16,6 +16,6 @@ public class AlertEvent : IEvent {
     }
 
     public float GetRange() {
-        return 1.0f;
+        return 10.0f;
     }
 }

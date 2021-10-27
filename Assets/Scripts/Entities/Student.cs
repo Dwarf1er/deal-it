@@ -17,7 +17,7 @@ public class Student : AI {
         this.SetNextState(new SequenceState(this, new AIState[]{
             new GotoState(this, position),
             new GotoObjectState(this, "Chair"),
-            new WaitState(this, Vector2.down)
+            new LookAtState(this, Vector2.down)
         }));
     }
 
