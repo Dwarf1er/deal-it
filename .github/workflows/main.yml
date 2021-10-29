@@ -71,8 +71,26 @@ jobs:
           name: Test results (${{ matrix.testMode }})
           path: ${{ steps.testRunner.outputs.artifactsPath }}
 
-  buildWindows:
+  createRelease:
     needs: testRunner
+    name: Create Release 📦
+    runs-on: ubuntu-latest
+    outputs:
+      release-url: ${{ steps.create-release.outputs.upload_url }}
+    steps:
+      - name: Create Release
+        id: create-release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ github.event.head_commit.message }}
+          release_name: release-v${{ github.event.head_commit.message }}
+          draft: false
+          prerelease: false
+  
+  buildWindows:
+    needs: createRelease
     name: Build for Windows 🖥️
     runs-on: ubuntu-latest
     strategy:
@@ -114,9 +132,23 @@ jobs:
         with:
           name: build-StandaloneWindows64
           path: build/StandaloneWindows64
+      
+      - name: Zip build
+        run: |
+          zip -r ./build.zip ./build
+      
+      - name: Upload Windows Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.release.outputs.release-url }}
+          asset_path: ./build.zip
+          asset_name: build-StandaloneWindows64.zip
+          asset_content_type: application/zip
 
   buildLinux:
-    needs: testRunner
+    needs: createRelease
     name: Build for Linux 🐧
     runs-on: ubuntu-latest
     strategy:
@@ -160,7 +192,7 @@ jobs:
           path: build/StandaloneLinux64
 
   buildOSX:
-    needs: testRunner
+    needs: createRelease
     name: Build for OSX 🍎
     runs-on: ubuntu-latest
     strategy:
@@ -204,7 +236,7 @@ jobs:
           path: build/StandaloneOSX
 
   buildWebGL:
-    needs: testRunner
+    needs: createRelease
     name: Build for WebGL 🌎
     runs-on: ubuntu-latest
     strategy:
@@ -265,29 +297,3 @@ jobs:
         with:
           branch: gh-pages
           folder: build/WebGL
-
-  release:
-    needs: [buildWindows, buildLinux, buildOSX]
-    name: Release 📦
-    runs-on: ubuntu-latest
-    steps:
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: release
-          release_name: Release ${{ github.ref }}
-          draft: false
-          prerelease: false
-      - name: Upload Windows Release
-        id: upload-windows-release
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} 
-          asset_path: build/StandaloneWindows64
-          asset_name: build-StandaloneWindows64
-          asset_content_type: application/zip
