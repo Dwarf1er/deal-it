@@ -140,7 +140,7 @@ jobs:
       
       - name: Zip build
         run: |
-          zip -r ./build.zip ./build
+          cd ./build/${{ matrix.targetPlatform }} && zip -r ../../build.zip .
       
       - name: Upload ${{ matrix.targetPlatform }} Release
         uses: actions/upload-release-asset@v1
