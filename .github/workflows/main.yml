@@ -88,7 +88,8 @@ jobs:
           prerelease: false
 
   buildForAllSupportedPlatforms:
-    name: Build for ${{ matrix.targetPlatform }} ${{ matrix.emoji }}
+    needs: createRelease
+    name: Build for ${{ matrix.targetPlatform }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -99,12 +100,6 @@ jobs:
           - StandaloneWindows64
           - StandaloneLinux64
           - WebGL
-        emoji:
-          - 🍎
-          - 💻
-          - 🖥️
-          - 🐧
-          - 🌎
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
