@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - master
-    tags:
-      - "v*"
 
 
 env:
@@ -88,13 +86,25 @@ jobs:
           release_name: release-v${{ github.event.head_commit.message }}
           draft: false
           prerelease: false
-  
-  buildWindows:
-    needs: createRelease
-    name: Build for Windows 🖥️
+
+  buildForAllSupportedPlatforms:
+    name: Build for ${{ matrix.targetPlatform }} ${{ matrix.emoji }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
+      matrix:
+        targetPlatform:
+          - StandaloneOSX
+          - StandaloneWindows
+          - StandaloneWindows64
+          - StandaloneLinux64
+          - WebGL
+        emoji:
+          - 🍎
+          - 💻
+          - 🖥️
+          - 🐧
+          - 🌎
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -119,166 +129,34 @@ jobs:
         uses: actions/cache@v2
         with:
           path: Library
-          key: Library-build-StandaloneWindows64
+          key: Library-build-${{ matrix.targetPlatform }}
           restore-keys: |
             Library-build-
             Library-
 
       - uses: game-ci/unity-builder@v2
         with:
-          targetPlatform: StandaloneWindows64
+          targetPlatform: ${{ matrix.targetPlatform }}
 
       - uses: actions/upload-artifact@v2
         with:
-          name: build-StandaloneWindows64
-          path: build/StandaloneWindows64
+          name: build-${{ matrix.targetPlatform }}
+          path: build/${{ matrix.targetPlatform }}
       
       - name: Zip build
         run: |
           zip -r ./build.zip ./build
       
-      - name: Upload Windows Release
+      - name: Upload ${{ matrix.targetPlatform }} Release
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ needs.release.outputs.release-url }}
+          upload_url: ${{ needs.createRelease.outputs.release-url }}
           asset_path: ./build.zip
-          asset_name: build-StandaloneWindows64.zip
-          asset_content_type: application/zip
-
-  buildLinux:
-    needs: createRelease
-    name: Build for Linux 🐧
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Create LFS file list
-        run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
-
-      - name: Restore LFS cache
-        uses: actions/cache@v2
-        id: lfs-cache
-        with:
-          path: .git/lfs
-          key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
-
-      - name: Git LFS Pull
-        run: |
-          git lfs pull
-          git add .
-          git reset --hard
-
-      - name: Restore Library cache
-        uses: actions/cache@v2
-        with:
-          path: Library
-          key: Library-build-StandaloneLinux64
-          restore-keys: |
-            Library-build-
-            Library-
-
-      - uses: game-ci/unity-builder@v2
-        with:
-          targetPlatform: StandaloneLinux64
-
-      - uses: actions/upload-artifact@v2
-        with:
-          name: build-StandaloneLinux64
-          path: build/StandaloneLinux64
-
-  buildOSX:
-    needs: createRelease
-    name: Build for OSX 🍎
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Create LFS file list
-        run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
-
-      - name: Restore LFS cache
-        uses: actions/cache@v2
-        id: lfs-cache
-        with:
-          path: .git/lfs
-          key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
-
-      - name: Git LFS Pull
-        run: |
-          git lfs pull
-          git add .
-          git reset --hard
-
-      - name: Restore Library cache
-        uses: actions/cache@v2
-        with:
-          path: Library
-          key: Library-build-StandaloneOSX
-          restore-keys: |
-            Library-build-
-            Library-
-
-      - uses: game-ci/unity-builder@v2
-        with:
-          targetPlatform: StandaloneOSX
-
-      - uses: actions/upload-artifact@v2
-        with:
-          name: build-StandaloneOSX
-          path: build/StandaloneOSX
-
-  buildWebGL:
-    needs: createRelease
-    name: Build for WebGL 🌎
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Create LFS file list
-        run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
-
-      - name: Restore LFS cache
-        uses: actions/cache@v2
-        id: lfs-cache
-        with:
-          path: .git/lfs
-          key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
-
-      - name: Git LFS Pull
-        run: |
-          git lfs pull
-          git add .
-          git reset --hard
-
-      - name: Restore Library cache
-        uses: actions/cache@v2
-        with:
-          path: Library
-          key: Library-build-WebGL
-          restore-keys: |
-            Library-build-
-            Library-
-
-      - uses: game-ci/unity-builder@v2
-        with:
-          targetPlatform: WebGL
-
-      - uses: actions/upload-artifact@v2
-        with:
-          name: build-WebGL
-          path: build/WebGL
-
+          asset_name: build-${{ matrix.targetPlatform }}.zip
+          asset_content_type: application/zip     
+        
   deployPages:
     needs: buildWebGL
     name: Deploy to Github Pages 🚀
