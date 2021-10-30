@@ -1,9 +1,9 @@
 name: GameCI - Tests & Build 🎮
 
 on:
-  push:
+  pull_request:
     branches:
-      - master
+      - production
 
 
 env:
@@ -82,8 +82,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ github.event.head_commit.message }}
-          release_name: release-v${{ github.event.head_commit.message }}
+          tag_name: v${{ github.event.pull_request.title }}
+          release_name: v${{ github.event.pull_request.title }}
           draft: false
           prerelease: false
 
