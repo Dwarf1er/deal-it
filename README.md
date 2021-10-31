@@ -6,11 +6,10 @@ A game centered around dealing at school.
 
 | name             | ID       |
 |------------------|----------|
-| Alexandre        | X        |
-| Antoine          | X        |
+| Alexandre        | 40129457 |
+| Antoine          | 40131102 |
 | Arman            | X        |
-| Audray           | X        |
-| Julie            | X        |
+| Julie            | 40077165 |
 
 ## Documentation
 
