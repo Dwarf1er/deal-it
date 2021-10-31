@@ -1,13 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public abstract class AbstractHuman : MonoBehaviour, ISubscriber, IWithPosition, IWithTransform {
     public float speed = 1.0f;
     public Sprite[] sprites;
     public Vector2 direction;
     private int spriteIndex;
+    private float flipTime;
     protected SpriteRenderer spriteRenderer;
 
     public virtual void Start() {
@@ -87,7 +85,9 @@ public abstract class AbstractHuman : MonoBehaviour, ISubscriber, IWithPosition,
 
         LookAt(this.direction);
 
-        if(Time.frameCount % 10 == 0) {
+        flipTime += Time.deltaTime;
+
+        if(flipTime > 0.175f) {
             switch(directionIndex) {
                 case 0:
                 case 1:
@@ -98,6 +98,7 @@ public abstract class AbstractHuman : MonoBehaviour, ISubscriber, IWithPosition,
                     this.spriteIndex = this.spriteIndex == 3 ? 2 : 3;
                     break;
             }
+            flipTime = 0;
         }
 
         if(this.spriteIndex >= 0) this.spriteRenderer.sprite = this.sprites[this.spriteIndex];
