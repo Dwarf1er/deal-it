@@ -149,3 +149,7 @@ Singleton is generally an okay design pattern, but can restrict development. It 
 ### Event
 
 It could be benificial to have an event system for notifying a handful/all AIs of changes (still testing as of writing this document). We can use something similar to MVC with `subscription`, `notification`, and AI method event handler. A specific case considered is a camera catching the player doing a bad act and have the guards change to a "pursuit" state. Could also be useful for routines (like classes starting and ending). [This video](https://www.youtube.com/watch?v=gx0Lt4tCDE0) seems to offer a nice system (though will get rid of Singleton).
+
+### Acknowledgements
+
+- Patrick de Arteaga, the soundtrack for the main menu of this game, Arex's Beat, was provided royalty free and can be found [here](https://patrickdearteaga.com/arcade-music/)
