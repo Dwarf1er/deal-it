@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7689276307218350028}
   - component: {fileID: 3107730836230926392}
   m_Layer: 5
-  m_Name: MessagePannel
+  m_Name: Popup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -89,7 +89,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 833684754229230249826e795c7d5ed4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: {fileID: 7689276307679010587}
   message: 
 --- !u!1 &7689276307679010581
 GameObject:
