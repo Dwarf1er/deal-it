@@ -10,6 +10,7 @@ public abstract class Graph<T> : MonoBehaviour where T: INode {
         Gizmos.color = Color.black;
 
         foreach(T node in nodes) {
+            Gizmos.color = Color.Lerp(Color.red, Color.blue, node.GetNeighbors().Count / 4.0f);
             Gizmos.DrawWireSphere(node.GetPosition(), 0.04f);
 
             foreach(T otherNode in node.GetNeighbors()) {
@@ -58,37 +59,41 @@ public abstract class Graph<T> : MonoBehaviour where T: INode {
         return minNode;
     }
 
-    /// Gets shortest path using BFS.
+    /// Gets shortest path using A*.
     public T[] GetPathTo(Vector3 from, Vector3 to) {
         T fromNode = GetNearestNode(from);
         T toNode = GetNearestNode(to);
 
-        HashSet<T> seenNodes = new HashSet<T>();
-
-        Queue<Stack<T>> queue = new Queue<Stack<T>>();
-        queue.Enqueue(new Stack<T>(new T[]{fromNode}));
+        PriorityQueue<Tuple<Stack<T>, HashSet<T>>, float> queue = new PriorityQueue<Tuple<Stack<T>, HashSet<T>>, float>();
+        queue.Enqueue(new Tuple<Stack<T>, HashSet<T>>(new Stack<T>(new T[]{fromNode}), new HashSet<T>()), 0);
 
         T[] finalPath = new T[]{};
-        while(queue.Count > 0) {
-            Stack<T> nextPath = queue.Dequeue();
-            T nextNode = nextPath.Pop();
+        while(queue.Count() > 0) {
+            Tuple<Stack<T>, HashSet<T>> pathSeen = queue.Dequeue();
+            Stack<T> path = pathSeen.first;
+            HashSet<T> seen = pathSeen.second;
+            T nextNode = path.Pop();
 
-            if(seenNodes.Contains(nextNode)) continue;
+            if(seen.Contains(nextNode)) continue;
 
             if(nextNode.Equals(toNode)) {
-                nextPath.Push(nextNode);
-                finalPath = new Stack<T>(nextPath).ToArray();
+                path.Push(nextNode);
+                finalPath = new Stack<T>(path).ToArray();
                 break;
             }
 
-            nextPath.Push(nextNode);
-            seenNodes.Add(nextNode);
+            path.Push(nextNode);
+            seen.Add(nextNode);
 
             foreach(T neighbor in nextNode.GetNeighbors()) {
-                Stack<T> neighborPath = new Stack<T>(new Stack<T>(nextPath));
+                Stack<T> neighborPath = new Stack<T>(new Stack<T>(path));
                 neighborPath.Push(neighbor);
-                queue.Enqueue(neighborPath);
+                queue.Enqueue(new Tuple<Stack<T>, HashSet<T>>(neighborPath, seen), 1.0f / (Vector2.Distance(neighbor.GetPosition(), to)));
             }
+        }
+
+        if(finalPath.Length == 0) {
+            Debug.LogWarning("Could not find path.");
         }
 
         AddPathToHistory(finalPath);

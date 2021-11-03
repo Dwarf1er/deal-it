@@ -24,7 +24,11 @@ public class UIManager : MonoBehaviour, ISubscriber {
         return null;
     }
 
-    private void ShowPopupMessage(string message) {
+    public static UIManager Get() {
+        return uiManager;
+    }
+
+    public UIPannel ShowPopupMessage(string message) {
         GameObject prefab = (GameObject)Resources.Load("UI/Popup");
         GameObject canvas = GameObject.Find("Canvas");
 
@@ -34,9 +38,11 @@ public class UIManager : MonoBehaviour, ISubscriber {
         UIPannel messagePannel = instance.GetComponent<UIPannel>();
         messagePannel.message = message;
         messagePannel.Open();
+
+        return messagePannel;
     }
 
-    private void ShowDialogueMessage(string message) {
+    public UIPannel ShowDialogueMessage(string message) {
         GameObject prefab = (GameObject)Resources.Load("UI/Dialogue");
         GameObject canvas = GameObject.Find("Canvas");
 
@@ -46,11 +52,12 @@ public class UIManager : MonoBehaviour, ISubscriber {
         UIPannel messagePannel = instance.GetComponent<UIPannel>();
         messagePannel.message = message;
         messagePannel.Open();
+
+        return messagePannel;
     }
 
     private void OnClassStart(ClassStartEvent classStartEvent) {
         ShowPopupMessage("Class Started");
-        ShowDialogueMessage("A class started.");
     }
 
     private void OnClassEnd(ClassEndEvent classStartEvent) {

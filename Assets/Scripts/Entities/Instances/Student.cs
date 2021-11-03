@@ -7,6 +7,8 @@ public class Student : AI, IDealable {
     private IEndEvent endEvent;
 
     public override void Start() {
+        this.textureName = "student1";
+
         base.Start();
 
         EventManager.Get().Subscribe((ClassStartEvent classEvent) => OnClassStart(classEvent));

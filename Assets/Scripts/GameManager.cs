@@ -12,14 +12,17 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
     private static GameManager gameManager;
 
-    void Awake() {
+    private void Awake() {
         if(gameManager) Destroy(this);
         gameManager = this;
     }
 
-    void Start() {
-        Vector3 classPosition = new Vector2(0, -0.85f);
+    private void Start() {
+        EventManager.Get().Broadcast(new StartEvent());
+        EventManager.Get().BroadcastWithDelay(new ClassStartEvent(new Vector2(0.0f, -0.85f)), 5.0f);
+    }
 
-        EventManager.Get().BroadcastWithDelay(new ClassStartEvent(classPosition), 5.0f);
+    private void OnDestroy() {
+        EventManager.Get().UnSubcribeAll(this);    
     }
 }

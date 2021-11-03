@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Guard : AI {
     public override void Start() {
+        this.textureName = "guard1";
+
         base.Start();
 
         EventManager.Get().Subscribe((AlertEvent alertEvent) => OnAlert(alertEvent));

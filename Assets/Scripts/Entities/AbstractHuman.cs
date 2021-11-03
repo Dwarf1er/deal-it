@@ -5,12 +5,14 @@ using UnityEngine.UI;
 
 public abstract class AbstractHuman : MonoBehaviour, ISubscriber, IWithPosition, IWithTransform {
     public float speed = 1.0f;
-    public Sprite[] sprites;
+    public string textureName = "template";
     public Vector2 direction;
+    protected Sprite[] sprites;
     private int spriteIndex;
     protected SpriteRenderer spriteRenderer;
 
     public virtual void Start() {
+        this.sprites = Resources.LoadAll<Sprite>("Characters/" + textureName);
         this.spriteRenderer = this.GetComponent<SpriteRenderer>();
     }
 
@@ -67,6 +69,8 @@ public abstract class AbstractHuman : MonoBehaviour, ISubscriber, IWithPosition,
     }
 
     public void LookAt(Vector2 direction) {
+        if(direction == Vector2.zero) return;
+
         int directionIndex = this.GetDirectionIndex(direction);
 
         switch(directionIndex) {

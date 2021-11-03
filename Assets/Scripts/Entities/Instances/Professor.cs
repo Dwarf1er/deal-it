@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Professor : AI {
     public override void Start() {
+        this.textureName = "professor1";
+
         base.Start();
 
         EventManager.Get().Subscribe((ClassStartEvent classEvent) => OnClassStart(classEvent));

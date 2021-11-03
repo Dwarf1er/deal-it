@@ -21,7 +21,7 @@ public class CameraController : MonoBehaviour {
     private Vector3 AverageTargetPosition() {
         Vector3 averagePosition = new Vector3();
 
-        if(this.targets.Length == 0) return averagePosition;
+        if(this.targets.Length == 0) return transform.position;
 
         foreach(Transform target in this.targets) {
             averagePosition += target.position;

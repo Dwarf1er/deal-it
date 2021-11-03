@@ -28,7 +28,7 @@ public class DialoguePannel : UIPannel {
     }
 
     private IEnumerator ScrollMessage() {
-        for(int i = 0; i < message.Length; i++) {
+        for(int i = 0; i <= message.Length; i++) {
             text.text = message.Substring(0, i);
             yield return new WaitForSeconds(0.05f);
         }

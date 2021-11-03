@@ -8,6 +8,7 @@ public abstract class UIPannel : MonoBehaviour, ISubscriber {
     private Vector3 offsetPosition;
     private Vector3 basePosition;
     private bool open = false;
+    private bool done = false;
     private readonly float STEPS = 100;
 
     protected virtual void Start() {
@@ -29,7 +30,11 @@ public abstract class UIPannel : MonoBehaviour, ISubscriber {
     }
 
     public bool IsOpen() {
-        return this.open;
+        return open;
+    }
+
+    public bool IsDone() {
+        return done;
     }
 
     public void Open() {
@@ -62,6 +67,8 @@ public abstract class UIPannel : MonoBehaviour, ISubscriber {
             transform.position = Vector3.Lerp(transform.position, offsetPosition, i / STEPS);
             yield return new WaitForSeconds(0.001f);
         }
+
+        done = true;
 
         Destroy(this.gameObject);
     }

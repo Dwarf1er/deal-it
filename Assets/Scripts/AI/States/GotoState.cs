@@ -12,21 +12,20 @@ public class GotoState : AIState {
     }
 
     public override AIState NextState() {
-        if(path.Count == 0) return new IdleState(this.ai);
+        if(path.Count == 0) return new IdleState(ai);
 
         return this;
     }
 
     public override void Enter() {
-        if(path == null || path.Count == 0) {
-            TilemapNode[] shortestPath = this.ai.GetGraph().GetPathTo(this.ai.transform.position, target);
-            this.path = new Queue<TilemapNode>(shortestPath);
-        }
+        if(path != null && path.Count > 0) return;
+
+        TilemapNode[] shortestPath = this.ai.GetGraph().GetPathTo(this.ai.transform.position, target);
+        this.path = new Queue<TilemapNode>(shortestPath);
     }
 
     public override void Update() {
-        if(this.path == null) return;
-        if(this.path.Count == 0) return;
+        if(path == null || path.Count == 0) return;
 
         TilemapNode nextNode = path.Peek();
         Vector3 target = nextNode.GetPosition();

@@ -10,8 +10,14 @@ public abstract class AI : AbstractHuman {
     public override void Start() {
         base.Start();
         this.graph = FindObjectOfType<TilemapGraph>();
-        this.state = new IdleState(this);
+        this.state = new LookAtState(this, Vector2.down);
         this.state.Enter();
+
+        EventManager.Get().Subscribe((StartEvent startEvent) => OnStartGame(startEvent));
+    }
+
+    private void OnStartGame(StartEvent startEvent) {
+        this.state = new IdleState(this);
     }
 
     public TilemapGraph GetGraph() {
@@ -33,6 +39,10 @@ public abstract class AI : AbstractHuman {
         this.direction = new Vector2();
         this.spriteRenderer.sprite = this.sprites[0];
         this.spriteRenderer.flipX = false;
+    }
+
+    public AIState GetState() {
+        return this.state;
     }
 
     protected void SetNextState(AIState nextState) {

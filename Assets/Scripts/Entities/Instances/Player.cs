@@ -6,6 +6,8 @@ public class Player : AbstractHuman, IDealer {
     private IEndEvent endEvent;
 
     public override void Start() {
+        this.textureName = "dealer1";
+
         base.Start();
 
         this.speed = 0.8f;
