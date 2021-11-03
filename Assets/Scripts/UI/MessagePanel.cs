@@ -3,17 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MessagePannel : UIPannel {
+public class MessagePanel : UIPanel {
+    private Text text;
+    public string message;
     private bool delayClose = false;
 
     protected override Vector3 GetOffset() {
-        return new Vector3(0, 100.0f, 0.0f);
+        return new Vector3(0, 150.0f, 0.0f);
     }
 
-    void Update() {
+    private void Start() {
+        text = GetComponentInChildren<Text>();
+    }
+
+    private void Update() {
         if(!delayClose) {
             delayClose = true;
-            StartCoroutine(DelayedClose(5.0f));
+            StartCoroutine(DelayedClose(3.0f));
         }
         text.text = message;
     }

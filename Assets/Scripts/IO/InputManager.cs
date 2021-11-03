@@ -18,9 +18,12 @@ public class InputManager : MonoBehaviour {
     }
 
     void Update() {
-        /// TODO: Per player check for deal.
+        /// TODO: Per player check.
         if(Input.GetKeyDown(KeyCode.Space)) {
             EventManager.Get().Broadcast(new DealInputEvent("P1"));
+        }
+        if(Input.GetKeyDown(KeyCode.E)) {
+            EventManager.Get().Broadcast(new InteractInputEvent("P1"));
         }
 
         foreach(string player in PLAYER_NAMES) {

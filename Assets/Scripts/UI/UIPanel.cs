@@ -2,18 +2,12 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public abstract class UIPannel : MonoBehaviour, ISubscriber {
-    public string message;
-    protected Text text;
+public abstract class UIPanel : MonoBehaviour, ISubscriber {
     private Vector3 offsetPosition;
     private Vector3 basePosition;
     private bool open = false;
     private bool done = false;
     private readonly float STEPS = 100;
-
-    protected virtual void Start() {
-        this.text = GetComponentInChildren<Text>();
-    }
 
     private void OnDestroy() {
         EventManager.Get().UnSubcribeAll(this);    

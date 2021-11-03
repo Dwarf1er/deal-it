@@ -221,7 +221,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84a8d294f0e571ac79c9997510d8bb7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  message: I'm broke, what am I going to do?
+  entityName: Player
+  message: I burnt all my savings on private tutors for 376... What am I going to
+    do?
 --- !u!1001 &187826477
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -327,7 +329,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84a8d294f0e571ac79c9997510d8bb7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  message: I got a solution for you!
+  entityName: Dealer
+  message: I got a solution for you! Follow me!
 --- !u!1 &209991880 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8223348720161328859, guid: cefc2d6f3c1f111d1b184da5527a8409, type: 3}
@@ -732,6 +735,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84a8d294f0e571ac79c9997510d8bb7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  entityName: Player
   message: Tuition is in...
 --- !u!1001 &789687223
 PrefabInstance:
@@ -1371,7 +1375,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfb3ceb0a32f3a98684e7fc600cb6e75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneName: Prototyping
+  sceneName: Menu
 --- !u!1 &1354277015
 GameObject:
   m_ObjectHideFlags: 0

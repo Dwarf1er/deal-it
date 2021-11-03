@@ -13,7 +13,8 @@ public class UIManager : MonoBehaviour, ISubscriber {
         EventManager.Get()
             .Subscribe((ClassStartEvent classStartEvent) => OnClassStart(classStartEvent))
             .Subscribe((ClassEndEvent classEndEvent) => OnClassEnd(classEndEvent))
-            .Subscribe((AlertEvent alertEvent) => OnAlert(alertEvent));
+            .Subscribe((AlertEvent alertEvent) => OnAlert(alertEvent))
+            .Subscribe((DialogueStartEvent dialogueEvent) => OnDialogue(dialogueEvent));
     }
 
     public bool HasDistance() {
@@ -28,32 +29,32 @@ public class UIManager : MonoBehaviour, ISubscriber {
         return uiManager;
     }
 
-    public UIPannel ShowPopupMessage(string message) {
+    private MessagePanel ShowPopupMessage(string message) {
         GameObject prefab = (GameObject)Resources.Load("UI/Popup");
         GameObject canvas = GameObject.Find("Canvas");
 
         GameObject instance = Instantiate(prefab, prefab.transform.position, prefab.transform.rotation);
         instance.transform.SetParent(canvas.transform, false);
 
-        UIPannel messagePannel = instance.GetComponent<UIPannel>();
-        messagePannel.message = message;
-        messagePannel.Open();
+        MessagePanel panel = instance.GetComponent<MessagePanel>();
+        panel.message = message;
+        panel.Open();
 
-        return messagePannel;
+        return panel;
     }
 
-    public UIPannel ShowDialogueMessage(string message) {
+    private DialoguePanel ShowDialogueMessage(DialogueStartEvent dialogueEvent) {
         GameObject prefab = (GameObject)Resources.Load("UI/Dialogue");
         GameObject canvas = GameObject.Find("Canvas");
 
         GameObject instance = Instantiate(prefab, prefab.transform.position, prefab.transform.rotation);
         instance.transform.SetParent(canvas.transform, false);
 
-        UIPannel messagePannel = instance.GetComponent<UIPannel>();
-        messagePannel.message = message;
-        messagePannel.Open();
+        DialoguePanel panel = instance.GetComponent<DialoguePanel>();
+        panel.dialogueEvent = dialogueEvent;
+        panel.Open();
 
-        return messagePannel;
+        return panel;
     }
 
     private void OnClassStart(ClassStartEvent classStartEvent) {
@@ -66,5 +67,9 @@ public class UIManager : MonoBehaviour, ISubscriber {
 
     private void OnAlert(AlertEvent alertEvent) {
         ShowPopupMessage("Alert");
+    }
+
+    private void OnDialogue(DialogueStartEvent dialogueEvent) {
+        ShowDialogueMessage(dialogueEvent);
     }
 }

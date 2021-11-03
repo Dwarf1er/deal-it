@@ -37,6 +37,8 @@ public class Player : AbstractHuman, IDealer {
         if(!CanStartEvent()) return;       
 
         endEvent = dealEvent.GetEndEvent();
+
+        this.LookAt(dealEvent.GetTo().GetTransform());
     }
 
     private void OnDealEndEvent(DealEndEvent dealEvent) {

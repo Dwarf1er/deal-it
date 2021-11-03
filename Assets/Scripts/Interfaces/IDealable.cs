@@ -1,1 +1,1 @@
-public interface IDealable : IWithPosition {}
+public interface IDealable : IWithPosition, IWithTransform {}

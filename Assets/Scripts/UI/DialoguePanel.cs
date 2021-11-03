@@ -2,14 +2,15 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DialoguePannel : UIPannel {
+public class DialoguePanel : UIPanel {
+    public Text nameText;
+    public Text messageText;
+    public DialogueStartEvent dialogueEvent;
     private bool animateText = false;
 
-    protected override void Start() {
-        base.Start();
-
+    private void Start() {
         EventManager.Get()
-            .Subscribe((DealInputEvent inputEvent) => HandleInput());
+            .Subscribe((InteractInputEvent inputEvent) => HandleInput());
     }
 
     protected override Vector3 GetOffset() {
@@ -17,10 +18,14 @@ public class DialoguePannel : UIPannel {
     }
 
     private void HandleInput() {
-        if(IsOpen()) Close();
+        if(IsOpen()) {
+            EventManager.Get().Broadcast(dialogueEvent.GetEndEvent());
+            Close();
+        }
     }
 
     private void Update() {
+        nameText.text = dialogueEvent.GetName();
         if(!animateText) {
             animateText = true;
             StartCoroutine(ScrollMessage());
@@ -28,8 +33,9 @@ public class DialoguePannel : UIPannel {
     }
 
     private IEnumerator ScrollMessage() {
+        string message = dialogueEvent.GetMessage();
         for(int i = 0; i <= message.Length; i++) {
-            text.text = message.Substring(0, i);
+            messageText.text = message.Substring(0, i);
             yield return new WaitForSeconds(0.05f);
         }
     }
