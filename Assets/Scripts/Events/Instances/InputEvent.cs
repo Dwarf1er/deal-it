@@ -30,10 +30,26 @@ public class DealInputEvent : InputEvent {
     }
 }
 
+public class DialogueInputEvent : InputEvent {
+    public string player { get; }
+
+    public DialogueInputEvent(string player) {
+        this.player = player;
+    }
+}
+
 public class InteractInputEvent : InputEvent {
     public string player { get; }
 
     public InteractInputEvent(string player) {
+        this.player = player;
+    }
+}
+
+public class PanelInputEvent : InputEvent {
+    public string player { get; }
+
+    public PanelInputEvent(string player) {
         this.player = player;
     }
 }

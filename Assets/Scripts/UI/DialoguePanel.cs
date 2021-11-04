@@ -8,13 +8,18 @@ public class DialoguePanel : UIPanel {
     public DialogueStartEvent dialogueEvent;
     private bool animateText = false;
 
-    private void Start() {
+    protected override void Start() {
+        base.Start();
         EventManager.Get()
-            .Subscribe((InteractInputEvent inputEvent) => HandleInput());
+            .Subscribe((DialogueInputEvent inputEvent) => HandleInput());
     }
 
-    protected override Vector3 GetOffset() {
-        return new Vector3(0.0f, -200.0f, 0.0f);
+    protected override bool DestroyOnClose() {
+        return true;
+    }
+
+    protected override Vector2 GetOffset() {
+        return new Vector2(0.0f, 2.0f);
     }
 
     private void HandleInput() {

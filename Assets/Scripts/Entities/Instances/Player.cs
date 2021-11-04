@@ -12,11 +12,12 @@ public class Player : AbstractHuman, IDealer {
 
         this.speed = 0.8f;
 
-        EventManager.Get().Subscribe((MoveInputEvent inputEvent) => OnMoveInputEvent(inputEvent));
-        EventManager.Get().Subscribe((DealInputEvent inputEvent) => OnDealInputEvent(inputEvent));
-
-        EventManager.Get().Subscribe((DealStartEvent dealEvent) => OnDealStartEvent(dealEvent));
-        EventManager.Get().Subscribe((DealEndEvent dealEvent) => OnDealEndEvent(dealEvent));
+        EventManager.Get()
+            .Subscribe((MoveInputEvent inputEvent) => OnMoveInputEvent(inputEvent))
+            .Subscribe((DealInputEvent inputEvent) => OnDealInputEvent(inputEvent))
+            .Subscribe((InteractInputEvent inputEvent) => OnInteractInputEvent(inputEvent))
+            .Subscribe((DealStartEvent dealEvent) => OnDealStartEvent(dealEvent))
+            .Subscribe((DealEndEvent dealEvent) => OnDealEndEvent(dealEvent));
     }
 
     /// TODO: Don't copy from other class.
@@ -59,26 +60,44 @@ public class Player : AbstractHuman, IDealer {
         this.transform.position += new Vector3(this.direction.x, this.direction.y, 0) * Time.deltaTime * this.speed;
     }
 
-    private static readonly float DEAL_DISTANCE = 0.5f;
+    private Tuple<T, float> GetNearestType<T>() where T: IWithPosition {
+        Tuple<T, float> minValue = null;
+
+        foreach(MonoBehaviour monoBehaviour in FindObjectsOfType<MonoBehaviour>()) {
+            if(monoBehaviour.TryGetComponent<T>(out T type)) {
+                float distance = Vector2.Distance(this.GetPosition(), type.GetPosition());
+                if(minValue == null || distance < minValue.second) {
+                    minValue = new Tuple<T, float>(type, distance);
+                }
+            }
+        }
+
+        return minValue;
+    }
+
+    private static readonly float INTERACT_DISTANCE = 0.5f;
 
     private void OnDealInputEvent(DealInputEvent inputEvent) {
         if(inputEvent.player != this.transform.name) return;
         if(endEvent != null) return;
 
-        IDealable minDeable = null;
-        float minDistance = float.MaxValue;
-        foreach(MonoBehaviour monoBehaviour in FindObjectsOfType<MonoBehaviour>()) {
-            if(monoBehaviour.TryGetComponent<IDealable>(out IDealable dealable)) {
-                float distance = Vector2.Distance(this.GetPosition(), dealable.GetPosition());
-                if(distance < minDistance) {
-                    minDistance = distance;
-                    minDeable = dealable;
-                }
-            }
-        }
+        Tuple<IDealable, float> minDealable = GetNearestType<IDealable>();
 
-        if(minDistance < DEAL_DISTANCE) {
-            EventManager.Get().Broadcast(new DealStartEvent(this, minDeable));
-        }
+        if(minDealable == null) return;
+        if(minDealable.second > INTERACT_DISTANCE) return;
+
+        EventManager.Get().Broadcast(new DealStartEvent(this, minDealable.first));
+    }
+
+    private void OnInteractInputEvent(InteractInputEvent inputEvent) {
+        if(inputEvent.player != this.transform.name) return;
+        if(endEvent != null) return;
+
+        Tuple<IInteractable, float> minInteractable = GetNearestType<IInteractable>();
+
+        if(minInteractable == null) return;
+        if(minInteractable.second > INTERACT_DISTANCE) return;
+
+        EventManager.Get().Broadcast(new InteractStartEvent(this, minInteractable.first));
     }
 }

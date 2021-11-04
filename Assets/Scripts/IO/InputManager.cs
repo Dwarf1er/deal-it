@@ -21,9 +21,13 @@ public class InputManager : MonoBehaviour {
         /// TODO: Per player check.
         if(Input.GetKeyDown(KeyCode.Space)) {
             EventManager.Get().Broadcast(new DealInputEvent("P1"));
+            EventManager.Get().Broadcast(new InteractInputEvent("P1"));
         }
         if(Input.GetKeyDown(KeyCode.E)) {
-            EventManager.Get().Broadcast(new InteractInputEvent("P1"));
+            EventManager.Get().Broadcast(new DialogueInputEvent("P1"));
+        }
+        if(Input.GetKeyDown(KeyCode.Q)) {
+            EventManager.Get().Broadcast(new PanelInputEvent("P1"));
         }
 
         foreach(string player in PLAYER_NAMES) {

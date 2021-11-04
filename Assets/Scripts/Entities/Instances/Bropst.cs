@@ -28,6 +28,11 @@ public class Bropst : MonoBehaviour, IDealable, ISubscriber {
     private void OnDealEnd(DealEndEvent dealEvent) {
         if(endEvent != dealEvent) return;
 
+        if(dealEvent.IsCancelled()) {
+            endEvent = null;
+            return;
+        }
+
         DialogueStartEvent dialogueEvent = new DialogueStartEvent("Bropst", "My last dose... Time to join my friends...");
         endEvent = dialogueEvent.GetEndEvent();
         EventManager.Get().Broadcast(dialogueEvent);
@@ -35,7 +40,6 @@ public class Bropst : MonoBehaviour, IDealable, ISubscriber {
     
     private void OnDialogueEnd(DialogueEndEvent dialogueEvent) {
         if(endEvent != dialogueEvent) return;
-
         StartCoroutine(DestroySelf());
     }
 

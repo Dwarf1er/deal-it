@@ -8,11 +8,16 @@ public class MessagePanel : UIPanel {
     public string message;
     private bool delayClose = false;
 
-    protected override Vector3 GetOffset() {
-        return new Vector3(0, 150.0f, 0.0f);
+    protected override Vector2 GetOffset() {
+        return new Vector2(0, -2.0f);
     }
 
-    private void Start() {
+    protected override bool DestroyOnClose() {
+        return true;
+    }
+
+    protected override void Start() {
+        base.Start();
         text = GetComponentInChildren<Text>();
     }
 
