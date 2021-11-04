@@ -9,6 +9,7 @@ public abstract class AbstractHuman : MonoBehaviour, ISubscriber, IWithPosition,
     public Vector2 direction;
     protected Sprite[] sprites;
     private int spriteIndex;
+    private float flipTime;
     protected SpriteRenderer spriteRenderer;
 
     public virtual void Start() {
@@ -91,7 +92,9 @@ public abstract class AbstractHuman : MonoBehaviour, ISubscriber, IWithPosition,
 
         LookAt(this.direction);
 
-        if(Time.frameCount % 10 == 0) {
+        flipTime += Time.deltaTime;
+
+        if (flipTime > 0.175f) {
             switch(directionIndex) {
                 case 0:
                 case 1:
@@ -102,6 +105,7 @@ public abstract class AbstractHuman : MonoBehaviour, ISubscriber, IWithPosition,
                     this.spriteIndex = this.spriteIndex == 3 ? 2 : 3;
                     break;
             }
+            flipTime = 0;
         }
 
         if(this.spriteIndex >= 0) this.spriteRenderer.sprite = this.sprites[this.spriteIndex];
