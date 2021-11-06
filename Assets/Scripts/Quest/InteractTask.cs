@@ -1,11 +1,13 @@
 using UnityEngine;
 
-public class QuestInteraction : QuestAbstract {
+public class InteractTask : AbstractTask {
     public Transform interactable;
     private IInteractable iinteractable;
     private string interactName;
 
-    private void Start() {
+    protected override void Start() {
+        base.Start();
+
         interactName = interactable.name;
 
         if(interactable.TryGetComponent<IInteractable>(out IInteractable interact)) {
@@ -22,7 +24,8 @@ public class QuestInteraction : QuestAbstract {
         if(interactEvent.GetTo() != iinteractable) return;
         Done();
     }
-    public override string GetQuestName() {
+
+    public override string GetTitle() {
         return "Interact with " + interactName;
     }
 }

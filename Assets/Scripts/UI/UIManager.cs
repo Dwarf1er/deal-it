@@ -15,7 +15,9 @@ public class UIManager : MonoBehaviour, ISubscriber {
             .Subscribe((ClassEndEvent classEndEvent) => OnClassEnd(classEndEvent))
             .Subscribe((AlertEvent alertEvent) => OnAlert(alertEvent))
             .Subscribe((DialogueStartEvent dialogueEvent) => OnDialogue(dialogueEvent))
-            .Subscribe((QuestEndEvent questEvent) => OnQuestEnd(questEvent));
+            .Subscribe((QuestStartEvent questEvent) => OnQuestStart(questEvent))
+            .Subscribe((QuestEndEvent questEvent) => OnQuestEnd(questEvent))
+            .Subscribe((TaskEndEvent taskEvent) => OnTaskEnd(taskEvent));
     }
 
     public bool HasDistance() {
@@ -72,6 +74,14 @@ public class UIManager : MonoBehaviour, ISubscriber {
 
     private void OnDialogue(DialogueStartEvent dialogueEvent) {
         ShowDialogueMessage(dialogueEvent);
+    }
+
+    private void OnQuestStart(QuestStartEvent questEvent) {
+        ShowPopupMessage("New Quest");
+    }
+
+    private void OnTaskEnd(TaskEndEvent taskEvent) {
+        ShowPopupMessage("Task Complete");
     }
 
     private void OnQuestEnd(QuestEndEvent questEvent) {

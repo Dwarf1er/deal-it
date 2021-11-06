@@ -45,12 +45,12 @@ public class Student : AI, IDealable {
         }));
     }
 
+    public bool IsDealable() {
+        return CanStartEvent();
+    }
+
     private void OnDealStart(DealStartEvent dealEvent) {
         if(!dealEvent.GetTo().Equals(this)) return;
-        if(!CanStartEvent()) {
-            ((ICancellableEvent)dealEvent.GetEndEvent()).Cancel();
-            return;
-        }
 
         endEvent = dealEvent.GetEndEvent();
 

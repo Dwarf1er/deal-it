@@ -1,11 +1,13 @@
 using UnityEngine;
 
-public class QuestDeal : QuestAbstract {
+public class DealTask : AbstractTask {
     public Transform dealable;
     private IDealable idealable;
     private string dealName;
 
-    private void Start() {
+    protected override void Start() {
+        base.Start();
+
         dealName = dealable.name;
 
         if(dealable.TryGetComponent<IDealable>(out IDealable deal)) {
@@ -22,7 +24,8 @@ public class QuestDeal : QuestAbstract {
         if(dealEvent.GetTo() != idealable) return;
         Done();
     }
-    public override string GetQuestName() {
+
+    public override string GetTitle() {
         return "Deal to " + dealName;
     }
 }

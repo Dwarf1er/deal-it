@@ -85,6 +85,7 @@ public class Player : AbstractHuman, IDealer {
 
         if(minDealable == null) return;
         if(minDealable.second > INTERACT_DISTANCE) return;
+        if(!minDealable.first.IsDealable()) return;
 
         EventManager.Get().Broadcast(new DealStartEvent(this, minDealable.first));
     }
@@ -97,6 +98,7 @@ public class Player : AbstractHuman, IDealer {
 
         if(minInteractable == null) return;
         if(minInteractable.second > INTERACT_DISTANCE) return;
+        if(!minInteractable.first.IsInteractable()) return;
 
         EventManager.Get().Broadcast(new InteractStartEvent(this, minInteractable.first));
     }

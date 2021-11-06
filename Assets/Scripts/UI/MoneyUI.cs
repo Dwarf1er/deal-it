@@ -11,7 +11,8 @@ public class MoneyUI : MonoBehaviour, ISubscriber {
     private void Start() {
         EventManager.Get()
             .Subscribe((DealEndEvent dealEvent) => OnDealEnd(dealEvent))
-            .Subscribe((InteractEndEvent interactEvent) => OnInteractEnd(interactEvent));
+            .Subscribe((InteractEndEvent interactEvent) => OnInteractEnd(interactEvent))
+            .Subscribe((QuestEndEvent questEvent) => OnQuestEnd(questEvent));
     }
 
     private void OnDestroy() {
@@ -30,7 +31,12 @@ public class MoneyUI : MonoBehaviour, ISubscriber {
     }
 
     private void OnDealEnd(DealEndEvent dealEvent) {
-        money += 25;
+        if(dealEvent.IsCancelled()) return;
+        // money += 25;
+    }
+
+    private void OnQuestEnd(QuestEndEvent questEvent) {
+        money += questEvent.GetQuest().reward;
     }
 
     private void OnInteractEnd(InteractEndEvent interactEvent) {

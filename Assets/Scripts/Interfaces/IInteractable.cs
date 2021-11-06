@@ -1,1 +1,3 @@
-public interface IInteractable: IWithPosition {}
+public interface IInteractable: IWithPosition {
+    bool IsInteractable();
+}

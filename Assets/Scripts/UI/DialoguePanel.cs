@@ -7,11 +7,14 @@ public class DialoguePanel : UIPanel {
     public Text messageText;
     public DialogueStartEvent dialogueEvent;
     private bool animateText = false;
+    private static readonly float WRITE_DELAY = 0.04f;
 
     protected override void Start() {
         base.Start();
         EventManager.Get()
-            .Subscribe((DialogueInputEvent inputEvent) => HandleInput());
+            .Subscribe((DialogueInputEvent inputEvent) => HandleInput())
+            .Subscribe((MoveInputEvent inputEvent) => HandleInput())
+            .Subscribe((PanelInputEvent inputEvent) => HandleInput());
     }
 
     protected override bool DestroyOnClose() {
@@ -41,7 +44,7 @@ public class DialoguePanel : UIPanel {
         string message = dialogueEvent.GetMessage();
         for(int i = 0; i <= message.Length; i++) {
             messageText.text = message.Substring(0, i);
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(WRITE_DELAY);
         }
     }
 }

@@ -11,6 +11,10 @@ public class Trash : MonoBehaviour, IInteractable, ISubscriber {
             .Subscribe((DialogueEndEvent dialogueEvent) => OnDialogueEnd(dialogueEvent));
     }
 
+    public bool IsInteractable() {
+        return true;
+    }
+
     public bool HasDistance() {
         return true;
     }

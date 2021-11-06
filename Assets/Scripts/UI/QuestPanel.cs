@@ -15,8 +15,14 @@ public class QuestPanel : UIPanel {
 
     private void Update() {
         messageText.text = "";
-        foreach(QuestAbstract quest in QuestManager.Get().quests) {
-            messageText.text += (quest.IsDone() ? "*" : "~") + " " + quest.GetQuestName() + "\n\n";
+        foreach(Quest quest in QuestManager.Get().GetQuests()) {
+            if(!quest.IsStarted() || quest.IsComplete()) continue;
+
+            messageText.text += "<b>" + quest.GetTitle() + "</b>\n\n";
+
+            foreach(AbstractTask task in quest.GetTasks()) {
+                messageText.text += (task.IsDone() ? "*" : "~") + " " + task.GetTitle() + "\n\n";
+            }
         }
     }
 
