@@ -7,7 +7,7 @@ public abstract class UIPanel : MonoBehaviour, ISubscriber {
     private Vector2 basePosition;
     private bool open = false;
     private bool transitioning = false;
-    private readonly float STEPS = 100;
+    private readonly float STEPS = 50;
 
     private void Awake() {
         this.rectTransform = GetComponent<RectTransform>();
