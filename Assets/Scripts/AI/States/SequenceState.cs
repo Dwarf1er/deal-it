@@ -2,15 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SequenceState : AIState {
-    private Queue<AIState> states;
+public class SequenceState : State {
+    private Queue<State> states;
 
-    public SequenceState(AI ai, AIState[] states) : base(ai) {
-        this.states = new Queue<AIState>(states);
+    public SequenceState(IStateHandler stateHandler, State[] states) : base(stateHandler) {
+        this.states = new Queue<State>(states);
     }
 
-    public override AIState NextState() {
-        if(this.IsComplete()) return new IdleState(this.ai);
+    public override State NextState() {
+        if(this.IsComplete()) return stateHandler.GetBaseState();
 
         return this;
     }
@@ -21,12 +21,12 @@ public class SequenceState : AIState {
         }
     }
 
-    public override void Update() {
+    public override void Loop() {
         if(this.states.Count == 0) return;
 
-        AIState state = this.states.Peek();
+        State state = this.states.Peek();
 
-        state.Update();
+        state.Loop();
 
         if(state.IsComplete()) {
             state.Exit();

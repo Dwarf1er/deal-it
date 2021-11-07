@@ -2,15 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveInputEvent : IEvent {
-    public string player { get; }
-    public Vector2 direction { get; }
-
-    public MoveInputEvent(string player, Vector2 direction) {
-        this.player = player;
-        this.direction = direction;
-    }
-
+public abstract class InputEvent : IEvent {
     public Vector2 GetPosition() {
         return Vector2.zero;
     }
@@ -20,18 +12,44 @@ public class MoveInputEvent : IEvent {
     }
 }
 
-public class DealInputEvent : IEvent {
+public class MoveInputEvent : InputEvent {
+    public string player { get; }
+    public Vector2 direction { get; }
+
+    public MoveInputEvent(string player, Vector2 direction) {
+        this.player = player;
+        this.direction = direction;
+    }
+}
+
+public class DealInputEvent : InputEvent {
     public string player { get; }
 
     public DealInputEvent(string player) {
         this.player = player;
     }
+}
 
-    public Vector2 GetPosition() {
-        return Vector2.zero;
+public class DialogueInputEvent : InputEvent {
+    public string player { get; }
+
+    public DialogueInputEvent(string player) {
+        this.player = player;
     }
+}
 
-    public float GetRange() {
-        return float.MaxValue;
+public class InteractInputEvent : InputEvent {
+    public string player { get; }
+
+    public InteractInputEvent(string player) {
+        this.player = player;
+    }
+}
+
+public class PanelInputEvent : InputEvent {
+    public string player { get; }
+
+    public PanelInputEvent(string player) {
+        this.player = player;
     }
 }

@@ -2,24 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[
-    RequireComponent(typeof(EventManager)), 
-    RequireComponent(typeof(SoundManager)), 
-    RequireComponent(typeof(InputManager)), 
-    RequireComponent(typeof(UIManager)),
-    RequireComponent(typeof(EmojiManager))
-]
-public class GameManager : MonoBehaviour {
+public class GameManager : MonoBehaviour, ISubscriber {
     private static GameManager gameManager;
 
-    void Awake() {
+    private void Awake() {
         if(gameManager) Destroy(this);
         gameManager = this;
     }
 
-    void Start() {
-        Vector3 classPosition = new Vector2(0, -0.85f);
+    private void Start() {
+        EventManager.Get()
+            .Subscribe((StartEvent startEvent) => OnStart(startEvent));
+    }
 
-        EventManager.Get().BroadcastWithDelay(new ClassStartEvent(classPosition), 5.0f);
+    private void OnStart(StartEvent startEvent) {
+        // EventManager.Get().BroadcastWithDelay(new ClassStartEvent(new Vector2(0.0f, -0.85f)), 5.0f);
+    }
+
+    private void OnDestroy() {
+        EventManager.Get().UnSubcribeAll(this);    
+    }
+
+    public bool HasDistance() {
+        return false;
+    }
+
+    public Transform GetTransform() {
+        return transform;
     }
 }

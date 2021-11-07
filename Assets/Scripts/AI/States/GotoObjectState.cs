@@ -2,27 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GotoObjectState : AIState {
-    private string targetName;
-    private Vector3 target;
+public class GotoObjectState : GotoState {
+    private string targetTag;
 
-    public GotoObjectState(AI ai, string target) : base(ai) {
-        this.targetName = target;
-        this.target = new Vector3();
-    }
-
-    public override AIState NextState() {
-        if(this.IsComplete()) return new IdleState(this.ai);
-
-        return this;
+    public GotoObjectState(IStateHandler stateHandler, string targetTag) : base(stateHandler, Vector3.zero) {
+        this.targetTag = targetTag;
     }
 
     public override void Enter() {
         float nearestDistance = float.MaxValue;
         GameObject nearestObject = null;
 
-        foreach(GameObject gameObject in GameObject.FindGameObjectsWithTag(this.targetName)) {
-            float distance = this.ai.DistanceTo(gameObject);
+        foreach(GameObject gameObject in GameObject.FindGameObjectsWithTag(targetTag)) {
+            float distance = stateHandler.DistanceTo(gameObject.transform.position);
             
             if(distance < nearestDistance) {
                 nearestDistance = distance;
@@ -31,17 +23,7 @@ public class GotoObjectState : AIState {
         }
 
         this.target = nearestObject.transform.position;
-    }
 
-    public override void Update() {
-        this.ai.MoveTowards(this.target);
-    }
-
-    public override void Exit() {
-        this.ai.ResetDirection();
-    }
-
-    public override bool IsComplete() {
-        return this.ai.ReachedPosition(this.target);
+        base.Enter();
     }
 }
