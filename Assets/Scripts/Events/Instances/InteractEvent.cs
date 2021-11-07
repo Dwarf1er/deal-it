@@ -40,9 +40,8 @@ public class InteractStartEvent : InteractEvent, IStartEvent {
     }
 }
 
-public class InteractEndEvent : InteractEvent, IEndEvent, ICancellableEvent {
+public class InteractEndEvent : InteractEvent, IEndEvent {
     private InteractStartEvent startEvent;
-    private bool cancelled = false;
 
     public InteractEndEvent(InteractStartEvent startEvent) : base(startEvent.GetFrom(), startEvent.GetTo()) {
         this.startEvent = startEvent;
@@ -50,13 +49,5 @@ public class InteractEndEvent : InteractEvent, IEndEvent, ICancellableEvent {
 
     public IEvent GetStartEvent() {
         return startEvent;
-    }
-
-    public void Cancel() {
-        this.cancelled = true;
-    }
-
-    public bool IsCancelled() {
-        return cancelled;
     }
 }

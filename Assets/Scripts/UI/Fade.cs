@@ -35,7 +35,7 @@ public class Fade : MonoBehaviour {
         if(!transition) return;
 
         float target = fadeOut ? 1.0f : 0.0f;
-        if(Mathf.Abs(GetAlpha() - target) < 0.001f) {
+        if(Mathf.Abs(GetAlpha() - target) < 0.01f) {
             SetAlpha(target);
             transition = false;
             return;

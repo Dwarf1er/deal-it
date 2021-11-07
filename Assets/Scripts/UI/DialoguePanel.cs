@@ -26,7 +26,7 @@ public class DialoguePanel : UIPanel {
     }
 
     private void HandleInput() {
-        if(IsOpen()) {
+        if(IsOpen() && !IsTransitioning()) {
             EventManager.Get().Broadcast(dialogueEvent.GetEndEvent());
             Close();
         }

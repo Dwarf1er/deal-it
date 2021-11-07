@@ -2,14 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[
-    RequireComponent(typeof(EventManager)), 
-    RequireComponent(typeof(SoundManager)), 
-    RequireComponent(typeof(InputManager)), 
-    RequireComponent(typeof(UIManager)),
-    RequireComponent(typeof(EmojiManager))
-]
-public class GameManager : MonoBehaviour {
+public class GameManager : MonoBehaviour, ISubscriber {
     private static GameManager gameManager;
 
     private void Awake() {
@@ -18,11 +11,23 @@ public class GameManager : MonoBehaviour {
     }
 
     private void Start() {
-        EventManager.Get().Broadcast(new StartEvent());
-        EventManager.Get().BroadcastWithDelay(new ClassStartEvent(new Vector2(0.0f, -0.85f)), 5.0f);
+        EventManager.Get()
+            .Subscribe((StartEvent startEvent) => OnStart(startEvent));
+    }
+
+    private void OnStart(StartEvent startEvent) {
+        // EventManager.Get().BroadcastWithDelay(new ClassStartEvent(new Vector2(0.0f, -0.85f)), 5.0f);
     }
 
     private void OnDestroy() {
         EventManager.Get().UnSubcribeAll(this);    
+    }
+
+    public bool HasDistance() {
+        return false;
+    }
+
+    public Transform GetTransform() {
+        return transform;
     }
 }

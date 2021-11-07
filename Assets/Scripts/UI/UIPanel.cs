@@ -32,6 +32,10 @@ public abstract class UIPanel : MonoBehaviour, ISubscriber {
         return transform;
     }
 
+    public bool IsTransitioning() {
+        return transitioning;
+    }
+
     public bool IsOpen() {
         return open;
     }

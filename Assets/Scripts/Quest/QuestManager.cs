@@ -17,4 +17,12 @@ public class QuestManager : MonoBehaviour {
     public Quest[] GetQuests() {
         return this.quests;
     }
+
+    public bool HasQuest(string title) {
+        foreach(Quest quest in quests) {
+            if(quest.GetTitle() == title) return quest.IsStarted();
+        }
+
+        return false;
+    }
 }

@@ -2,11 +2,11 @@ using System.Collections;
 using UnityEngine;
 
 public class CutscenePatrol : CutsceneAbstract {
-    public CutsceneHuman[] humans;
+    public StateHuman[] actors;
 
     public override void Enter() {
-        foreach(CutsceneHuman human in humans) {
-            human.Patrol();
+        foreach(StateHuman actor in actors) {
+            actor.Patrol();
         }
     }
 

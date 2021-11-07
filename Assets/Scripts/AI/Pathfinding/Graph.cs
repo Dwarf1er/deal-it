@@ -88,7 +88,7 @@ public abstract class Graph<T> : MonoBehaviour where T: INode {
             foreach(T neighbor in nextNode.GetNeighbors()) {
                 Stack<T> neighborPath = new Stack<T>(new Stack<T>(path));
                 neighborPath.Push(neighbor);
-                queue.Enqueue(new Tuple<Stack<T>, HashSet<T>>(neighborPath, seen), 1.0f / (Vector2.Distance(neighbor.GetPosition(), to)));
+                queue.Enqueue(new Tuple<Stack<T>, HashSet<T>>(neighborPath, seen), 1.0f / (Vector2.Distance(neighbor.GetPosition(), to) * neighborPath.Count));
             }
         }
 

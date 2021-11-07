@@ -45,7 +45,12 @@ public class Trash : MonoBehaviour, IInteractable, ISubscriber {
     private void OnInteractEnd(InteractEndEvent interactEvent) {
         if(endEvent != interactEvent) return;
 
-        DialogueStartEvent dialogueEvent = new DialogueStartEvent("Trash", "You found... Trash. What were you expecting?");
+        DialogueStartEvent dialogueEvent;
+        if(QuestManager.Get().HasQuest("Bropst Quest")) {
+            dialogueEvent = new DialogueStartEvent("Trash", "You found... An old coffee. Could still be drinkable.");
+        } else {
+            dialogueEvent = new DialogueStartEvent("Trash", "You found... Trash. What were you expecting?");
+        }
 
         endEvent = dialogueEvent.GetEndEvent();
 

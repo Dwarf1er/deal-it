@@ -15,8 +15,7 @@ public class Bropst : MonoBehaviour, IDealable, ISubscriber, IQuestProvider {
         EventManager.Get()
             .Subscribe((InteractStartEvent interactEvent) => OnInteractStart(interactEvent))
             .Subscribe((DealStartEvent dealEvent) => OnDealStart(dealEvent))
-            .Subscribe((DealEndEvent dealEvent) => OnDealEnd(dealEvent))
-            .Subscribe((DialogueEndEvent dialogueEvent) => OnDialogueEnd(dialogueEvent));
+            .Subscribe((DealEndEvent dealEvent) => OnDealEnd(dealEvent));
     }
 
     public bool ProvidedQuest() {
@@ -32,7 +31,7 @@ public class Bropst : MonoBehaviour, IDealable, ISubscriber, IQuestProvider {
     }
 
     public bool IsInteractable() {
-        return true;
+        return endEvent == null;
     }
 
     private void OnDestroy() {
@@ -64,27 +63,7 @@ public class Bropst : MonoBehaviour, IDealable, ISubscriber, IQuestProvider {
             return;
         }
 
-        DialogueStartEvent dialogueEvent = new DialogueStartEvent("Bropst", "My last dose... Time to join my friends...");
-        endEvent = dialogueEvent.GetEndEvent();
-        EventManager.Get().Broadcast(dialogueEvent);
-    }
-    
-    private void OnDialogueEnd(DialogueEndEvent dialogueEvent) {
-        if(endEvent != dialogueEvent) return;
-        StartCoroutine(DestroySelf());
-    }
-
-    private IEnumerator DestroySelf() {
-        Color color = spriteRenderer.color;
-
-        for(int i = 0; i <= 100; i++) {
-            color.a = Mathf.Lerp(1.0f, 0.0f, i / 100.0f);
-            spriteRenderer.color = color;
-            yield return new WaitForSeconds(0.005f);
-        }
-
         quest.Exit();
-        Destroy(this.gameObject);
     }
 
     public bool HasDistance() {

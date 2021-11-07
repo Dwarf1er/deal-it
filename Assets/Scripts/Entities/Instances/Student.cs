@@ -3,12 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Student : AI, IDealable {
+public class Student : StateHuman, IDealable {
     private IEndEvent endEvent;
 
-    public override void Start() {
-        this.textureName = "student1";
-
+    protected override void Start() {
         base.Start();
 
         EventManager.Get().Subscribe((ClassStartEvent classEvent) => OnClassStart(classEvent));
@@ -18,27 +16,24 @@ public class Student : AI, IDealable {
         EventManager.Get().Subscribe((DealEndEvent dealEvent) => OnDealEnd(dealEvent));
     }
 
-    /// TODO: Don't copy from other class.
-    private bool CanStartEvent() {
-        if(endEvent == null) return true;
-        if(endEvent is ICancellableEvent) {
-            ICancellableEvent cancellableEvent = (ICancellableEvent)endEvent;
-            cancellableEvent.Cancel();
-            endEvent = null;
-            return true;
-        }
+    protected override string GetTextureName() {
+        return "student1";
+    }
 
-        return false;
+    protected override float GetSpeed() {
+        return 0.75f;
+    }
+
+    public override State GetBaseState() {
+        return new IdleState(this);
     }
 
     private void OnClassStart(ClassStartEvent classEvent) {
-        if(!CanStartEvent()) return;
-
         endEvent = classEvent.GetEndEvent();
 
         Vector3 position = classEvent.GetPosition();
 
-        this.SetNextState(new SequenceState(this, new AIState[]{
+        this.SetNextState(new SequenceState(this, new State[]{
             new GotoState(this, position),
             new GotoObjectState(this, "Chair"),
             new LookAtState(this, Vector2.down)
@@ -46,7 +41,7 @@ public class Student : AI, IDealable {
     }
 
     public bool IsDealable() {
-        return CanStartEvent();
+        return endEvent != null;
     }
 
     private void OnDealStart(DealStartEvent dealEvent) {

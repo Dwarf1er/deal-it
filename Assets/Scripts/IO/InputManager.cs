@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InputManager : MonoBehaviour {
+public class InputManager : MonoBehaviour, ISubscriber {
     private static readonly string[] PLAYER_NAMES = new string[]{"P1", "P2"};
     private static InputManager inputManager;
     private Dictionary<string, bool> hadInput;
+    private int dialogueCount;
 
-    void Start() {
+    private void Start() {
         if(inputManager) Destroy(this);
         inputManager = this;
 
@@ -15,16 +16,41 @@ public class InputManager : MonoBehaviour {
         foreach(string player in PLAYER_NAMES) {
             hadInput[player] = false;
         }
+
+        EventManager.Get()
+            .Subscribe((DialogueStartEvent dialogueEvent) => OnDialogueStart(dialogueEvent))
+            .Subscribe((DialogueEndEvent dialogueEvent) => OnDialogueEnd(dialogueEvent));
+    }
+
+    public bool HasDistance() {
+        return false;
+    }
+
+    public Transform GetTransform() {
+        return transform;
+    }
+
+    private void OnDialogueStart(DialogueStartEvent dialogueEvent) {
+        dialogueCount++;
+    }
+
+    private void OnDialogueEnd(DialogueEndEvent dialogueEvent) {
+        dialogueCount--;
+    }
+
+    private void OnDestroy() {
+        EventManager.Get().UnSubcribeAll(this);
     }
 
     void Update() {
         /// TODO: Per player check.
         if(Input.GetKeyDown(KeyCode.Space)) {
-            EventManager.Get().Broadcast(new DealInputEvent("P1"));
-            EventManager.Get().Broadcast(new InteractInputEvent("P1"));
-        }
-        if(Input.GetKeyDown(KeyCode.E)) {
-            EventManager.Get().Broadcast(new DialogueInputEvent("P1"));
+            if(dialogueCount == 0) {
+                EventManager.Get().Broadcast(new DealInputEvent("P1"));
+                EventManager.Get().Broadcast(new InteractInputEvent("P1"));
+            } else {
+                EventManager.Get().Broadcast(new DialogueInputEvent("P1"));
+            }
         }
         if(Input.GetKeyDown(KeyCode.Q)) {
             EventManager.Get().Broadcast(new PanelInputEvent("P1"));
