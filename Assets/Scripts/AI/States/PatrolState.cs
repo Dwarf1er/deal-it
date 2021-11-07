@@ -3,22 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PatrolState : GotoState {
-    public PatrolState(AI ai) : base(ai, ai.GetGraph().RandomNode().GetPosition()) {}
+    public PatrolState(IStateHandler stateHandler) : base(stateHandler, stateHandler.GetGraph().RandomNode().GetPosition()) {}
 
-    public override AIState NextState() {
-        if(this.IsNextState(0.001f)) return new IdleState(this.ai);
+    public override State NextState() {
+        if(this.IsNextState(0.001f)) return stateHandler.GetBaseState();
 
         return this;
     }
 
-    public override void Update() {
+    public override void Loop() {
         if(path != null && path.Count == 0) {
             path = null;
-            target = ai.GetGraph().RandomNode().GetPosition();
+            target = stateHandler.GetGraph().RandomNode().GetPosition();
             Enter();
         }
 
-        base.Update();
+        base.Loop();
     }
 
     public override bool IsComplete() {

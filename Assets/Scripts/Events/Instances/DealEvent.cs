@@ -56,11 +56,14 @@ public class DealEndEvent : DealEvent, IEndEvent, IDelayedEvent, ICancellableEve
         return 5.0f;
     }
 
-    public void Cancel() {
-        this.cancelled = true;
-    }
-
     public bool IsCancelled() {
-        return cancelled;
+        if(cancelled) return true;
+
+        if(Vector2.Distance(GetFrom().GetPosition(), GetTo().GetPosition()) > 0.5f) {
+            cancelled = true;
+            return true;
+        }
+
+        return false;
     }
 }

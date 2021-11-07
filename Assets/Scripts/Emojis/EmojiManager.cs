@@ -38,7 +38,7 @@ public class EmojiManager : MonoBehaviour, ISubscriber {
     }
 
     private void OnDealStart(DealStartEvent dealEvent) {
-        activeEventEmojis.Add(dealEvent.GetEndEvent(), Spawn("Clock", dealEvent.GetPosition()));
+        activeEventEmojis.Add(dealEvent.GetEndEvent(), Spawn("Status", dealEvent.GetPosition()));
     }
 
     private void OnDealEnd(DealEndEvent dealEvent) {

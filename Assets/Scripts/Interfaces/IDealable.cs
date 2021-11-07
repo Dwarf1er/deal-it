@@ -1,1 +1,3 @@
-public interface IDealable : IWithPosition {}
+public interface IDealable : IWithPosition, IWithTransform {
+    bool IsDealable();
+}

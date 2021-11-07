@@ -60,13 +60,17 @@ public class TilemapGraph : Graph<TilemapNode> {
                     int dx = x + ox;
                     int dy = y + oy;
 
-                    if(dx > 0 && dy > 0 && dx < nodeMatrix.GetLength(0) && dy < nodeMatrix.GetLength(1)) {
+                    if(dx >= 0 && dy >= 0 && dx < nodeMatrix.GetLength(0) && dy < nodeMatrix.GetLength(1)) {
                         TilemapNode otherNode = nodeMatrix[dx, dy];
 
                         if(otherNode != null) {
                             node.AddNeighbor(otherNode);
                         }
                     }
+                }
+
+                if(node.GetNeighbors().Count == 0) {
+                    Debug.Log(x + ", " + y);
                 }
             }
         }
