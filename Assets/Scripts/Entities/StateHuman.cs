@@ -67,7 +67,7 @@ public abstract class StateHuman : MonoBehaviour, ISubscriber, IWithPosition, IW
     }
 
     private int GetDirectionIndex(Vector2 direction) {
-        if(direction.magnitude == 0) return -1;
+        if(direction.magnitude < 0.01f) return -1;
 
         float angle = Vector2.SignedAngle(Vector2.right, direction) + 180.0f;
 
@@ -85,13 +85,13 @@ public abstract class StateHuman : MonoBehaviour, ISubscriber, IWithPosition, IW
     public void LookAt(Vector2 position) {
         Vector2 displacement = position - (Vector2)this.transform.position;
 
-        if(displacement.magnitude == 0) return;
+        if(direction.magnitude == 0) return;
 
         LookTowards(displacement.normalized);
     }
 
     public void LookTowards(Vector2 direction) {
-        if(direction == Vector2.zero) return;
+        if(direction.magnitude == 0) return;
 
         int directionIndex = this.GetDirectionIndex(direction);
 
