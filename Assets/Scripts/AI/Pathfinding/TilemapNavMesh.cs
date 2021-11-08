@@ -150,7 +150,7 @@ public class TilemapNavMesh : MonoBehaviour {
     private bool OnSurface(Vector3 position) {
         if(!meshFilter.mesh.bounds.Contains(position)) return false;
 
-        return Physics.RaycastAll(position + Vector3.back * 0.1f, Vector3.forward, 0.2f).Length > 0;
+        return Physics.Raycast(position + Vector3.back * 0.01f, Vector3.forward, 0.02f, LayerMask.GetMask("Path"));
     }
 
     public void AddObstacle(TilemapNavObstacle obstacle) {
