@@ -9,7 +9,7 @@ public class Pusher : StateHuman {
         return "dealer1";
     }
 
-    protected override float GetSpeed() {
+    public override float GetSpeed() {
         return 0.8f;
     }
 }

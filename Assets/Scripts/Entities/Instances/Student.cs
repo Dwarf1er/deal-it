@@ -20,7 +20,7 @@ public class Student : StateHuman, IDealable {
         return "student1";
     }
 
-    protected override float GetSpeed() {
+    public override float GetSpeed() {
         return 0.75f;
     }
 

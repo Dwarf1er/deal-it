@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GotoState : State {
-    protected Queue<TilemapNode> path;
+    protected Queue<Vector2> path;
     protected Vector3 target;
 
     public GotoState(IStateHandler stateHandler, Vector3 target) : base(stateHandler) {
@@ -20,15 +20,14 @@ public class GotoState : State {
     public override void Enter() {
         if(path != null && path.Count > 0) return;
 
-        TilemapNode[] shortestPath = stateHandler.GetGraph().GetPathTo(stateHandler.GetTransform().position, target);
-        this.path = new Queue<TilemapNode>(shortestPath);
+        Vector2[] shortestPath = stateHandler.GetPath(stateHandler.GetTransform().position, target);
+        this.path = new Queue<Vector2>(shortestPath);
     }
 
     public override void Loop() {
         if(path == null || path.Count == 0) return;
 
-        TilemapNode nextNode = path.Peek();
-        Vector3 target = nextNode.GetPosition();
+        Vector3 target = path.Peek();
 
         stateHandler.MoveTowards(target);
 

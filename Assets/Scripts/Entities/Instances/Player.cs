@@ -29,7 +29,7 @@ public class Player : StateHuman, IDealer {
         return "student1";
     }
 
-    protected override float GetSpeed() {
+    public override float GetSpeed() {
         return 0.8f;
     }
 }
