@@ -219,12 +219,12 @@ public class TilemapNavMesh : MonoBehaviour {
             return new Vector2[0];
         }
 
-        PriorityQueue<Tuple<Stack<Vector2>, HashSet<Vector2>>, float> queue = new PriorityQueue<Tuple<Stack<Vector2>, HashSet<Vector2>>, float>();
+        PriorityQueue<Tuple<Stack<Vector2>, HashSet<Vector2>>, float> queue = new PriorityQueue<Tuple<Stack<Vector2>, HashSet<Vector2>>, float>(true);
         queue.Enqueue(new Tuple<Stack<Vector2>, HashSet<Vector2>>(new Stack<Vector2>(new Vector2[]{from}), new HashSet<Vector2>()), 0);
 
         bool firstLoop = true;
         Vector2[] finalPath = new Vector2[0];
-        while(queue.Count() > 0) {
+        while(queue.Count > 0) {
             Tuple<Stack<Vector2>, HashSet<Vector2>> pathSeen = queue.Dequeue();
             Stack<Vector2> path = pathSeen.first;
             HashSet<Vector2> seen = pathSeen.second;
@@ -248,7 +248,7 @@ public class TilemapNavMesh : MonoBehaviour {
                 Vector2 offset = path.Peek() + delta * STEP_SIZE;
                 Stack<Vector2> nextPath = new Stack<Vector2>(new Stack<Vector2>(path));
                 nextPath.Push(offset);
-                queue.Enqueue(new Tuple<Stack<Vector2>, HashSet<Vector2>>(nextPath, seen), 1.0f / (Vector2.Distance(offset, to) * nextPath.Count));
+                queue.Enqueue(new Tuple<Stack<Vector2>, HashSet<Vector2>>(nextPath, seen), Vector2.Distance(offset, to) * nextPath.Count);
             }
         }
 
