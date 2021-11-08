@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.SceneManagement;
 
 public class TilemapNavMesh : MonoBehaviour {
     public Tilemap tilemap;
@@ -13,26 +14,20 @@ public class TilemapNavMesh : MonoBehaviour {
     private void Awake() {
         this.pathHistory = new Queue<Vector2[]>();
         this.obstacles = new HashSet<TilemapNavObstacle>();
-        Mesh mesh = MakeMesh(tilemap);
-        mesh = ErodeMesh(mesh);
-
-        mesh.RecalculateNormals();
-        mesh.RecalculateBounds();
-
-        meshFilter = (MeshFilter)gameObject.AddComponent(typeof(MeshFilter));
-        meshFilter.mesh = mesh;
-        gameObject.AddComponent(typeof(MeshCollider));
+        this.meshFilter = GetComponent<MeshFilter>();
     }
 
     private void OnDrawGizmosSelected() {
-        if(meshFilter == null) return;
+        if(meshFilter == null || meshFilter.sharedMesh == null) return;
 
-        while(pathHistory.Count > 3) pathHistory.Dequeue();
+        if(pathHistory != null) {
+            while(pathHistory.Count > 3) pathHistory.Dequeue();
 
-        Gizmos.color = Color.black;
-        foreach(Vector2[] path in pathHistory) {
-            foreach(Vector2 point in path) {
-                Gizmos.DrawSphere(point, 0.02f);
+            Gizmos.color = Color.black;
+            foreach(Vector2[] path in pathHistory) {
+                foreach(Vector2 point in path) {
+                    Gizmos.DrawSphere(point, 0.02f);
+                }
             }
         }
 
@@ -40,7 +35,27 @@ public class TilemapNavMesh : MonoBehaviour {
         color.a = 0.5f;
         Gizmos.color = color;
 
-        Gizmos.DrawMesh(meshFilter.mesh, transform.position, transform.rotation);
+        Gizmos.DrawMesh(meshFilter.sharedMesh, transform.position, transform.rotation);
+    }
+
+    public Mesh BuildMesh() {
+        Mesh mesh = MakeMesh(tilemap);
+        mesh = ErodeMesh(mesh);
+        mesh.RecalculateNormals();
+        mesh.RecalculateBounds();
+
+        return mesh;
+    }
+
+    public void BuildComponents(Mesh mesh) {
+        MeshFilter meshFilter = GetComponent<MeshFilter>();
+        if(meshFilter == null) {
+            meshFilter = (MeshFilter)gameObject.AddComponent(typeof(MeshFilter));
+        } 
+        meshFilter.sharedMesh = mesh;
+        if(GetComponent<MeshCollider>() == null) {
+            gameObject.AddComponent(typeof(MeshCollider));
+        }
     }
 
     private Mesh MakeMesh(Tilemap tilemap) {
@@ -207,17 +222,20 @@ public class TilemapNavMesh : MonoBehaviour {
         PriorityQueue<Tuple<Stack<Vector2>, HashSet<Vector2>>, float> queue = new PriorityQueue<Tuple<Stack<Vector2>, HashSet<Vector2>>, float>();
         queue.Enqueue(new Tuple<Stack<Vector2>, HashSet<Vector2>>(new Stack<Vector2>(new Vector2[]{from}), new HashSet<Vector2>()), 0);
 
+        bool firstLoop = true;
         Vector2[] finalPath = new Vector2[0];
         while(queue.Count() > 0) {
             Tuple<Stack<Vector2>, HashSet<Vector2>> pathSeen = queue.Dequeue();
             Stack<Vector2> path = pathSeen.first;
             HashSet<Vector2> seen = pathSeen.second;
             Vector2 nextNode = path.Pop();
-
-            if(!OnSurface(nextNode) || OnObstacle(nextNode)) continue;
+            
+            if(firstLoop) {
+                firstLoop = false;  
+            } else if(!OnSurface(nextNode) || OnObstacle(nextNode)) continue;
             if(seen.Contains(nextNode)) continue;
 
-            if(Vector2.Distance(nextNode, to) <= STEP_SIZE) {
+            if(Vector2.Distance(nextNode, to) <= 0.16f) {
                 path.Push(to);
                 finalPath = new Stack<Vector2>(path).ToArray();
                 break;
