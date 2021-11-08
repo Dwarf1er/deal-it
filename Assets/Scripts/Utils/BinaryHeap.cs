@@ -1,7 +1,6 @@
 /// Modified from https://gist.github.com/irsal/5589011.
 
 using System;
-using UnityEngine;
 
 public class BinaryHeap<T, K> where K: IComparable {
     private T[] data;

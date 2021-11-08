@@ -215,10 +215,6 @@ public class TilemapNavMesh : MonoBehaviour {
     }
 
     public Vector2[] GetPath(Vector2 from, Vector2 to) {
-        if(OnObstacle(from) || OnObstacle(to)) {
-            return new Vector2[0];
-        }
-
         PriorityQueue<Tuple<Stack<Vector2>, HashSet<Vector2>>, float> queue = new PriorityQueue<Tuple<Stack<Vector2>, HashSet<Vector2>>, float>(true);
         queue.Enqueue(new Tuple<Stack<Vector2>, HashSet<Vector2>>(new Stack<Vector2>(new Vector2[]{from}), new HashSet<Vector2>()), 0);
 
@@ -232,7 +228,7 @@ public class TilemapNavMesh : MonoBehaviour {
             
             if(firstLoop) {
                 firstLoop = false;  
-            } else if(!OnSurface(nextNode) || OnObstacle(nextNode)) continue;
+            } else if(!OnSurface(nextNode)) continue;
             if(seen.Contains(nextNode)) continue;
 
             if(Vector2.Distance(nextNode, to) <= 0.16f) {
@@ -250,6 +246,11 @@ public class TilemapNavMesh : MonoBehaviour {
                 nextPath.Push(offset);
                 queue.Enqueue(new Tuple<Stack<Vector2>, HashSet<Vector2>>(nextPath, seen), Vector2.Distance(offset, to) * nextPath.Count);
             }
+        }
+
+        // TODO: Checking for obstacles here prevents finding a new route. This said, it assures that we will always find a path. We should properly check if the start or end positions are enclosed.
+        foreach(Vector2 position in finalPath) {
+            if(OnObstacle(position)) return new Vector2[0];    
         }
 
         if(finalPath.Length > 0) {
