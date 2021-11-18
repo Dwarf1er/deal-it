@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class CutscenePlay : CutsceneAbstract {
     public override void Enter() {
         EventManager.Get().Broadcast(new StartEvent());

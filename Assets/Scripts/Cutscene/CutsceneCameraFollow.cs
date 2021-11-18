@@ -1,19 +1,29 @@
-using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CutsceneCameraFollow : CutsceneAbstract {
-    public Transform[] targets;
+    private Transform[] transformTargets;
+    private CameraController cameraController;
+
+    public CutsceneCameraFollow(string[] targets) {
+        List<Transform> transformList = new List<Transform>();
+
+        foreach(string target in targets) {
+            transformList.Add(GameObject.Find(target).transform);
+        }
+
+        this.transformTargets = transformList.ToArray();
+
+        this.cameraController = Camera.main.GetComponent<CameraController>();
+    }
 
     public override void Enter() {
-        CameraController cameraController = Camera.main.GetComponent<CameraController>();
-        cameraController.targets = targets;
+        cameraController.targets = transformTargets;
     }
 
     public override bool Loop() {
         return false;
     }
 
-    public override void Exit() {
-
-    }
+    public override void Exit() {}
 }

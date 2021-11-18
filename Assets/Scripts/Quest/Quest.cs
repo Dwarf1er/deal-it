@@ -1,23 +1,22 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-public class Quest : MonoBehaviour {
+public class Quest {
     public string title;
-    public string description;
     public int reward;
-    private AbstractTask[] tasks;
+    public string description;
+    private List<AbstractTask> children;
     private bool started = false;
+    private bool done = false;
     private bool complete = false;
 
-    private void Start() {
-        this.tasks = transform.GetComponentsInChildren<AbstractTask>();
-    }
-
-    private void OnDestroy() {
-        EventManager.Get().UnSubcribeAll(this);
+    public Quest(string title) {
+        this.title = title;
+        this.children = new List<AbstractTask>();
     }
 
     public void Enter() {
-        foreach(AbstractTask task in tasks) {
+        foreach(AbstractTask task in children) {
             task.Enter();
         }
         started = true;
@@ -25,45 +24,40 @@ public class Quest : MonoBehaviour {
     }
 
     public void Exit() {
-        complete = true;
+        done = true;
         EventManager.Get().Broadcast(new QuestEndEvent(this));
+    }
+
+    public void AddChild(AbstractTask task) {
+        children.Add(task);
+    }
+
+    public AbstractTask[] GetChildren() {
+        return children.ToArray();
     }
 
     public bool IsStarted() {
         return started;
     }
 
-    public bool TasksDone() {
+    public bool IsComplete() {
         if(complete) return true;
 
-        foreach(AbstractTask task in tasks) {
+        foreach(AbstractTask task in children) {
             if(!task.IsDone()) return false;
         }
 
-        return true;
-    }
+        complete = true;
+        EventManager.Get().Broadcast(new QuestCompleteEvent(this));
 
-    public bool IsComplete() {
         return complete;
     }
 
-    public AbstractTask[] GetTasks() {
-        return tasks;
+    public bool IsDone() {
+        return done;
     }
 
     public string GetTitle() {
         return title;
-    }
-
-    public string GetDescription() {
-        return description;
-    }
-
-    public bool HasDistance() {
-        return false;
-    }
-
-    public Transform GetTransform() {
-        return transform;
     }
 }

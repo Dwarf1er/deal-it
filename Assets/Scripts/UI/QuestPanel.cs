@@ -16,11 +16,11 @@ public class QuestPanel : UIPanel {
     private void Update() {
         messageText.text = "";
         foreach(Quest quest in QuestManager.Get().GetQuests()) {
-            if(!quest.IsStarted() || quest.IsComplete()) continue;
+            if(!quest.IsStarted() || quest.IsDone()) continue;
 
             messageText.text += "<b>" + quest.GetTitle() + "</b>\n\n";
 
-            foreach(AbstractTask task in quest.GetTasks()) {
+            foreach(AbstractTask task in quest.GetChildren()) {
                 messageText.text += (task.IsDone() ? "*" : "~") + " " + task.GetTitle() + "\n\n";
             }
         }

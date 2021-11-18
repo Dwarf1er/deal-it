@@ -2,22 +2,21 @@ using System.Collections;
 using UnityEngine;
 
 public class CutsceneWait : CutsceneAbstract {
-    public float seconds = 1.0f;
-    private bool done;
+    private float seconds;
+    private float time;
+
+    public CutsceneWait(float seconds) {
+        this.seconds = seconds;
+    }
 
     public override void Enter() {
-        done = false;
-        StartCoroutine(Sleep(seconds));
+        time = 0;
     }
 
     public override bool Loop() {
-        return !done;
+        time += Time.deltaTime;
+        return time <= seconds;
     }
 
     public override void Exit() {}
-
-    private IEnumerator Sleep(float seconds) {
-        yield return new WaitForSeconds(seconds);
-        done = true;
-    }
 }

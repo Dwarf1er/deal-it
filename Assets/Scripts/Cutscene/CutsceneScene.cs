@@ -2,7 +2,11 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class CutsceneScene : CutsceneAbstract {
-    public string sceneName;
+    private string sceneName;
+
+    public CutsceneScene(string sceneName) {
+        this.sceneName = sceneName;
+    }
 
     public override void Enter() {
         SceneManager.LoadScene(sceneName, LoadSceneMode.Single);

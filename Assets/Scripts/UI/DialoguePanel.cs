@@ -38,6 +38,8 @@ public class DialoguePanel : UIPanel {
             animateText = true;
             StartCoroutine(ScrollMessage());
         }
+
+        if(!IsOpen() && !IsTransitioning()) Destroy(this.gameObject);
     }
 
     private IEnumerator ScrollMessage() {
