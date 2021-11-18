@@ -4,38 +4,48 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ItemSlotUI : MonoBehaviour {
-    [SerializeField] private Sprite itemSprite;
     [SerializeField] private Image itemRenderer;
     [SerializeField] private Transform panel;
     [SerializeField] private Text itemCountText;
-    private int itemCount;
-    public bool selected = false;
-    public bool locked = false;
+    private ItemStack itemStack;
+    public bool selected;
     private Image[] panelRenderers;
 
     private void Start() {
         panelRenderers = panel.GetComponentsInChildren<Image>();
     }
 
+    public void SetItemStack(ItemStack itemStack) {
+        this.itemStack = itemStack;
+    }
+
     private Color GetPanelColor() {
-        if(locked) return Color.gray;
+        if(itemStack == null || itemStack.locked) return Color.gray;
         if(selected) return Color.red;
 
         return Color.white;
     }
 
     private void Update() {
-        itemRenderer.sprite = itemSprite;
-
         Color panelColor = GetPanelColor();
         foreach(Image panelRenderer in panelRenderers) {
             panelRenderer.color = panelColor;
         }
 
-        if(itemCount > 1 && !locked) {
-            itemCountText.text = "" + itemCount;
+        Color color = itemRenderer.color;
+        if(itemStack == null) {
+            color.a = 0;
+            itemRenderer.color = color;
         } else {
-            itemCountText.text = "";
+            color.a = 1;
+            itemRenderer.color = color;
+            itemRenderer.sprite = itemStack.item.sprite;
+
+            if(itemStack.count > 1 && !itemStack.locked) {
+                itemCountText.text = "" + itemStack.count;
+            } else {
+                itemCountText.text = "";
+            }
         }
     }
 }

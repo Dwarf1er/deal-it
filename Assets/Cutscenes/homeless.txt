@@ -3,4 +3,5 @@ cutscene loop Homeless:
         case true:
             look ["P1"] "Homeless"
             dialogue "Homeless" "What do you want from me?"
+            shop
             play

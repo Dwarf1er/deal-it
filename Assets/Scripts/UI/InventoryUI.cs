@@ -8,6 +8,7 @@ public abstract class InventoryUI : MonoBehaviour, ISubscriber {
     private ItemSlotUI[] itemSlots;
     private int selectedItem;
     private bool isVisible;
+    private bool buttonDown;
 
     protected virtual void Start() {
         this.rectTransform = GetComponent<RectTransform>();
@@ -15,11 +16,39 @@ public abstract class InventoryUI : MonoBehaviour, ISubscriber {
         rectTransform.pivot = offset;
         this.itemSlots = GetComponentsInChildren<ItemSlotUI>();
         itemSlots[selectedItem].selected = true;
+        EventManager.Get()
+            .Subscribe((MoveInputEvent inputEvent) => OnMove(inputEvent));
+    }
+
+    private void UpdateItems() {
+        ItemStack[] itemStacks = GetInventory().GetItemStacks().ToArray();
+            
+        for(int i = 0; i < itemStacks.Length; i++) {
+            itemSlots[i].SetItemStack(itemStacks[i]);
+        }
+    }
+
+    private void OnMove(MoveInputEvent inputEvent) {
+        if(inputEvent.direction.magnitude == 0) {
+            buttonDown = false;
+            return;
+        }
+
+        if(buttonDown) return;
+        buttonDown = true;
+
+        if(inputEvent.direction.x != 0) {
+            itemSlots[GetInventory().GetSelected()].selected = false;
+            GetInventory().ToggleItem(inputEvent.direction.x > 0);
+            itemSlots[GetInventory().GetSelected()].selected = true;
+        }
     }
 
     private void OnDestroy() {
         EventManager.Get().UnSubcribeAll(this);
     }
+
+    protected abstract Inventory GetInventory();
 
     public bool HasDistance() {
         return false;
@@ -34,22 +63,11 @@ public abstract class InventoryUI : MonoBehaviour, ISubscriber {
     }
 
     protected void SetVisible(bool isVisible) {
-        StartCoroutine(Animate(isVisible));
-    }
-
-    protected void ToggleItem() {
-        int i = selectedItem;
-
-        while(true) {
-            i = (i + 1) % itemSlots.Length;
-
-            if(!itemSlots[i].locked) {
-                itemSlots[selectedItem].selected = false;
-                itemSlots[i].selected = true;
-                selectedItem = i;
-                break;
-            }                
+        if(isVisible) {
+            UpdateItems();
         }
+
+        StartCoroutine(Animate(isVisible));
     }
 
     private IEnumerator Animate(bool toOpen) {
@@ -65,5 +83,12 @@ public abstract class InventoryUI : MonoBehaviour, ISubscriber {
 
     public ItemSlotUI GetSelected() {
         return itemSlots[selectedItem];
+    }
+
+    private void Update() {
+        if(Input.GetKeyDown(KeyCode.Escape)) {
+            SetVisible(false);
+            EventManager.Get().Broadcast(new CloseInventoryEvent(GetInventory()));
+        }
     }
 }

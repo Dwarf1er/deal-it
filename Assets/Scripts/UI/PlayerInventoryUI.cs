@@ -1,8 +1,8 @@
 using System.Collections;
 using UnityEngine;
 
-public class ShopInventoryUI : InventoryUI {
-    private ShopInventory shopInventory;
+public class PlayerInventoryUI : InventoryUI {
+    private PlayerInventory playerInventory;
 
     protected override void Start() {
         base.Start();
@@ -11,13 +11,13 @@ public class ShopInventoryUI : InventoryUI {
     }
 
     protected override Inventory GetInventory() {
-        return shopInventory;
+        return playerInventory;
     }
 
     private void OnInventoryOpen(OpenInventoryEvent inventoryEvent) {
-        if(!(inventoryEvent.GetInventory() is ShopInventory)) return;
+        if(!(inventoryEvent.GetInventory() is PlayerInventory)) return;
 
-        this.shopInventory = (ShopInventory)inventoryEvent.GetInventory();
+        this.playerInventory = (PlayerInventory)inventoryEvent.GetInventory();
         SetVisible(true);
     }
 }

@@ -78,6 +78,8 @@ public class CutsceneFile : MonoBehaviour {
                 return ParsePatrol();
             case "scene":
                 return ParseScene();
+            case "shop":
+                return ParseShop();
             default:
                 throw new Exception("Unimplemented " + type);
         }
@@ -186,5 +188,9 @@ public class CutsceneFile : MonoBehaviour {
     private CutsceneScene ParseScene() {
         string sceneName = stringParser.ParseDelimitedString();
         return new CutsceneScene(sceneName);
+    }
+
+    private CutsceneShop ParseShop() {
+        return new CutsceneShop();
     }
 }
