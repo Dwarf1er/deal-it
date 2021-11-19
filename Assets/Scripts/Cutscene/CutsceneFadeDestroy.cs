@@ -2,32 +2,32 @@ using System.Collections;
 using UnityEngine;
 
 public class CutsceneFadeDestroy : CutsceneAbstract {
-    public GameObject target;
-    private SpriteRenderer spriteRenderer;
-    private bool done;
+    private GameObject targetGameObject;
+    private SpriteRenderer targetSpriteRenderer;
+    private float time;
+    private static readonly float TOTAL_TIME = 3.0f;
 
-    private IEnumerator FadeDestroy() {
-        Color color = spriteRenderer.color;
+    public CutsceneFadeDestroy(string target) {
+        this.targetGameObject = GameObject.Find(target);
+        this.targetSpriteRenderer = targetGameObject.GetComponent<SpriteRenderer>();
 
-        for(int i = 0; i <= 100; i++) {
-            color.a = Mathf.Lerp(1.0f, 0.0f, i / 100.0f);
-            spriteRenderer.color = color;
-            yield return new WaitForSeconds(0.005f);
-        }
-
-        Destroy(this.gameObject);
-        done = true;
     }
 
     public override void Enter() {
-        done = false;
-        spriteRenderer = target.GetComponent<SpriteRenderer>();
-        StartCoroutine(FadeDestroy());
+        time = 0;
     }
 
     public override bool Loop() {
-        return !done;
+        time += Time.deltaTime;
+
+        Color color = targetSpriteRenderer.color;
+        color.a = Mathf.Lerp(1.0f, 0.0f, time / TOTAL_TIME);
+        targetSpriteRenderer.color = color;
+
+        return time <= TOTAL_TIME;
     }
 
-    public override void Exit() {}
+    public override void Exit() {
+        GameObject.Destroy(targetGameObject);
+    }
 }

@@ -1,62 +1,67 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-public class Quest : MonoBehaviour {
+public class Quest : ISubscriber {
     public string title;
-    public string description;
     public int reward;
-    private AbstractTask[] tasks;
+    public string description;
+    private HashSet<AbstractTask> children;
+    private int taskCompleteCount;
     private bool started = false;
+    private bool done = false;
     private bool complete = false;
 
-    private void Start() {
-        this.tasks = transform.GetComponentsInChildren<AbstractTask>();
-    }
-
-    private void OnDestroy() {
-        EventManager.Get().UnSubcribeAll(this);
+    public Quest(string title) {
+        this.title = title;
+        this.children = new HashSet<AbstractTask>();
     }
 
     public void Enter() {
-        foreach(AbstractTask task in tasks) {
+        EventManager.Get().Subscribe((TaskEndEvent taskEvent) => OnTaskEnd(taskEvent));
+        foreach(AbstractTask task in children) {
             task.Enter();
         }
+        taskCompleteCount = 0;
         started = true;
         EventManager.Get().Broadcast(new QuestStartEvent(this));
     }
 
     public void Exit() {
-        complete = true;
+        done = true;
+        EventManager.Get().UnSubcribeAll(this);
         EventManager.Get().Broadcast(new QuestEndEvent(this));
+    }
+
+    public HashSet<AbstractTask> GetChildren() {
+        return this.children;
+    }
+
+    public void AddChild(AbstractTask task) {
+        children.Add(task);
     }
 
     public bool IsStarted() {
         return started;
     }
 
-    public bool TasksDone() {
-        if(complete) return true;
-
-        foreach(AbstractTask task in tasks) {
-            if(!task.IsDone()) return false;
-        }
-
-        return true;
-    }
-
     public bool IsComplete() {
         return complete;
     }
 
-    public AbstractTask[] GetTasks() {
-        return tasks;
+    private void OnTaskEnd(TaskEndEvent taskEvent) {
+        if(!children.Contains(taskEvent.GetTask())) return;
+        if(++taskCompleteCount < children.Count) return;
+
+        complete = true;
+        EventManager.Get().Broadcast(new QuestCompleteEvent(this));
+    }
+
+    public bool IsDone() {
+        return done;
     }
 
     public string GetTitle() {
         return title;
-    }
-
-    public string GetDescription() {
-        return description;
     }
 
     public bool HasDistance() {
@@ -64,6 +69,6 @@ public class Quest : MonoBehaviour {
     }
 
     public Transform GetTransform() {
-        return transform;
+        return null;
     }
 }

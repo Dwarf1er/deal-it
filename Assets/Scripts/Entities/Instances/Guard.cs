@@ -13,7 +13,7 @@ public class Guard : StateHuman {
         return "guard1";
     }
 
-    protected override float GetSpeed() {
+    public override float GetSpeed() {
         return 0.75f;
     }
 

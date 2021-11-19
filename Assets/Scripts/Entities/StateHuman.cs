@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(TilemapNavAgent))]
 public abstract class StateHuman : MonoBehaviour, ISubscriber, IWithPosition, IWithTransform, IStateHandler, ICutsceneActor {
     private Vector2 direction;
     private Sprite[] sprites;
@@ -10,12 +11,12 @@ public abstract class StateHuman : MonoBehaviour, ISubscriber, IWithPosition, IW
     private float flipTime;
     private SpriteRenderer spriteRenderer;
     private State state;
-    private TilemapGraph graph;
+    private TilemapNavAgent agent;
 
     protected virtual void Start() {
         this.sprites = Resources.LoadAll<Sprite>("Characters/" + GetTextureName());
-        this.spriteRenderer = this.GetComponent<SpriteRenderer>();
-        this.graph = FindObjectOfType<TilemapGraph>();
+        this.spriteRenderer = GetComponent<SpriteRenderer>();
+        this.agent = GetComponent<TilemapNavAgent>();
         this.state = GetBaseState();
         this.state.Enter();
     }
@@ -25,7 +26,7 @@ public abstract class StateHuman : MonoBehaviour, ISubscriber, IWithPosition, IW
     }
 
     public abstract State GetBaseState();
-    protected abstract float GetSpeed();
+    public abstract float GetSpeed();
 
     protected abstract string GetTextureName();
 
@@ -33,12 +34,16 @@ public abstract class StateHuman : MonoBehaviour, ISubscriber, IWithPosition, IW
         return this.transform.position;
     }
 
-    public TilemapGraph GetGraph() {
-        return this.graph;
+    public Vector2[] GetPath(Vector2 from, Vector2 to) {
+        return agent.GetPath(from, to);
+    }
+
+    public Vector2 RandomPosition() {
+        return agent.RandomPosition();
     }
 
     public State GetState() {
-        return this.state;
+        return state;
     }
 
     public void SetDirection(Vector2 direction) {
@@ -86,7 +91,7 @@ public abstract class StateHuman : MonoBehaviour, ISubscriber, IWithPosition, IW
     }
 
     public void LookTowards(Vector2 direction) {
-        if(direction == Vector2.zero) return;
+        if(direction.magnitude == 0) return;
 
         int directionIndex = this.GetDirectionIndex(direction);
 

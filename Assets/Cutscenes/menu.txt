@@ -1,0 +1,5 @@
+cutscene single Menu:
+    fade in
+    dialogue "Press Space to Start"
+    fade out
+    scene "CharacterSelection"

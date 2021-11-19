@@ -12,7 +12,7 @@ public class CutsceneHuman : StateHuman {
         return textureName;
     }
 
-    protected override float GetSpeed() {
+    public override float GetSpeed() {
         return speed;
     }
 }

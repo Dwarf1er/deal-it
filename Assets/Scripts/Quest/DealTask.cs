@@ -1,21 +1,21 @@
 using UnityEngine;
 
 public class DealTask : AbstractTask {
-    public Transform dealable;
     private IDealable idealable;
     private string dealName;
 
-    protected override void Start() {
-        base.Start();
+    public DealTask(string target) {
+        dealName = target;
 
-        dealName = dealable.name;
-
-        if(dealable.TryGetComponent<IDealable>(out IDealable deal)) {
+        if(GameObject.Find(target).TryGetComponent<IDealable>(out IDealable deal)) {
             idealable = deal;
         } else {
             throw new System.Exception("Deal should be IDealable.");
         }
+    }
 
+    public override void Enter() {
+        base.Enter();
         EventManager.Get()
             .Subscribe((DealEndEvent dealEvent) => OnDealEnd(dealEvent));
     }

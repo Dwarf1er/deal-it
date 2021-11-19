@@ -24,6 +24,10 @@ public class QuestStartEvent : QuestEvent {
     public QuestStartEvent(Quest quest) : base(quest) {}
 }
 
+public class QuestCompleteEvent : QuestEvent {
+    public QuestCompleteEvent(Quest quest) : base(quest) {}
+}
+
 public class QuestEndEvent : QuestEvent {
     public QuestEndEvent(Quest quest) : base(quest) {}
 }

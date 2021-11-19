@@ -15,7 +15,7 @@ public class Professor : StateHuman {
         return "professor1";
     }
 
-    protected override float GetSpeed() {
+    public override float GetSpeed() {
         return 0.5f;
     }
 

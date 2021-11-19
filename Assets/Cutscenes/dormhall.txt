@@ -1,0 +1,39 @@
+cutscene single Main:
+    toggle ["Exit Door"]
+    look ["Pusher"] "P1"
+    look ["Homeless"] "Pusher"
+    camera ["P1"]
+    fade in
+    look ["P1"] "Pusher"
+    camera ["Pusher"]
+    goto ["Pusher"] "P1" (0,-0.16) up
+    dialogue "Pusher" "You struggling with tuition?"
+    camera ["P1"]
+    dialogue "Student" "The private tutors..."
+    camera ["Pusher"]
+    dialogue "Pusher" "Yeah... I have a solution for you. Come see me later."
+    camera ["P1"]
+    play
+    goto ["Pusher"] "Homeless" (0.16,0) left
+    wait 10
+    patrol ["Pusher"]
+    look ["Homeless"] "P1"
+    quest start "Pusher's Proposal"
+cutscene loop ExitDoor:
+    match interact Exit Door:
+        case true:
+            fade out
+            end "TODO"
+cutscene loop Pusher:
+    match quest Pusher's Proposal:
+        case complete:
+            look ["P1"] "Pusher"
+            look ["Pusher"] "P1"
+            dialogue "Pusher" "TODO."
+            quest end "Pusher's Proposal"
+            play
+            patrol ["Pusher"]
+        case none:
+            match interact Pusher:
+                case true:
+                    dialogue "Pusher" "Come talk to me later."

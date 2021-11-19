@@ -43,46 +43,27 @@ public abstract class UIPanel : MonoBehaviour, ISubscriber {
     public void Open() {
         if(transitioning) return;
 
-        StartCoroutine(AnimateOpen());
+        StartCoroutine(Animate(true));
     }
 
     public void Close() {
         if(transitioning) return;
 
-        StartCoroutine(AnimateClose());
+        StartCoroutine(Animate(false));
     }
 
-    private IEnumerator AnimateOpen() {
-        open = false;
+    private IEnumerator Animate(bool toOpen) {
+        open = !toOpen;
         transitioning = true;
 
-        Vector2 targetPosition = basePosition;
+        Vector2 targetPosition = basePosition + (toOpen ? Vector2.zero : GetOffset());
 
         for(float i = 0; i <= STEPS; i++) {
             rectTransform.pivot = Vector2.Lerp(rectTransform.pivot, targetPosition, i / STEPS);
             yield return new WaitForSeconds(0.001f);
         }
 
-        open = true;
-        transitioning = false;
-    }
-
-    private IEnumerator AnimateClose() {
-        open = true;
-        transitioning = true;
-
-        Vector2 targetPosition = basePosition + GetOffset();
-
-        for(float i = 0; i <= STEPS; i++) {
-            rectTransform.pivot = Vector2.Lerp(rectTransform.pivot, targetPosition, i / STEPS);
-            yield return new WaitForSeconds(0.001f);
-        }
-
-        if(DestroyOnClose()) {
-            Destroy(this.gameObject);
-        }
-
-        open = false;
+        open = toOpen;
         transitioning = false;
     }
 }

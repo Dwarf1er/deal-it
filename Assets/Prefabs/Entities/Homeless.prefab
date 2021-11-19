@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &826566204
+--- !u!114 &-2148544969101009272
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9,11 +9,34 @@ MonoBehaviour:
   m_GameObject: {fileID: 1509986919039750738}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b84bf7390acfaf1489694ed68b3df77, type: 3}
+  m_Script: {fileID: 11500000, guid: e1b68972a0b68cb41a7cd91806a75038, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textureName: homeless1
-  speed: 0.8
+  sprite: {fileID: 21300000, guid: 06ca55bb130bed5a89097959f5bb1009, type: 3}
+--- !u!114 &5830926891899317340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1509986919039750738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c046598e1ee6f62cb13b9a1e707aa10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7405495312550187483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1509986919039750738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46aedc7c891d1b125adf3cb064836ab2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7416224680198593673
 PrefabInstance:
   m_ObjectHideFlags: 0

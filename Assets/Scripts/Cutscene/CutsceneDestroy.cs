@@ -1,10 +1,14 @@
 using UnityEngine;
 
 public class CutsceneDestroy : CutsceneAbstract {
-    public GameObject target;
+    private GameObject targetGameObject;
+
+    public CutsceneDestroy(string target) {
+        this.targetGameObject = GameObject.Find(target);
+    }
 
     public override void Enter() {
-        Destroy(target);
+        GameObject.Destroy(targetGameObject);
     }
 
     public override bool Loop() {

@@ -1,13 +1,13 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Student : StateHuman, IDealable {
     private IEndEvent endEvent;
+    private int skinIndex = -1;
 
     protected override void Start() {
         base.Start();
+
+        
 
         EventManager.Get().Subscribe((ClassStartEvent classEvent) => OnClassStart(classEvent));
         EventManager.Get().Subscribe((DealStartEvent dealEvent) => OnDealStart(dealEvent));
@@ -17,10 +17,14 @@ public class Student : StateHuman, IDealable {
     }
 
     protected override string GetTextureName() {
-        return "student1";
+        if(skinIndex == -1) {
+            this.skinIndex = Random.Range(2, 6);
+        }
+
+        return "student" + skinIndex;
     }
 
-    protected override float GetSpeed() {
+    public override float GetSpeed() {
         return 0.75f;
     }
 

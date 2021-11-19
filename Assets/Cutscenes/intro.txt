@@ -1,0 +1,15 @@
+cutscene single Intro:
+    look ["Pusher"] "P1"
+    camera ["P1"]
+    fade in
+    dialogue "Student" "Tuitions are in..."
+    dialogue "Student" "I spent all my savings on private tutors for 376... What am I going to do?"
+    camera ["Pusher"]
+    look ["P1"] "Pusher"
+    goto ["Pusher"] "P1" (-0.16,0) right
+    dialogue "Pusher" "I got a solution for you. Follow me!"
+    goto ["Pusher", "P1"] "Toilet"
+    look ["P1"] "Pusher"
+    look ["Pusher"] "P1"
+    fade out
+    scene "Menu"

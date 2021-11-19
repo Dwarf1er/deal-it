@@ -1,20 +1,21 @@
 using UnityEngine;
 
 public class InteractTask : AbstractTask {
-    public Transform interactable;
     private IInteractable iinteractable;
     private string interactName;
 
-    protected override void Start() {
-        base.Start();
+    public InteractTask(string target) {
+        interactName = target;
 
-        interactName = interactable.name;
-
-        if(interactable.TryGetComponent<IInteractable>(out IInteractable interact)) {
+        if(GameObject.Find(target).TryGetComponent<IInteractable>(out IInteractable interact)) {
             iinteractable = interact;
         } else {
             throw new System.Exception("Interact should be IInteractable.");
         }
+    }
+
+    public override void Enter() {
+        base.Enter();
 
         EventManager.Get()
             .Subscribe((InteractEndEvent interactEvent) => OnInteractEnd(interactEvent));

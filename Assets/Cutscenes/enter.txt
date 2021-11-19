@@ -1,0 +1,4 @@
+cutscene single Enter:
+    fade in
+    camera ["P1"]
+    play

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PatrolState : GotoState {
-    public PatrolState(IStateHandler stateHandler) : base(stateHandler, stateHandler.GetGraph().RandomNode().GetPosition()) {}
+    public PatrolState(IStateHandler stateHandler) : base(stateHandler, stateHandler.RandomPosition()) {}
 
     public override State NextState() {
         if(this.IsNextState(0.001f)) return stateHandler.GetBaseState();
@@ -12,9 +12,9 @@ public class PatrolState : GotoState {
     }
 
     public override void Loop() {
-        if(path != null && path.Count == 0) {
+        if(base.IsComplete()) {
             path = null;
-            target = stateHandler.GetGraph().RandomNode().GetPosition();
+            target = stateHandler.RandomPosition();
             Enter();
         }
 
