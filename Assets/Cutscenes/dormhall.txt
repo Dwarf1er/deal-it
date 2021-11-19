@@ -25,15 +25,15 @@ cutscene loop ExitDoor:
             fade out
             end "TODO"
 cutscene loop Pusher:
-    match interact Pusher:
-        case true:
-            match quest Pusher's Proposal:
-                case active:
-                    look ["P1"] "Pusher"
-                    look ["Pusher"] "P1"
-                    dialogue "Pusher" "TODO."
-                    quest end "Pusher's Proposal"
-                    play
-                    patrol ["Pusher"]
-                case none:
+    match quest Pusher's Proposal:
+        case complete:
+            look ["P1"] "Pusher"
+            look ["Pusher"] "P1"
+            dialogue "Pusher" "TODO."
+            quest end "Pusher's Proposal"
+            play
+            patrol ["Pusher"]
+        case none:
+            match interact Pusher:
+                case true:
                     dialogue "Pusher" "Come talk to me later."

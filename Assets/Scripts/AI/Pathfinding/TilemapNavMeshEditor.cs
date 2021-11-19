@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.SceneManagement;
@@ -16,3 +17,4 @@ public class TilemapNavMeshEditor : Editor {
         }
     }
 }
+#endif
