@@ -1,0 +1,5 @@
+quest Bropst:
+    description "Bropst"
+    reward 100
+
+    interact "Trash"

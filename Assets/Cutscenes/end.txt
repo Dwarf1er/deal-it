@@ -1,0 +1,5 @@
+cutscene start End:
+    fade in
+    wait 4
+    fade out
+    scene "Menu"

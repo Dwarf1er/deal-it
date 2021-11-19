@@ -10,14 +10,17 @@ public class GameManager : MonoBehaviour, ISubscriber {
         gameManager = this;
     }
 
-    private void Start() {
-        EventManager.Get()
-            .Subscribe((StartEvent startEvent) => OnStart(startEvent));
+    private void Update() {
+        if(Input.GetKeyDown(KeyCode.Escape)) {
+            #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+            #else
+            Application.Quit();
+            #endif
+        }
     }
 
-    private void OnStart(StartEvent startEvent) {
-        // EventManager.Get().BroadcastWithDelay(new ClassStartEvent(new Vector2(0.0f, -0.85f)), 5.0f);
-    }
+    private void Start() {}
 
     private void OnDestroy() {
         EventManager.Get().UnSubcribeAll(this);    

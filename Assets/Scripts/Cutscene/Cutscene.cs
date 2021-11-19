@@ -1,25 +1,27 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-public class Cutscene : MonoBehaviour {
-    private CutsceneAbstract[] steps;
-    private int currentStep = 0;
-    private bool stepStarted = false;
+public class Cutscene : CutsceneCollection {
+    private string name;
+    private bool loop;
 
-    private void Start() {
-        steps = transform.GetComponentsInChildren<CutsceneAbstract>();
+    public Cutscene(string name, bool loop) {
+        this.name = name;
+        this.loop = loop;
     }
 
-    private void Update() {
-        if(currentStep >= steps.Length) return;
+    public override string GetName() {
+        return name;
+    }
 
-        if(!stepStarted) {
-            stepStarted = true;
-            steps[currentStep].Enter();
+    public override bool Loop() {
+        bool baseState = base.Loop();
+
+        if(!baseState) {
+            if(loop) SetStep(0);
+            else return false;
         }
 
-        if(!steps[currentStep].Loop()) {
-            stepStarted = false;
-            steps[currentStep++].Exit();
-        }
+        return true;
     }
 }

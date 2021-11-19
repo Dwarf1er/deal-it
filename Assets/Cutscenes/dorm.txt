@@ -1,0 +1,66 @@
+cutscene single Main:
+    camera ["P1"]
+    fade in
+    dialogue "Student" "Urgh..."
+    dialogue "Student" "Another 2 hour night."
+    camera ["Laptop"]
+    dialogue "Student" "I should go look if missed anything."
+    quest start "Start Day"
+    camera ["P1"]
+    play
+cutscene single Audray:
+    wait 60
+    quest start "Give Up"
+cutscene loop Audray_Loop:
+    match quest Give Up:
+        case complete:
+            goto ["P1"] "Bed" (0,-0.08) down
+            dialogue "Student" "Fuck this!!"
+            quest end "Give Up"
+            wait 1
+            fade out
+            end "Audray"
+cutscene loop Camera:
+    match interact Camera:
+        case true:
+            look ["P1"] "Camera"
+            dialogue "Student" "School installed these a few weeks back."
+            dialogue "Student" "They promised that they don't look at the footage..."
+            play
+cutscene loop Poster:
+    match interact Poster:
+        case true:
+            look ["P1"] "Poster"
+            dialogue "Student" "My prized possession: Rainbow Dash"
+            play
+cutscene loop Laptop:
+    match quest Start Day:
+        case complete:
+            look ["P1"] "Laptop"
+            dialogue "Student" "Nothing on Discord..."
+            dialogue "Student" "Nothing on Facebook..."
+            dialogue "Student" "One email..."
+            dialogue "Student" "..."
+            dialogue "Student" "FUUUUUUUUCCCCCCKKKKKKK!!!"
+            dialogue "Student" "Tuitions are in..."
+            dialogue "Student" "I spent all my savings on private tutors for 376..."
+            dialogue "Student" "What am I going to do?"
+            quest end "Start Day"
+            play
+            wait 10
+            look ["P1"] "Door"
+            camera ["Door"]
+            dialogue "**Knock Knock**"
+            toggle ["Door"]
+            dialogue "You good in there?"
+            camera ["P1"]
+            dialogue "Student" "Yeah yeah... Just got the bad news."
+            quest start "Leave Dorm"
+            play
+cutscene loop Door:
+    match quest Leave Dorm:
+        case complete:
+            quest end "Leave Dorm"
+            wait 1
+            fade out
+            scene "DormHall"

@@ -1,0 +1,10 @@
+cutscene loop Trash:
+    match interact Trash:
+        case true:
+            look ["P1"] "Trash"
+            match quest Bropst:
+                case active:
+                    dialogue "Trash" "You found... An old coffee. Could still be drinkable?"
+                case else:
+                    dialogue "Trash" "You found... Trash. What were you expecting?"
+            play

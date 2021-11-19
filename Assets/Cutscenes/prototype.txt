@@ -1,0 +1,11 @@
+cutscene single Prototype:
+    camera ["Doctor K"]
+    fade in
+    look ["Homeless"] "Doctor K"
+    goto ["Doctor K"] "Homeless" (-0.16, 0) right
+    wait 2
+    camera ["P1"]
+    play
+    goto ["Doctor K"] "Trash"
+    look ["Homeless"] "P1"
+    destroy "Doctor K"

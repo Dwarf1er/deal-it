@@ -2,12 +2,16 @@ using System.Collections;
 using UnityEngine;
 
 public class CutsceneFade : CutsceneAbstract {
-    public bool fadeOut;
+    private bool fout;
     private Fade fade;
 
+    public CutsceneFade(bool fout) {
+        this.fout = fout;
+        this.fade = Object.FindObjectOfType<Fade>();
+    }
+
     public override void Enter() {
-        fade = FindObjectOfType<Fade>();
-        if(fadeOut) fade.FadeOut();
+        if(fout) fade.FadeOut();
         else fade.FadeIn();
     }
 
@@ -15,7 +19,5 @@ public class CutsceneFade : CutsceneAbstract {
         return fade.IsTransitioning();
     }
 
-    public override void Exit() {
-
-    }
+    public override void Exit() {}
 }

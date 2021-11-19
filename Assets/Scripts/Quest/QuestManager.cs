@@ -1,13 +1,19 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class QuestManager : MonoBehaviour {
-    private Quest[] quests;
+    private List<Quest> quests;
     private static QuestManager questManager;
 
-    private void Start() {
+    private void Awake() {
         if(questManager) Destroy(this);
         questManager = this;
-        this.quests = transform.GetComponentsInChildren<Quest>();
+        this.quests = new List<Quest>();
+        foreach(QuestFile questFile in FindObjectsOfType<QuestFile>()) {
+            foreach(Quest quest in questFile.GetQuests()) {
+                quests.Add(quest);
+            }
+        }
     }
 
     public static QuestManager Get() {
@@ -15,7 +21,15 @@ public class QuestManager : MonoBehaviour {
     }
 
     public Quest[] GetQuests() {
-        return this.quests;
+        return this.quests.ToArray();
+    }
+
+    public Quest GetQuest(string title) {
+        foreach(Quest quest in quests) {
+            if(quest.GetTitle() == title) return quest;
+        }
+
+        throw new System.Exception("Could not find quest \"" + title + "\".");
     }
 
     public bool HasQuest(string title) {

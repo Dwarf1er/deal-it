@@ -26,10 +26,10 @@ public class Player : StateHuman, IDealer {
     }
 
     protected override string GetTextureName() {
-        return "student1";
+        return PlayerPrefs.GetString("Skin");
     }
 
-    protected override float GetSpeed() {
+    public override float GetSpeed() {
         return 0.8f;
     }
 }

@@ -2,35 +2,21 @@ using System;
 using System.Collections.Generic;
 
 public class PriorityQueue<T, K> where K : IComparable {
-    private List<Tuple<T, K>> queue;
+    private BinaryHeap<T, K> heap;
 
-    public PriorityQueue() {
-        queue = new List<Tuple<T, K>>();
+    public PriorityQueue(bool isMin) {
+        this.heap = new BinaryHeap<T, K>(isMin);
     }
 
-    public int Count() {
-        return queue.Count;
+    public int Count {
+        get { return heap.Count; }
     }
 
     public void Enqueue(T value, K priority) {
-        queue.Add(new Tuple<T, K>(value, priority));
+        heap.Push(value, priority);
     }
 
     public T Dequeue() {
-        if(queue.Count == 0) {
-            throw new IndexOutOfRangeException("Trying to dequeue from an empty list.");
-        }
-
-        Tuple<T, K> maxPriority = queue[0];
-        
-        foreach(Tuple<T, K> tuple in queue) {
-            if(tuple.second.CompareTo(maxPriority.second) >= 0) {
-                maxPriority = tuple;
-            }
-        }
-
-        queue.Remove(maxPriority);
-
-        return maxPriority.first;
+        return heap.Pop();
     }
 }

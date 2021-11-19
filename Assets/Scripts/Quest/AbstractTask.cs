@@ -1,14 +1,8 @@
 using UnityEngine;
 
-public abstract class AbstractTask : MonoBehaviour, ISubscriber {
+public abstract class AbstractTask : ISubscriber {
     private bool done = false;
     private bool started = false;
-
-    protected virtual void Start() {}
-
-    private void OnDestroy() {
-        EventManager.Get().UnSubcribeAll(this);
-    }
 
     public bool IsDone() {
         return done;
@@ -19,9 +13,11 @@ public abstract class AbstractTask : MonoBehaviour, ISubscriber {
         if(done) return;
         done = true;
         EventManager.Get().Broadcast(new TaskEndEvent(this));
+        // TODO: Prevent concurrent delete.
+        // EventManager.Get().UnSubcribeAll(this);
     }
 
-    public void Enter() {
+    public virtual void Enter() {
         started = true;
     }
 
@@ -30,6 +26,6 @@ public abstract class AbstractTask : MonoBehaviour, ISubscriber {
         return false;
     }
     public Transform GetTransform() {
-        return transform;
+        return null;
     }
 }

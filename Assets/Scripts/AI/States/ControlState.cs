@@ -57,7 +57,7 @@ public class ControlState : State {
         return minValue;
     }
 
-    private static readonly float INTERACT_DISTANCE = 0.5f;
+    private static readonly float INTERACT_DISTANCE = 0.32f;
 
     public void OnDealInput(DealInputEvent inputEvent) {
         if(inputEvent.player != stateHandler.GetTransform().name) return;

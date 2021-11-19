@@ -2,11 +2,22 @@ using System.Collections;
 using UnityEngine;
 
 public class CutsceneLookAt : CutsceneAbstract {
-    public StateHuman actor;
-    public Transform target;
+    private StateHuman[] stateHumans;
+    private Transform targetTransform;
+
+    public CutsceneLookAt(string[] actors, string target) {
+        this.stateHumans = new StateHuman[actors.Length];
+        int i = 0;
+        foreach(string actor in actors) {
+            this.stateHumans[i++] = GameObject.Find(actor).GetComponent<StateHuman>();
+        }
+        this.targetTransform = GameObject.Find(target).transform;
+    }
 
     public override void Enter() {
-        actor.SetLookAt(target);
+        foreach(StateHuman actor in stateHumans) {
+            actor.SetLookAt(targetTransform);
+        }
     }
 
     public override bool Loop() {
