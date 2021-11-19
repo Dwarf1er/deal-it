@@ -7,7 +7,7 @@ public class DialoguePanel : UIPanel {
     public Text messageText;
     public DialogueStartEvent dialogueEvent;
     private bool animateText = false;
-    private static readonly float WRITE_DELAY = 0.04f;
+    private static readonly float WRITE_DELAY = 0.035f;
 
     protected override void Start() {
         base.Start();

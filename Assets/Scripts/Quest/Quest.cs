@@ -1,39 +1,43 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Quest {
+public class Quest : ISubscriber {
     public string title;
     public int reward;
     public string description;
-    private List<AbstractTask> children;
+    private HashSet<AbstractTask> children;
+    private int taskCompleteCount;
     private bool started = false;
     private bool done = false;
     private bool complete = false;
 
     public Quest(string title) {
         this.title = title;
-        this.children = new List<AbstractTask>();
+        this.children = new HashSet<AbstractTask>();
     }
 
     public void Enter() {
+        EventManager.Get().Subscribe((TaskEndEvent taskEvent) => OnTaskEnd(taskEvent));
         foreach(AbstractTask task in children) {
             task.Enter();
         }
+        taskCompleteCount = 0;
         started = true;
         EventManager.Get().Broadcast(new QuestStartEvent(this));
     }
 
     public void Exit() {
         done = true;
+        EventManager.Get().UnSubcribeAll(this);
         EventManager.Get().Broadcast(new QuestEndEvent(this));
+    }
+
+    public HashSet<AbstractTask> GetChildren() {
+        return this.children;
     }
 
     public void AddChild(AbstractTask task) {
         children.Add(task);
-    }
-
-    public AbstractTask[] GetChildren() {
-        return children.ToArray();
     }
 
     public bool IsStarted() {
@@ -41,16 +45,15 @@ public class Quest {
     }
 
     public bool IsComplete() {
-        if(complete) return true;
+        return complete;
+    }
 
-        foreach(AbstractTask task in children) {
-            if(!task.IsDone()) return false;
-        }
+    private void OnTaskEnd(TaskEndEvent taskEvent) {
+        if(!children.Contains(taskEvent.GetTask())) return;
+        if(++taskCompleteCount < children.Count) return;
 
         complete = true;
         EventManager.Get().Broadcast(new QuestCompleteEvent(this));
-
-        return complete;
     }
 
     public bool IsDone() {
@@ -59,5 +62,13 @@ public class Quest {
 
     public string GetTitle() {
         return title;
+    }
+
+    public bool HasDistance() {
+        return false;
+    }
+
+    public Transform GetTransform() {
+        return null;
     }
 }

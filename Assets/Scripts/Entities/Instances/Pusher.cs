@@ -1,8 +1,12 @@
 using UnityEngine;
 
-public class Pusher : StateHuman {
+public class Pusher : StateHuman, IInteractable {
     public override State GetBaseState() {
         return new IdleState(this);
+    }
+
+    public bool IsInteractable() {
+        return true;
     }
 
     protected override string GetTextureName() {

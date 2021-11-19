@@ -1,0 +1,2 @@
+quest Pusher's Proposal:
+    interact "Pusher"

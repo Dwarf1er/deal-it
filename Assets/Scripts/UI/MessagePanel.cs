@@ -25,6 +25,8 @@ public class MessagePanel : UIPanel {
         if(!delayClose) {
             delayClose = true;
             StartCoroutine(DelayedClose(3.0f));
+        } else if(!IsOpen() && !IsTransitioning()) {
+            Destroy(this.gameObject);
         }
         text.text = message;
     }

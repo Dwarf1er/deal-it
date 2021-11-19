@@ -136,7 +136,11 @@ public class TilemapNavMesh : MonoBehaviour {
     }
 
     public Vector2 RandomPosition() {
-        return RandomInTriangle(RandomTriangleIndex());
+        Vector2 randomPosition = RandomInTriangle(RandomTriangleIndex());
+
+        Debug.DrawRay(randomPosition, Vector2.up * 0.1f, Color.green, 1.0f);
+
+        return randomPosition;
     }
 
     private bool OnObstacle(Vector2 position) {

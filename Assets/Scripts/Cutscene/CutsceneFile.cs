@@ -80,6 +80,10 @@ public class CutsceneFile : MonoBehaviour {
                 return ParseScene();
             case "shop":
                 return ParseShop();
+            case "toggle":
+                return ParseToggle();
+            case "end":
+                return ParseEnd();
             default:
                 throw new Exception("Unimplemented " + type);
         }
@@ -192,5 +196,15 @@ public class CutsceneFile : MonoBehaviour {
 
     private CutsceneShop ParseShop() {
         return new CutsceneShop();
+    }
+
+    private CutsceneToggle ParseToggle() {
+        string[] targets = stringParser.ParseStringArray();
+        return new CutsceneToggle(targets);
+    }
+
+    private CutsceneEnd ParseEnd() {
+        string title = stringParser.ParseDelimitedString();
+        return new CutsceneEnd(title);
     }
 }

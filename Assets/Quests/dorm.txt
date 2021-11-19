@@ -1,0 +1,6 @@
+quest Start Day:
+    interact "Laptop"
+quest Leave Dorm:
+    interact "Door"
+quest Give Up:
+    interact "Bed"

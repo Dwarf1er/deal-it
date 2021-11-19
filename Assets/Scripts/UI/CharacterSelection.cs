@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class CharacterSelection : MonoBehaviour, ISubscriber {
     public string[] characterSprites;
@@ -54,7 +55,17 @@ public class CharacterSelection : MonoBehaviour, ISubscriber {
     }
 
     private void OnSelect(DealInputEvent inputEvent) {
-        SceneManager.LoadScene("Cutscene");
+        Fade fade = FindObjectOfType<Fade>();
+        fade.FadeOut();
+        StartCoroutine(WaitTransition(fade));
+    }
+
+    private IEnumerator WaitTransition(Fade fade) {
+        while(fade.IsTransitioning()) {
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        SceneManager.LoadScene("Dorm");
     }
 
     public bool HasDistance() {
