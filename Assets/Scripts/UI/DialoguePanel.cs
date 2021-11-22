@@ -46,6 +46,7 @@ public class DialoguePanel : UIPanel {
         string message = dialogueEvent.GetMessage();
         for(int i = 0; i <= message.Length; i++) {
             messageText.text = message.Substring(0, i);
+            EventManager.Get().Broadcast(new SoundEvent("Dialogue"));
             yield return new WaitForSeconds(WRITE_DELAY);
         }
     }

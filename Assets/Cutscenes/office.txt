@@ -1,0 +1,81 @@
+cutscene single Main:
+    look ["P1"] "Doctor K"
+    look ["Doctor K"] "Window"
+    camera ["P1"]
+    fade in
+    camera ["Doctor K"]
+    dialogue "Another student given proper disciplinary actions."
+    camera ["Table"]
+    wait 1.5
+    camera ["Doctor K"]
+    dialogue "He wouldn't have survived a minute in the industry."
+    dialogue "Good riddance."
+    camera ["P1"]
+    play
+cutscene loop Tomb:
+    match interact Jeff Tomb:
+        case true:
+            look ["P1"] "Jeff Tomb"
+            dialogue "Jeffrey Robertson"
+            dialogue "1999-2018"
+            dialogue "Disciplined for mispelling name on exam."
+            dialogue "May he remember his mistake for the rest of eternity."
+            play
+    match interact Tony Tomb:
+        case true:
+            look ["P1"] "Tony Tomb"
+            dialogue "Tony Chicken"
+            dialogue "2000-2021"
+            dialogue "Disciplined for complaining to student services."
+            dialogue "May he remember his mistake for the rest of eternity."
+            play
+cutscene loop Doctor K:
+    match interact Doctor K:
+        case true:
+            look ["P1"] "Doctor K"
+            camera ["Doctor K"]
+            dialogue "I was expecting you..."
+            look ["Doctor K"] "P1"
+            camera ["P1"]
+            dialogue "Student" "Doctor K?"
+            camera ["Doctor K"]
+            dialogue "Doctor K" "I have been watching your every move."
+            dialogue "Doctor K" 'I know your little "secret".'
+            camera ["P1"]
+            dialogue "Student" "What... What are you talking about?"
+            camera ["Doctor K"]
+            dialogue "Doctor K" 'The "private tutors" you bought...'
+            camera ["P1"]
+            dialogue "Student" "..."
+            camera ["Doctor K"]
+            look ["Doctor K"] "Window"
+            dialogue "Doctor K" "They were my minions."
+            dialogue "Doctor K" 'They said that you "borrowed" work without citing the source.'
+            dialogue "Doctor K" "I will have no choice but to take disciplinary actions."
+            goto ["Doctor K"] "Table" (0,0.04) down
+            camera ["P1"]
+            dialogue "Student" "Please give me a chance Doctor K..."
+            dialogue "Student" "I dropped a course for you... There must be something I can do..."
+            camera ["Doctor K"]
+            dialogue "Doctor K" "..."
+            goto ["Doctor K"] "Window" (0,-0.24) up
+            dialogue "Doctor K" "I offer you one chance for redemption."
+            dialogue "Doctor K" "..."
+            look ["Doctor K"] "P1"
+            dialogue "Doctor K" "Is Poker a game?"
+            camera ["P1"]
+            dialogue "Student" "..."
+            dialogue "Student" "Yes...?"
+            effect "glitch"
+            camera ["Doctor K"]
+            dialogue "Doctor K" "Why did you say that?"
+            goto ["Doctor K"] "Middle" (0,0) down
+            dialogue "Doctor K" "You are breaking the space-time continuum."
+            dialogue "Doctor K" "All our existence was balanced on the correct answer to that question."
+            goto ["Doctor K"] "P1" (0,-0.16) up
+            dialogue "Doctor K" "And you fucked it all up..."
+            dialogue "Doctor K" "..."
+            goto ["Doctor K"] "Middle" (0,0) down
+            dialogue "Doctor K" "We need a reboot."
+            fade out
+            end "Space-Time"

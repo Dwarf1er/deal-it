@@ -8,18 +8,20 @@ cutscene single Main:
     quest start "Start Day"
     camera ["P1"]
     play
-cutscene single Audray:
-    wait 60
+cutscene single DISC:
+    wait 240
+    toggle ["Bed"]
     quest start "Give Up"
-cutscene loop Audray_Loop:
+cutscene loop DISC_Loop:
     match quest Give Up:
         case complete:
+            toggle ["Bed"]
             goto ["P1"] "Bed" (0,-0.08) down
-            dialogue "Student" "Fuck this!!"
+            dialogue "Student" "My mental health is worth more than this."
             quest end "Give Up"
             wait 1
             fade out
-            end "Audray"
+            end "DISC"
 cutscene loop Camera:
     match interact Camera:
         case true:
@@ -27,19 +29,40 @@ cutscene loop Camera:
             dialogue "Student" "School installed these a few weeks back."
             dialogue "Student" "They promised that they don't look at the footage..."
             play
+cutscene loop Trash:
+    match interact Trash:
+        case true:
+            dialogue "Student" "A used condom..."
+            dialogue "Student" "Not sure how it got there. Definitely not mine."
 cutscene loop Poster:
     match interact Poster:
         case true:
             look ["P1"] "Poster"
             dialogue "Student" "My prized possession: Rainbow Dash"
             play
+            wait 2
+            match quest Start Day:
+                case end:
+                    match quest Leave Dorm:
+                        case none:
+                            look ["P1"] "Door"
+                            camera ["Door"]
+                            sound "Door Knock"
+                            dialogue "**Knock Knock**"
+                            toggle ["Door"]
+                            dialogue "You good in there?"
+                            camera ["P1"]
+                            dialogue "Student" "Did you not receive Iliada's email?"
+                            quest start "Leave Dorm"
+                            play
 cutscene loop Laptop:
     match quest Start Day:
         case complete:
+            toggle ["Laptop"]
             look ["P1"] "Laptop"
             dialogue "Student" "Nothing on Discord..."
-            dialogue "Student" "Nothing on Facebook..."
-            dialogue "Student" "One email..."
+            dialogue "Student" "Nothing on pahms_cos's Instagram..."
+            dialogue "Student" "Two emails..."
             dialogue "Student" "..."
             dialogue "Student" "FUUUUUUUUCCCCCCKKKKKKK!!!"
             dialogue "Student" "Tuitions are in..."
@@ -47,16 +70,14 @@ cutscene loop Laptop:
             dialogue "Student" "What am I going to do?"
             quest end "Start Day"
             play
-            wait 10
-            look ["P1"] "Door"
-            camera ["Door"]
-            dialogue "**Knock Knock**"
-            toggle ["Door"]
-            dialogue "You good in there?"
-            camera ["P1"]
-            dialogue "Student" "Yeah yeah... Just got the bad news."
-            quest start "Leave Dorm"
-            play
+            wait 20
+            match quest Leave Dorm:
+                case none:
+                    look ["P1"] "Poster"
+                    camera ["Poster"]
+                    dialogue "Student" "Hmm... I really like that poster."
+                    camera ["P1"]
+                    play
 cutscene loop Door:
     match quest Leave Dorm:
         case complete:

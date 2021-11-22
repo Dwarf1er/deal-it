@@ -1,0 +1,2 @@
+quest Data:
+    reward 100

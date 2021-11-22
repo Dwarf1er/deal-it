@@ -6,7 +6,7 @@ public class CameraController : MonoBehaviour {
     public float speed = 5.0f;
     public Transform[] targets;
     private Camera _camera;
-    private float baseZoom = 0.5f;
+    private float baseZoom = 0.4f;
     private float zoomExpandSpeed = 0.5f;
 
     void Start() {

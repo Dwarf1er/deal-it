@@ -84,6 +84,10 @@ public class CutsceneFile : MonoBehaviour {
                 return ParseToggle();
             case "end":
                 return ParseEnd();
+            case "effect":
+                return ParseEffect();
+            case "sound":
+                return ParseSound();
             default:
                 throw new Exception("Unimplemented " + type);
         }
@@ -206,5 +210,13 @@ public class CutsceneFile : MonoBehaviour {
     private CutsceneEnd ParseEnd() {
         string title = stringParser.ParseDelimitedString();
         return new CutsceneEnd(title);
+    }
+
+    private CutsceneEffect ParseEffect() {
+        return new CutsceneEffect(stringParser.ParseDelimitedString());
+    }
+
+    private CutsceneSound ParseSound() {
+        return new CutsceneSound(stringParser.ParseDelimitedString());
     }
 }
