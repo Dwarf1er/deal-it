@@ -21,12 +21,16 @@ public class Player : StateHuman, IDealer {
         SetNextState(controlState);
     }
 
+    public IInteractable GetInteractTarget() {
+        return controlState.GetInteractTarget();
+    }
+
     public override State GetBaseState() {
         return new LookAtState(this, Vector2.zero);
     }
 
     protected override string GetTextureName() {
-        return PlayerPrefs.GetString("Skin");
+        return PlayerPrefs.GetString("Skin", "student2");
     }
 
     public override float GetSpeed() {

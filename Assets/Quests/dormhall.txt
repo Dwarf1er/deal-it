@@ -1,2 +1,10 @@
 quest Pusher's Proposal:
     interact "Pusher"
+quest Get Your Hands Dirty:
+    interact "Hobo"
+quest Find Jerry:
+    interact "Jerry"
+quest Return Jerry:
+    interact "Hobo"
+quest Go Upstairs:
+    interact "Exit Door"
