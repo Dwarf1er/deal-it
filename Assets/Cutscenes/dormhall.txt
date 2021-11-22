@@ -1,7 +1,6 @@
 cutscene single Main:
-    toggle ["Exit Door"]
     look ["Pusher"] "P1"
-    look ["Homeless"] "Pusher"
+    look ["Hobo"] "Pusher"
     camera ["P1"]
     fade in
     look ["P1"] "Pusher"
@@ -11,29 +10,94 @@ cutscene single Main:
     camera ["P1"]
     dialogue "Student" "The private tutors..."
     camera ["Pusher"]
-    dialogue "Pusher" "Yeah... I have a solution for you. Come see me later."
+    dialogue "Pusher" "Yeah... I have a solution for you. Come see me later kiddo."
     camera ["P1"]
     play
-    goto ["Pusher"] "Homeless" (0.16,0) left
+    goto ["Pusher"] "Hobo" (0.16,0) left
     wait 10
     patrol ["Pusher"]
-    look ["Homeless"] "P1"
+    look ["Hobo"] "P1"
     quest start "Pusher's Proposal"
-cutscene loop ExitDoor:
-    match interact Exit Door:
-        case true:
-            fade out
-            end "TODO"
 cutscene loop Pusher:
     match quest Pusher's Proposal:
         case complete:
+            quest end "Pusher's Proposal"
             look ["P1"] "Pusher"
             look ["Pusher"] "P1"
-            dialogue "Pusher" "TODO."
-            quest end "Pusher's Proposal"
+            camera ["Pusher"]
+            dialogue "Pusher" "Looks like you found me kiddo."
+            camera ["P1"]
+            dialogue "Student" "So... What solution were you talking about?"
+            camera ["Pusher"]
+            dialogue "Pusher" "I can get you the paper you need..."
+            dialogue "Pusher" "But you have to get your hands dirty."
+            camera ["P1"]
+            dialogue "Student" "How dirty are we talking?"
+            camera ["Pusher"]
+            dialogue "Pusher" "Are you in or not?"
+            camera ["P1"]
+            dialogue "Student" "I have nothing left to lose..."
+            dialogue "Student" "This school has already taken everything from me..."
+            camera ["Hobo"]
+            dialogue "Pusher" "You see that hobo over there?"
+            camera ["Pusher"]
+            dialogue "Pusher" "He's going to be your best bud for the rest of the semester."
+            dialogue "Pusher" "Go have a word with him."
+            camera ["P1"]
+            quest start "Get Your Hands Dirty"
             play
             patrol ["Pusher"]
         case none:
             match interact Pusher:
                 case true:
                     dialogue "Pusher" "Come talk to me later."
+cutscene loop Hobo:
+    match quest Get Your Hands Dirty:
+        case complete:
+            quest end "Get Your Hands Dirty"
+            look ["Hobo"] "P1"
+            look ["P1"] "Hobo"
+            dialogue "Student" "Pusher sent me here. I'm ready to get my hands dirty."
+            dialogue "Hobo" "Don't talk to me!!"
+            dialogue "Hobo" "I lost my friend Jerry... Where did he go?"
+            quest start "Find Jerry"
+            camera ["P1"]
+            play
+    match quest Return Jerry:
+        case complete:
+            quest end "Return Jerry"
+            look ["P1"] "Hobo"
+            dialogue "Hobo" "There he is! Thank you for finding him."
+            dialogue "Student" "Why do you care so much about this rat?"
+            dialogue "Hobo" '"This rat" is the solution to your problem.'
+            dialogue "Student" "What do you mean?"
+            dialogue "Hobo" "**Pulls drugs from Jerry's ass**."
+            dialogue "Hobo" "There you go."
+            dialogue "Student" "What the fuck..."
+            dialogue "Hobo" "Didn't the Pusher tell you? This is dirty business."
+            dialogue "Hobo" "Go upstairs. You know what to do with this."
+            quest start "Go Upstairs"
+            camera ["P1"]
+            toggle ["Exit Door"]
+            play
+cutscene loop Jerry:
+    match quest Find Jerry:
+        case complete:
+            quest end "Find Jerry"
+            look ["P1"] "Jerry"
+            dialogue "Jerry" "Squeeek SquEEEk Squeeek."
+            fdestroy "Jerry"
+            quest start "Return Jerry"
+            camera ["P1"]
+            play
+        case none:
+            match interact Jerry:
+                case true:
+                    dialogue "Jerry" "Squeek"
+cutscene loop ExitDoor:
+    match quest Go Upstairs:
+        case complete:
+            quest end "Go Upstairs"
+            wait 1
+            fade out
+            scene "Campus"

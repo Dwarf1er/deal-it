@@ -32,6 +32,15 @@ public class ControlState : State {
         return true;
     }
 
+    public IInteractable GetInteractTarget() {
+        Tuple<IInteractable, float> value = GetNearestType<IInteractable>();
+
+        if(value.second > INTERACT_DISTANCE) return null;
+        if(!value.first.IsInteractable()) return null;
+
+        return value.first;
+    }
+
     public Transform GetTransform() {
         return stateHandler.GetTransform();
     }

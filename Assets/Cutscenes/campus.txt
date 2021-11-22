@@ -1,0 +1,14 @@
+cutscene single Main:
+    camera ["P1"]
+    fade in
+    camera ["Exit Door"]
+    wait 1
+    toggle ["Exit Door"]
+    wait 1
+    camera ["P1"]
+    play
+cutscene loop Exit:
+    match interact Exit Door:
+        case true:
+            fade out
+            scene "Office"
