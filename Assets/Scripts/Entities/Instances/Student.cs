@@ -2,18 +2,18 @@ using UnityEngine;
 
 public class Student : StateHuman, IDealable {
     private IEndEvent endEvent;
-    private int skinIndex = -1;
+    private bool canDeal = false;
+    [SerializeField] private int skinIndex = -1;
 
     protected override void Start() {
         base.Start();
 
-        
-
-        EventManager.Get().Subscribe((ClassStartEvent classEvent) => OnClassStart(classEvent));
-        EventManager.Get().Subscribe((DealStartEvent dealEvent) => OnDealStart(dealEvent));
-
-        EventManager.Get().Subscribe((ClassEndEvent classEvent) => OnClassEnd(classEvent));
-        EventManager.Get().Subscribe((DealEndEvent dealEvent) => OnDealEnd(dealEvent));
+        EventManager.Get()
+            .Subscribe((ToggleEvent toggleEvent) => OnToggle(toggleEvent))
+            .Subscribe((ClassStartEvent classEvent) => OnClassStart(classEvent))
+            .Subscribe((DealStartEvent dealEvent) => OnDealStart(dealEvent))
+            .Subscribe((ClassEndEvent classEvent) => OnClassEnd(classEvent))
+            .Subscribe((DealEndEvent dealEvent) => OnDealEnd(dealEvent));
     }
 
     protected override string GetTextureName() {
@@ -45,7 +45,12 @@ public class Student : StateHuman, IDealable {
     }
 
     public bool IsDealable() {
-        return endEvent != null;
+        return canDeal && endEvent == null;
+    }
+
+    private void OnToggle(ToggleEvent toggleEvent) {
+        if(!toggleEvent.GetTarget().Equals(transform)) return;
+        canDeal = !canDeal;
     }
 
     private void OnDealStart(DealStartEvent dealEvent) {

@@ -1,9 +1,12 @@
 using UnityEngine;
 
-public class Laptop : MonoBehaviour, IInteractable, ISubscriber {
-    private bool open = false;
+public class CoatHanger : MonoBehaviour, ISubscriber {
+    public Sprite[] sprites;
+    private SpriteRenderer spriteRenderer;
 
     private void Start() {
+        this.spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer.sprite = sprites[0];
         EventManager.Get()
             .Subscribe((ToggleEvent toggleEvent) => OnToggle(toggleEvent));
     }
@@ -14,11 +17,7 @@ public class Laptop : MonoBehaviour, IInteractable, ISubscriber {
 
     public void OnToggle(ToggleEvent toggleEvent) {
         if(!toggleEvent.GetTarget().Equals(transform)) return;
-        open = !open;
-    }
-
-    public bool IsInteractable() {
-        return open;
+        spriteRenderer.sprite = sprites[1];
     }
 
     public Vector2 GetPosition() {

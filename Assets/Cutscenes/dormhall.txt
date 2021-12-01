@@ -18,6 +18,15 @@ cutscene single Main:
     patrol ["Pusher"]
     look ["Hobo"] "P1"
     quest start "Pusher's Proposal"
+cutscene single Hooded:
+    look ["Hooded"] "Hobo"
+    wait 2
+    goto ["Hooded"] "Exit Door" (0,-0.16) up
+    wait 0.5
+    toggle ["Exit Door"]
+    wait 0.5
+    toggle ["Exit Door"]
+    destroy "Hooded"
 cutscene loop Pusher:
     match quest Pusher's Proposal:
         case complete:

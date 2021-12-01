@@ -18,8 +18,8 @@ public class Door : MonoBehaviour, IInteractable, ISubscriber {
 
     public void OnToggle(ToggleEvent toggleEvent) {
         if(!toggleEvent.GetTarget().Equals(transform)) return;
-        open = true;
-        spriteRenderer.sprite = sprites[1];
+        open = !open;
+        spriteRenderer.sprite = sprites[open ? 1 : 0];
     }
 
     public bool IsInteractable() {

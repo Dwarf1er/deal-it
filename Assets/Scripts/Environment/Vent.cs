@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Laptop : MonoBehaviour, IInteractable, ISubscriber {
+public class Vent : MonoBehaviour, IInteractable, ISubscriber {
     private bool open = false;
 
     private void Start() {

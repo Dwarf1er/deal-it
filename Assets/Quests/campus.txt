@@ -1,2 +1,10 @@
-quest Data:
-    reward 100
+quest Deal It:
+    deal "Gerard"
+    deal "Henry"
+    deal "Lucifer"
+quest Talk to Hobo:
+    interact "Hobo"
+quest To The Rescue:
+    interact "Bropst"
+quest Coffee Time:
+    interact "Trash"

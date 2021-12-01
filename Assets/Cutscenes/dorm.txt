@@ -1,10 +1,11 @@
 cutscene single Main:
+    toggle ["Laptop"]
     camera ["P1"]
     fade in
     dialogue "Student" "Urgh..."
     dialogue "Student" "Another 2 hour night."
     camera ["Laptop"]
-    dialogue "Student" "I should go look if missed anything."
+    dialogue "Student" "I should go look to see if missed anything."
     quest start "Start Day"
     camera ["P1"]
     play
@@ -25,26 +26,38 @@ cutscene loop DISC_Loop:
 cutscene loop Camera:
     match interact Camera:
         case true:
+            lock
             look ["P1"] "Camera"
             dialogue "Student" "School installed these a few weeks back."
             dialogue "Student" "They promised that they don't look at the footage..."
             play
+            unlock
 cutscene loop Trash:
     match interact Trash:
         case true:
+            lock
+            look ["P1"] "Trash"
             dialogue "Student" "A used condom..."
             dialogue "Student" "Not sure how it got there. Definitely not mine."
-cutscene loop Poster:
+            play
+            unlock
+cutscene loop PosterText:
     match interact Poster:
         case true:
+            lock
             look ["P1"] "Poster"
             dialogue "Student" "My prized possession: Rainbow Dash"
             play
-            wait 2
+            unlock
+cutscene loop Poster:
+    match interact Poster:
+        case true:
             match quest Start Day:
                 case end:
                     match quest Leave Dorm:
                         case none:
+                            wait 2
+                            lock
                             look ["P1"] "Door"
                             camera ["Door"]
                             sound "Door Knock"
@@ -55,6 +68,7 @@ cutscene loop Poster:
                             dialogue "Student" "Did you not receive Iliada's email?"
                             quest start "Leave Dorm"
                             play
+                            unlock
 cutscene loop Laptop:
     match quest Start Day:
         case complete:
@@ -71,6 +85,7 @@ cutscene loop Laptop:
             quest end "Start Day"
             play
             wait 20
+            lock
             match quest Leave Dorm:
                 case none:
                     look ["P1"] "Poster"
@@ -78,6 +93,7 @@ cutscene loop Laptop:
                     dialogue "Student" "Hmm... I really like that poster."
                     camera ["P1"]
                     play
+            unlock
 cutscene loop Door:
     match quest Leave Dorm:
         case complete:
