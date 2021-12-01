@@ -12,7 +12,7 @@ public class Professor : StateHuman {
     }
 
     protected override string GetTextureName() {
-        return "professor1";
+        return "professor2";
     }
 
     public override float GetSpeed() {

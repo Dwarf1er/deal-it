@@ -88,6 +88,12 @@ public class CutsceneFile : MonoBehaviour {
                 return ParseEffect();
             case "sound":
                 return ParseSound();
+            case "lock":
+                return ParseLock(true);
+            case "unlock":
+                return ParseLock(false);
+            case "instantiate":
+                return ParseInstantiate();
             default:
                 throw new Exception("Unimplemented " + type);
         }
@@ -218,5 +224,20 @@ public class CutsceneFile : MonoBehaviour {
 
     private CutsceneSound ParseSound() {
         return new CutsceneSound(stringParser.ParseDelimitedString());
+    }
+
+    private CutsceneLock ParseLock(bool to_lock) {
+        if(stringParser.EndOfLine()) {
+            return new CutsceneLock("", to_lock);
+        } else {
+            string name = stringParser.ParseDelimitedString();
+            return new CutsceneLock(name, to_lock);
+        }
+    }
+
+    private CutsceneInstantiate ParseInstantiate() {
+        string resource = stringParser.ParseDelimitedString();
+        Vector2 position = stringParser.ParseVector2();
+        return new CutsceneInstantiate(resource, position);
     }
 }

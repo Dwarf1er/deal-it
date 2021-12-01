@@ -22,6 +22,7 @@ public class DealTask : AbstractTask {
 
     private void OnDealEnd(DealEndEvent dealEvent) {
         if(dealEvent.GetTo() != idealable) return;
+        if(dealEvent.IsCancelled()) return;
         Done();
     }
 

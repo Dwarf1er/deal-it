@@ -2,19 +2,16 @@ using System.Collections;
 using UnityEngine;
 
 public class CutscenePatrol : CutsceneAbstract {
-    private StateHuman[] stateHumans;
+    private string[] actors;
 
     public CutscenePatrol(string[] actors) {
-        this.stateHumans = new StateHuman[actors.Length];
-        int i = 0;
-        foreach(string actor in actors) {
-            this.stateHumans[i++] = GameObject.Find(actor).GetComponent<StateHuman>();
-        }
+        this.actors = actors;
     }
 
     public override void Enter() {
-        foreach(StateHuman actor in stateHumans) {
-            actor.Patrol();
+        StateHuman[] stateHumans = new StateHuman[actors.Length];
+        foreach(string actor in actors) {
+            GameObject.Find(actor).GetComponent<StateHuman>().Patrol();
         }
     }
 

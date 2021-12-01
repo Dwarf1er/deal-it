@@ -1,14 +1,108 @@
 cutscene single Main:
     camera ["P1"]
     fade in
-    camera ["Exit Door"]
-    wait 1
-    toggle ["Exit Door"]
-    wait 1
-    camera ["P1"]
+    quest start "Deal It"
+    toggle ["Lucifer", "Henry", "Gerard"]
     play
+cutscene single Hooded:
+    goto ["Hooded"] "Exit Door" (0,-0.16) up
+    wait 0.5
+    toggle ["Exit Door"]
+    wait 0.5
+    toggle ["Exit Door"]
+    destroy "Hooded"
+cutscene loop Students:
+    match deal Lucifer:
+        case true:
+            toggle ["Lucifer"]
+    match deal Henry:
+        case true:
+            toggle ["Henry"]
+    match deal Gerard:
+        case true:
+            toggle ["Gerard"]
+cutscene loop Hobo:
+    match quest Deal It:
+        case complete:
+            quest end "Deal It"
+            look ["P1"] "Escalator"
+            camera ["Escalator"]
+            wait 1
+            sound "Door Open"
+            instantiate "Hobo" (-2.32,1.52)
+            dialogue "Student" "I should go ask what to do next."
+            quest start "Talk to Hobo"
+            patrol ["Hobo"]
+            camera ["P1"]
+            play
+    match quest Talk to Hobo:
+        case complete:
+            look ["P1"] "Hobo"
+            look ["Hobo"] "P1"
+            dialogue "Student" "I'm done. What should I do next?"
+            camera ["Hobo"]
+            dialogue "Hobo" "Here's your cut. Stop bothering me."
+            quest end "Talk to Hobo"
+            camera ["P1"]
+            patrol ["Hobo"]
+            play
+            wait 5
+            look ["P1"] "Bropst"
+            dialogue "Help!! I've fallen and I can't get up."
+            dialogue "Student" "Hmm...?"
+            play
+            quest start "To The Rescue"
+cutscene loop Trash:
+    match quest Coffee Time:
+        case complete:
+            match interact Trash:
+                case true:
+                    look ["P1"] "Trash"
+                    dialogue "Student" "Cocaine..."
+                    dialogue "Student" "Syringes..."
+                    dialogue "Student" "An old coffee... Could still be drinkable?"
+                    camera ["P1"]
+                    play
+cutscene loop Bropst:
+    match quest To The Rescue:
+        case complete:
+            quest end "To The Rescue"
+            look ["P1"] "Bropst"
+            dialogue "Student" "Are you alright sir?"
+            camera ["Bropst"]
+            dialogue "Bropst" "I'm a terribly old bastard."
+            camera ["P1"]
+            dialogue "Student" "Okay...?"
+            camera ["Bropst"]
+            dialogue "Bropst" "A Tim Horton's coffee could do me well right now."
+            dialogue "Bropst" "Can you go get me one?"
+            quest start "Coffee Time"
+            camera ["P1"]
+            play
+    match deal Bropst:
+        case true:
+            quest end "Coffee Time"
+            look ["P1"] "Bropst"
+            camera ["Bropst"]
+            dialogue "Bropst" "My last dose... Time to join my friends..."
+            camera ["P1"]
+            dialogue "Student" "Shit... He stopped moving..."
+            fdestroy "Bropst"
+            dialogue "Student" "Hmm... his office keys."
+            dialogue "Student" "Guess he won't need them anymore."
+            camera ["Exit Door"]
+            wait 1
+            toggle ["Exit Door"]
+            wait 1
+            camera ["P1"]
+            play
+    match quest Coffee Time:
+        case none:
+            match interact Bropst:
+                case true:
+                    dialogue "Bropst" "Come back when you have my coffee!"
 cutscene loop Exit:
     match interact Exit Door:
         case true:
             fade out
-            scene "Office"
+            scene "Washroom"

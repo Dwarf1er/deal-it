@@ -1,9 +1,13 @@
 cutscene single Main:
     look ["P1"] "Doctor K"
-    look ["Doctor K"] "Window"
-    camera ["P1"]
+    camera ["Doctor K"]
     fade in
     camera ["Doctor K"]
+    goto ["Doctor K"] "Coat Hanger" (0,-0.16) up
+    wait 1
+    toggle ["Doctor K", "Coat Hanger"]
+    wait 1
+    goto ["Doctor K"] "Window" (0,-0.24) up
     dialogue "Another student given proper disciplinary actions."
     camera ["Table"]
     wait 1.5

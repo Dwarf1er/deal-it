@@ -6,7 +6,7 @@ public class Bropst : MonoBehaviour, IDealable, ISubscriber, IQuestProvider {
     private Quest quest;
 
     private void Start() {
-        quest = QuestManager.Get().GetQuest("Bropst");
+        quest = QuestManager.Get().GetQuest("Coffee Time");
     }
 
     public Quest GetQuest() {
