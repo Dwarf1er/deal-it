@@ -1,0 +1,20 @@
+cutscene single Main:
+    camera ["Hooded"]
+    fade in
+    goto ["Hooded"] "Vent" (0,0) down
+    wait 0.5
+    camera ["P1"]
+    destroy "Hooded"
+    toggle ["Vent"]
+    wait 1
+    dialogue "Student" "That was kinda sus..."
+    play
+cutscene loop Tomb:
+    match interact Tomb:
+        case true:
+            dialogue "Here lie all my friends"
+cutscene loop Vent:
+    match interact Vent:
+        case true:
+            fade out
+            scene "Office"

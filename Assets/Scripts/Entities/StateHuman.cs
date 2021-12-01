@@ -14,7 +14,7 @@ public abstract class StateHuman : MonoBehaviour, ISubscriber, IWithPosition, IW
     private TilemapNavAgent agent;
 
     protected virtual void Start() {
-        this.sprites = Resources.LoadAll<Sprite>("Characters/" + GetTextureName());
+        UpdateTextures();
         this.spriteRenderer = GetComponent<SpriteRenderer>();
         this.agent = GetComponent<TilemapNavAgent>();
         this.state = GetBaseState();
@@ -29,6 +29,10 @@ public abstract class StateHuman : MonoBehaviour, ISubscriber, IWithPosition, IW
     public abstract float GetSpeed();
 
     protected abstract string GetTextureName();
+
+    protected void UpdateTextures() {
+        this.sprites = Resources.LoadAll<Sprite>("Characters/" + GetTextureName());
+    }
 
     public Vector2 GetPosition() {
         return this.transform.position;

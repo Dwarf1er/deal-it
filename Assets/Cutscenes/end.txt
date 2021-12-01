@@ -1,5 +1,10 @@
 cutscene start End:
     fade in
-    wait 4
+    wait 80
     fade out
     scene "Menu"
+cutscene loop Credits:
+    match interact Credits:
+        case true:
+            fade out
+            scene "Menu"
