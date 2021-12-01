@@ -11,6 +11,15 @@ cutscene single Hooded:
     wait 0.5
     toggle ["Exit Door"]
     destroy "Hooded"
+cutscene loop Caught:
+    match reached P1:
+        case true:
+            look ["P1"] "Guard"
+            look ["Guard"] "P1"
+            look ["Guard1"] "P1"
+            dialogue "Guard" "Get fucked scrub."
+            fade out
+            scene "Campus"
 cutscene loop Students:
     match deal Lucifer:
         case true:

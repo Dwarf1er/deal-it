@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FollowState : State {
     private Transform target;
-    private float followRange = 1.0f;
+    private float followRange = 0.8f;
     private float stoppingRange = 0.05f;
 
     public FollowState(IStateHandler stateHandler, Transform target) : base(stateHandler) {
@@ -30,6 +30,15 @@ public class FollowState : State {
     public override bool IsComplete() {
         float distance = stateHandler.DistanceTo(target.position);
 
-        return distance < this.stoppingRange || distance > this.followRange;
+        if(distance < this.stoppingRange) {
+            EventManager.Get().Broadcast(new ReachedEvent(this.target));
+            return true;
+        }
+
+        if(distance > this.followRange) {
+            return true;
+        }
+
+        return false;
     }
 }

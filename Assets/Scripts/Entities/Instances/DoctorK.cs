@@ -10,7 +10,7 @@ public class DoctorK : StateHuman, IInteractable {
     }
 
     private void OnToggle(ToggleEvent toggleEvent) {
-        if(toggleEvent.GetTarget().Equals(transform)) return;
+        if(!toggleEvent.GetTarget().Equals(transform)) return;
         hooded = !hooded;
         UpdateTextures();
     }
