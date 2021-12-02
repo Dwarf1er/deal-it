@@ -3,10 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Jerry : MonoBehaviour, IInteractable, ISubscriber {
-    private void Start() {}
+    private bool canTalk = false;
+
+    private void Start() {
+        EventManager.Get()
+            .Subscribe((ToggleEvent toggleEvent) => OnToggle(toggleEvent));
+    }
 
     public bool IsInteractable() {
-        return true;
+        return canTalk;
+    }
+
+    public void OnToggle(ToggleEvent toggleEvent) {
+        if(!toggleEvent.GetTarget().Equals(transform)) return;
+        canTalk = !canTalk;
     }
 
     public bool HasDistance() {

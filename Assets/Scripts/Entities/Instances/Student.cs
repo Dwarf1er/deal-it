@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Student : StateHuman, IDealable {
+public class Student : StateHuman, IInteractable, IDealable {
     private IEndEvent endEvent;
     private bool canDeal = false;
     [SerializeField] private int skinIndex = -1;
@@ -46,6 +46,10 @@ public class Student : StateHuman, IDealable {
 
     public bool IsDealable() {
         return canDeal && endEvent == null;
+    }
+
+    public bool IsInteractable() {
+        return !canDeal;
     }
 
     private void OnToggle(ToggleEvent toggleEvent) {

@@ -17,11 +17,11 @@ cutscene single Main:
     camera ["P1"]
     play
 cutscene loop Tomb:
-    match interact Jeff Tomb:
+    match interact Julius Tomb:
         case true:
-            look ["P1"] "Jeff Tomb"
-            dialogue "Jeffrey Robertson"
-            dialogue "1999-2018"
+            look ["P1"] "Julius Tomb"
+            dialogue "Julius Piranha"
+            dialogue "1999-2021"
             dialogue "Disciplined for mispelling name on exam."
             dialogue "May he remember his mistake for the rest of eternity."
             play
@@ -36,6 +36,7 @@ cutscene loop Tomb:
 cutscene loop Doctor K:
     match interact Doctor K:
         case true:
+            toggle ["Doctor K"]
             look ["P1"] "Doctor K"
             camera ["Doctor K"]
             dialogue "I was expecting you..."

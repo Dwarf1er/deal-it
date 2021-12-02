@@ -1,5 +1,5 @@
 cutscene single Main:
-    toggle ["Laptop"]
+    toggle ["Laptop", "Camera"]
     camera ["P1"]
     fade in
     dialogue "Student" "Urgh..."
@@ -37,8 +37,8 @@ cutscene loop Trash:
         case true:
             lock
             look ["P1"] "Trash"
-            dialogue "Student" "A used condom..."
-            dialogue "Student" "Not sure how it got there. Definitely not mine."
+            dialogue "Student" "Used condoms..."
+            dialogue "Student" "Not sure how they got there. Definitely not mine."
             play
             unlock
 cutscene loop PosterText:

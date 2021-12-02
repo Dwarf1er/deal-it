@@ -6,5 +6,3 @@ quest Find Jerry:
     interact "Jerry"
 quest Return Jerry:
     interact "Hobo"
-quest Go Upstairs:
-    interact "Exit Door"

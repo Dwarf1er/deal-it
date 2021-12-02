@@ -1,9 +1,15 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ControlState : State {
     private Vector2 direction;
+    private IInteractable[] interactables;
+    private IDealable[] dealables;
 
-    public ControlState(IStateHandler stateHandler) : base(stateHandler) {}
+    public ControlState(IStateHandler stateHandler) : base(stateHandler) {
+        interactables = FindCollection<IInteractable>().ToArray();
+        dealables = FindCollection<IDealable>().ToArray();
+    }
 
     public override void Enter() {
         if(!(stateHandler is IDealer)) {
@@ -33,10 +39,21 @@ public class ControlState : State {
     }
 
     public IInteractable GetInteractTarget() {
-        Tuple<IInteractable, float> value = GetNearestType<IInteractable>();
+        Tuple<IInteractable, float> value = GetNearestType<IInteractable>(interactables);
 
+        if(value == null) return null;
         if(value.second > INTERACT_DISTANCE) return null;
         if(!value.first.IsInteractable()) return null;
+
+        return value.first;
+    }
+
+    public IDealable GetDealableTarget() {
+        Tuple<IDealable, float> value = GetNearestType<IDealable>(dealables);
+
+        if(value == null) return null;
+        if(value.second > INTERACT_DISTANCE) return null;
+        if(!value.first.IsDealable()) return null;
 
         return value.first;
     }
@@ -51,15 +68,25 @@ public class ControlState : State {
         direction = inputEvent.direction;
     }
 
-    private Tuple<T, float> GetNearestType<T>() where T: IWithPosition {
-        Tuple<T, float> minValue = null;
+    private List<T> FindCollection<T>() {
+        List<T> collection = new List<T>();
 
         foreach(MonoBehaviour monoBehaviour in Object.FindObjectsOfType<MonoBehaviour>()) {
             if(monoBehaviour.TryGetComponent<T>(out T type)) {
-                float distance = Vector2.Distance(GetTransform().position, type.GetPosition());
-                if(minValue == null || distance < minValue.second) {
-                    minValue = new Tuple<T, float>(type, distance);
-                }
+                collection.Add(type);
+            }
+        }
+
+        return collection;
+    }
+
+    private Tuple<T, float> GetNearestType<T>(T[] collection) where T: IWithPosition {
+        Tuple<T, float> minValue = null;
+
+        foreach(T t in collection) {
+            float distance = Vector2.Distance(GetTransform().position, t.GetPosition());
+            if(minValue == null || distance < minValue.second) {
+                minValue = new Tuple<T, float>(t, distance);
             }
         }
 
@@ -71,7 +98,7 @@ public class ControlState : State {
     public void OnDealInput(DealInputEvent inputEvent) {
         if(inputEvent.player != stateHandler.GetTransform().name) return;
 
-        Tuple<IDealable, float> minDealable = GetNearestType<IDealable>();
+        Tuple<IDealable, float> minDealable = GetNearestType<IDealable>(dealables);
 
         if(minDealable == null) return;
         if(minDealable.second > INTERACT_DISTANCE) return;
@@ -84,7 +111,7 @@ public class ControlState : State {
     public void OnInteractInput(InteractInputEvent inputEvent) {
         if(inputEvent.player != stateHandler.GetTransform().name) return;
 
-        Tuple<IInteractable, float> minInteractable = GetNearestType<IInteractable>();
+        Tuple<IInteractable, float> minInteractable = GetNearestType(interactables);
 
         if(minInteractable == null) return;
         if(minInteractable.second > INTERACT_DISTANCE) return;

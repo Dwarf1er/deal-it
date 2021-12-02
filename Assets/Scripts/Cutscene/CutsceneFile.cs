@@ -162,6 +162,8 @@ public class CutsceneFile : MonoBehaviour {
                 return new CutsceneIfQuest(target);
             case "deal":
                 return new CutsceneIfDeal(target);
+            case "reached":
+                return new CutsceneIfReached(target);
             default:
                 throw new Exception("Not implemented match " + matchType);
         }
