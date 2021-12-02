@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Guard : StateHuman {
+    private static readonly float SPOT_DISTANCE = 0.75f;
+
     protected override void Start() {
         base.Start();
 
@@ -24,7 +26,9 @@ public class Guard : StateHuman {
     }
 
     private void OnDealStart(DealStartEvent dealEvent) {
-        EventManager.Get().Broadcast(new AlertEvent(this.transform.position, dealEvent.GetFrom().GetTransform()));
+        if((dealEvent.GetFrom().GetPosition() - (Vector2)transform.position).magnitude < SPOT_DISTANCE) {
+            EventManager.Get().Broadcast(new AlertEvent(this.transform.position, dealEvent.GetFrom().GetTransform()));
+        }   
     }
 
     private void OnAlert(AlertEvent alertEvent) {

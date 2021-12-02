@@ -1,2 +1,2 @@
 quest TODO:
-    interact "Doctor K"
+    description "TODO"

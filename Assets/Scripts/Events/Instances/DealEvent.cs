@@ -24,7 +24,7 @@ public abstract class DealEvent : IInteractionEvent<IDealer, IDealable> {
     }
 
     public float GetRange() {
-        return 1.0f;
+        return float.MaxValue;
     }
 }
 

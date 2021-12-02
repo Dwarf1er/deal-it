@@ -28,6 +28,6 @@ public class CutsceneFadeDestroy : CutsceneAbstract {
     }
 
     public override void Exit() {
-        GameObject.Destroy(targetGameObject);
+        targetGameObject.transform.position = new Vector3(-99, -99, 0);
     }
 }

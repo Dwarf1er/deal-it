@@ -2,16 +2,19 @@ using UnityEngine;
 
 public class DoctorK : StateHuman, IInteractable {
     [SerializeField] private bool hooded = false;
+    private bool canTalk = false;
 
     protected override void Start() {
         base.Start();
 
-        EventManager.Get().Subscribe((ToggleEvent toggleEvent) => OnToggle(toggleEvent));
+        EventManager.Get()
+            .Subscribe((ToggleEvent toggleEvent) => OnToggle(toggleEvent));
     }
 
     private void OnToggle(ToggleEvent toggleEvent) {
         if(!toggleEvent.GetTarget().Equals(transform)) return;
-        hooded = !hooded;
+        hooded = false;
+        canTalk = !canTalk;
         UpdateTextures();
     }
 
@@ -20,7 +23,7 @@ public class DoctorK : StateHuman, IInteractable {
     }
 
     public bool IsInteractable() {
-        return true;
+        return canTalk;
     }
 
     protected override string GetTextureName() {

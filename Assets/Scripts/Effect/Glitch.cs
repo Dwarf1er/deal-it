@@ -9,6 +9,7 @@ public class Glitch : MonoBehaviour {
     private SpriteRenderer[] renderers;
     private Color color = Color.white;
     private float rotationSpeed = 1.0f;
+    private float flickerSpeed = 1.0f;
     private float t = 0;
     public static bool glitch = false;
 
@@ -36,7 +37,7 @@ public class Glitch : MonoBehaviour {
 
         Camera.main.transform.Rotate(Vector3.forward * rotationSpeed * Time.deltaTime);
 
-        rotationSpeed += 10.0f * Time.deltaTime;
-        color = Color.HSVToRGB(0, 0, Mathf.Abs(Mathf.Cos(t * 2.0f)));
+        rotationSpeed += 5.0f * Time.deltaTime;
+        color = Color.HSVToRGB(0, 0, Mathf.Abs(Mathf.Cos(t * flickerSpeed)));
     }
 }
