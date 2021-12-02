@@ -8,7 +8,7 @@ public class CutsceneDestroy : CutsceneAbstract {
     }
 
     public override void Enter() {
-        GameObject.Destroy(targetGameObject);
+        targetGameObject.transform.position = new Vector3(-99, -99, 0);
     }
 
     public override bool Loop() {

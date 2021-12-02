@@ -11,19 +11,109 @@ cutscene single Hooded:
     wait 0.5
     toggle ["Exit Door"]
     destroy "Hooded"
-cutscene loop Students:
+cutscene loop Caught:
+    match reached P1:
+        case true:
+            lock
+            look ["P1"] "Guard"
+            look ["Guard"] "P1"
+            look ["Guard1"] "P1"
+            dialogue "Guard" "Stop! You have violated the law."
+            dialogue "Guard" "You must serve your sentence."
+            fade out
+            scene "Campus"
+            unlock
+cutscene loop LuciferDeal:
     match deal Lucifer:
         case true:
+            lock
             toggle ["Lucifer"]
+            look ["P1"] "Lucifer"
+            look ["Lucifer"] "P1"
+            camera ["Lucifer"]
+            dialogue "Lucifer" "Those narcotics are heavenly."
+            patrol ["Lucifer"]
+            camera ["P1"]
+            play
+            unlock
+cutscene loop LuciferInteract:
+    match interact Lucifer:
+        case true:
+            lock
+            look ["P1"] "Lucifer"
+            look ["Lucifer"] "P1"
+            camera ["Lucifer"]
+            dialogue "Lucifer" "Dear lord, I'm having a blessed time. Thank you so much."
+            patrol ["Lucifer"]
+            camera ["P1"]
+            play
+            unlock
+cutscene loop HenryDeal:
     match deal Henry:
         case true:
+            lock
             toggle ["Henry"]
+            look ["P1"] "Henry"
+            look ["Henry"] "P1"
+            camera ["Henry"]
+            dialogue "Henry" "That shit bussin."
+            patrol ["Henry"]
+            camera ["P1"]
+            play
+            unlock
+cutscene loop HenryInteract:
+    match interact Henry:
+        case true:
+            lock
+            look ["P1"] "Henry"
+            look ["Henry"] "P1"
+            camera ["Henry"]
+            dialogue "Henry" "Sheeesh!!"
+            patrol ["Henry"]
+            camera ["P1"]
+            play
+            unlock
+cutscene loop GerardDeal:
     match deal Gerard:
         case true:
+            lock
             toggle ["Gerard"]
+            look ["P1"] "Gerard"
+            look ["Gerard"] "P1"
+            camera ["Gerard"]
+            dialogue "Gerard" "Merci mon pote."
+            patrol ["Gerard"]
+            camera ["P1"]
+            play
+            unlock
+cutscene loop GerardInteract:
+    match interact Gerard:
+        case true:
+            lock
+            look ["P1"] "Gerard"
+            look ["Gerard"] "P1"
+            camera ["Gerard"]
+            dialogue "Gerard" "Osti que chu stone moe."
+            patrol ["Gerard"]
+            camera ["P1"]
+            play
+            unlock
+cutscene loop Liza:
+    match interact Liza:
+        case true:
+            lock
+            look ["P1"] "Liza"
+            look ["Liza"] "P1"
+            camera ["Liza"]
+            dialogue "Liza" "I'm pretty sure I just saw a hooded person with a knife."
+            patrol ["Liza"]
+            camera ["P1"]
+            play
+            unlock
 cutscene loop Hobo:
     match quest Deal It:
         case complete:
+            lock
             quest end "Deal It"
             look ["P1"] "Escalator"
             camera ["Escalator"]
@@ -34,9 +124,12 @@ cutscene loop Hobo:
             quest start "Talk to Hobo"
             patrol ["Hobo"]
             camera ["P1"]
+            toggle ["Hobo"]
             play
+            unlock
     match quest Talk to Hobo:
         case complete:
+            toggle ["Hobo"]
             look ["P1"] "Hobo"
             look ["Hobo"] "P1"
             dialogue "Student" "I'm done. What should I do next?"
@@ -46,23 +139,38 @@ cutscene loop Hobo:
             camera ["P1"]
             patrol ["Hobo"]
             play
-            wait 5
+            wait 10
+            lock
             look ["P1"] "Bropst"
             dialogue "Help!! I've fallen and I can't get up."
             dialogue "Student" "Hmm...?"
             play
             quest start "To The Rescue"
+            toggle ["Bropst"]
+            unlock
 cutscene loop Trash:
     match quest Coffee Time:
         case complete:
             match interact Trash:
                 case true:
+                    lock
                     look ["P1"] "Trash"
-                    dialogue "Student" "Cocaine..."
-                    dialogue "Student" "Syringes..."
+                    dialogue "Student" "Failed exams..."
+                    dialogue "Student" "My hopes and dreams..."
                     dialogue "Student" "An old coffee... Could still be drinkable?"
                     camera ["P1"]
                     play
+                    unlock
+        case else:
+            match interact Trash:
+                case true:
+                    lock
+                    look ["P1"] "Trash"
+                    dialogue "Student" "Looks like a bunch of trash..."
+                    dialogue "Student" "Noting interesting for now."
+                    camera ["P1"]
+                    play
+                    unlock
 cutscene loop Bropst:
     match quest To The Rescue:
         case complete:
@@ -79,6 +187,10 @@ cutscene loop Bropst:
             quest start "Coffee Time"
             camera ["P1"]
             play
+        case done:
+            match interact Bropst:
+                case true:
+                    dialogue "Bropst" "Come back when you have my coffee!"
     match deal Bropst:
         case true:
             quest end "Coffee Time"
@@ -96,11 +208,6 @@ cutscene loop Bropst:
             wait 1
             camera ["P1"]
             play
-    match quest Coffee Time:
-        case none:
-            match interact Bropst:
-                case true:
-                    dialogue "Bropst" "Come back when you have my coffee!"
 cutscene loop Exit:
     match interact Exit Door:
         case true:

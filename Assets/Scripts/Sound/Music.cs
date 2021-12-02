@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class Music : MonoBehaviour {
     private static Music music;
 
-    private void Awake() {
+    private void Start() {
         DontDestroyOnLoad(this);
         if(music != null) Destroy(this.gameObject);
         music = this;

@@ -25,6 +25,10 @@ public class Player : StateHuman, IDealer {
         return controlState.GetInteractTarget();
     }
 
+    public IDealable GetDealableTarget() {
+        return controlState.GetDealableTarget();
+    }
+
     public override State GetBaseState() {
         return new LookAtState(this, Vector2.zero);
     }

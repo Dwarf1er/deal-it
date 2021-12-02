@@ -1,10 +1,12 @@
 cutscene single Main:
+    look ["P1"] "Hooded"
     camera ["Hooded"]
     fade in
     goto ["Hooded"] "Vent" (0,0) down
     wait 0.5
     camera ["P1"]
     destroy "Hooded"
+    sound "Door Open"
     toggle ["Vent"]
     wait 1
     dialogue "Student" "That was kinda sus..."

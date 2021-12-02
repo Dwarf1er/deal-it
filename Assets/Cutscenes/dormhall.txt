@@ -1,4 +1,5 @@
 cutscene single Main:
+    toggle ["Jerry"]
     look ["Pusher"] "P1"
     look ["Hobo"] "Pusher"
     camera ["P1"]
@@ -27,6 +28,67 @@ cutscene single Hooded:
     wait 0.5
     toggle ["Exit Door"]
     destroy "Hooded"
+cutscene loop Emelie:
+    match interact Emelie:
+        case true:
+            lock
+            look ["Emelie"] "P1"
+            look ["P1"] "Emelie"
+            camera ["Emelie"]
+            dialogue "Emelie" "**Cough cough**"
+            dialogue "Emelie" "It's not COVID I swear."
+            camera ["P1"]
+            play
+            patrol ["Emelie"]
+            unlock
+cutscene loop Linda:
+    match interact Linda:
+        case true:
+            lock
+            look ["Linda"] "P1"
+            look ["P1"] "Linda"
+            camera ["Linda"]
+            dialogue "Linda" "Did you see that hooded person?"
+            dialogue "Linda" "Not sure what his deal is."
+            camera ["P1"]
+            play
+            patrol ["Linda"]
+            unlock
+cutscene loop Kyle:
+    match interact Kyle:
+        case true:
+            lock
+            look ["Kyle"] "P1"
+            look ["P1"] "Kyle"
+            camera ["Kyle"]
+            dialogue "Kyle" "Why are you talking to me?"
+            camera ["P1"]
+            play
+            patrol ["Kyle"]
+            unlock
+cutscene loop Trash:
+    match interact Trash:
+        case true:
+            lock
+            look ["P1"] "Trash"
+            dialogue "Student" "Just useless junk. Not worth looking through it."
+            play
+            unlock
+cutscene loop Camera:
+    match interact Camera:
+        case true:
+            lock
+            look ["P1"] "Camera"
+            dialogue "Student" "I wonder if this camera still works."
+            play
+            unlock
+    match interact Camera 1:
+        case true:
+            lock
+            look ["P1"] "Camera 1"
+            dialogue "Student" "I wonder if this camera still works."
+            play
+            unlock
 cutscene loop Pusher:
     match quest Pusher's Proposal:
         case complete:
@@ -54,6 +116,7 @@ cutscene loop Pusher:
             dialogue "Pusher" "Go have a word with him."
             camera ["P1"]
             quest start "Get Your Hands Dirty"
+            toggle ["Hobo"]
             play
             patrol ["Pusher"]
         case none:
@@ -64,6 +127,7 @@ cutscene loop Hobo:
     match quest Get Your Hands Dirty:
         case complete:
             quest end "Get Your Hands Dirty"
+            toggle ["Hobo"]
             look ["Hobo"] "P1"
             look ["P1"] "Hobo"
             dialogue "Student" "Pusher sent me here. I'm ready to get my hands dirty."
@@ -75,6 +139,7 @@ cutscene loop Hobo:
     match quest Return Jerry:
         case complete:
             quest end "Return Jerry"
+            toggle ["Hobo"]
             look ["P1"] "Hobo"
             dialogue "Hobo" "There he is! Thank you for finding him."
             dialogue "Student" "Why do you care so much about this rat?"
@@ -85,9 +150,11 @@ cutscene loop Hobo:
             dialogue "Student" "What the fuck..."
             dialogue "Hobo" "Didn't the Pusher tell you? This is dirty business."
             dialogue "Hobo" "Go upstairs. You know what to do with this."
-            quest start "Go Upstairs"
-            camera ["P1"]
+            camera ["Exit Door"]
+            wait 1
             toggle ["Exit Door"]
+            wait 1
+            camera ["P1"]
             play
 cutscene loop Jerry:
     match quest Find Jerry:
@@ -98,15 +165,15 @@ cutscene loop Jerry:
             fdestroy "Jerry"
             quest start "Return Jerry"
             camera ["P1"]
+            toggle ["Hobo"]
             play
         case none:
             match interact Jerry:
                 case true:
                     dialogue "Jerry" "Squeek"
 cutscene loop ExitDoor:
-    match quest Go Upstairs:
-        case complete:
-            quest end "Go Upstairs"
+    match interact Exit Door:
+        case true:
             wait 1
             fade out
             scene "Campus"
