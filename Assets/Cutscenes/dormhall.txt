@@ -49,7 +49,7 @@ cutscene loop Linda:
             look ["P1"] "Linda"
             camera ["Linda"]
             dialogue "Linda" "Did you see that hooded person?"
-            dialogue "Linda" "Not sure what his deal is."
+            dialogue "Linda" "Not sure what their deal is."
             camera ["P1"]
             play
             patrol ["Linda"]
