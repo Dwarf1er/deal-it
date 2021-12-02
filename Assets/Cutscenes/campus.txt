@@ -21,8 +21,8 @@ cutscene loop Caught:
             dialogue "Guard" "Stop! You have violated the law."
             dialogue "Guard" "You must serve your sentence."
             fade out
-            scene "Campus"
             unlock
+            scene "Campus"
 cutscene loop LuciferDeal:
     match deal Lucifer:
         case true:
