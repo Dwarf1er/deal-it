@@ -150,10 +150,10 @@ cutscene loop Hobo:
             toggle ["Bropst"]
             unlock
 cutscene loop Trash:
-    match quest Coffee Time:
-        case complete:
-            match interact Trash:
-                case true:
+    match interact Trash:
+        case true:
+            match quest Coffee Time:
+                case complete:
                     lock
                     look ["P1"] "Trash"
                     dialogue "Student" "Failed exams..."
@@ -162,9 +162,7 @@ cutscene loop Trash:
                     camera ["P1"]
                     play
                     unlock
-        case else:
-            match interact Trash:
-                case true:
+                case else:
                     lock
                     look ["P1"] "Trash"
                     dialogue "Student" "Looks like a bunch of trash..."
@@ -192,6 +190,7 @@ cutscene loop Bropst:
             match interact Bropst:
                 case true:
                     dialogue "Bropst" "Come back when you have my coffee!"
+cutscene loop BropstDeal:
     match deal Bropst:
         case true:
             quest end "Coffee Time"
