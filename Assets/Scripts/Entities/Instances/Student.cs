@@ -25,7 +25,7 @@ public class Student : StateHuman, IInteractable, IDealable {
     }
 
     public override float GetSpeed() {
-        return 0.75f;
+        return 0.65f;
     }
 
     public override State GetBaseState() {
