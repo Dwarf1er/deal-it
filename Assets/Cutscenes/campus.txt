@@ -1,4 +1,5 @@
 cutscene single Main:
+    unlock
     camera ["P1"]
     fade in
     quest start "Deal It"
