@@ -8,7 +8,7 @@ A game centered around dealing at school.
 |------------------|----------|
 | Alexandre        | 40129457 |
 | Antoine          | 40131102 |
-| Arman            | X        |
+| Arman            | 40075912 |
 | Julie            | 40077165 |
 
 ## Documentation
